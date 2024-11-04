@@ -26,11 +26,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private async void MercadoForm_Load(object sender, EventArgs e)
         {
-            await CargarCryptos();
+            await CargarMercado();
 
         }
 
-        private async Task CargarCryptos()
+        private async Task CargarMercado()
         {
 
             // Obtener las criptomonedas

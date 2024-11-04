@@ -10,5 +10,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
     public interface IUserRepository
     {
         UserDTO ValidarUsuario(string mail, string contrasena);
+        Task <List<UsuarioCryptoDTO>> ObtenerCryptosFavoritas(int idUsuario);
     }
 }

@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.Data;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
+using Microsoft.EntityFrameworkCore;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
 {
@@ -30,6 +32,21 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
                 return usuario;
             }
             else    return null;
+        }
+
+        public async Task<List<UsuarioCryptoDTO>> ObtenerCryptosFavoritas(int userId)
+        {
+            // Obtiene las criptomonedas favoritas del usuario especificado
+            var favoriteCryptos = await _context.UsuariosCryptos
+                .Where(fc => fc.UsuarioID == userId) // Usa el userId proporcionado
+                .Select(fc => new UsuarioCryptoDTO // Mapea a UsuarioCryptoDTO
+                {
+                    UsuarioID = fc.UsuarioID,
+                    CryptoID = fc.CryptoID
+                })
+                .ToListAsync(); // Utiliza ToListAsync para operaciones asincrónicas
+
+            return favoriteCryptos; // Retorna la lista de criptomonedas favoritas
         }
     }
 

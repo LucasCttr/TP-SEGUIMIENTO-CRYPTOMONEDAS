@@ -29,11 +29,13 @@
         private void InitializeComponent()
         {
             MercadoBoton = new Button();
+            CryptosFavoritasLista = new ListView();
+            label1 = new Label();
             SuspendLayout();
             // 
             // MercadoBoton
             // 
-            MercadoBoton.Location = new Point(294, 401);
+            MercadoBoton.Location = new Point(12, 415);
             MercadoBoton.Name = "MercadoBoton";
             MercadoBoton.Size = new Size(75, 23);
             MercadoBoton.TabIndex = 0;
@@ -41,20 +43,42 @@
             MercadoBoton.UseVisualStyleBackColor = true;
             MercadoBoton.Click += MercadoBoton_Click;
             // 
+            // CryptosFavoritasLista
+            // 
+            CryptosFavoritasLista.Location = new Point(12, 41);
+            CryptosFavoritasLista.Name = "CryptosFavoritasLista";
+            CryptosFavoritasLista.Size = new Size(776, 368);
+            CryptosFavoritasLista.TabIndex = 1;
+            CryptosFavoritasLista.UseCompatibleStateImageBehavior = false;
+            // 
+            // label1
+            // 
+            label1.AutoSize = true;
+            label1.Location = new Point(12, 23);
+            label1.Name = "label1";
+            label1.Size = new Size(36, 15);
+            label1.TabIndex = 2;
+            label1.Text = "inicio";
+            // 
             // InicioForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(label1);
+            Controls.Add(CryptosFavoritasLista);
             Controls.Add(MercadoBoton);
             Name = "InicioForm";
             Text = "InicioForm";
             Load += InicioForm_Load;
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private Button MercadoBoton;
+        private ListView CryptosFavoritasLista;
+        private Label label1;
     }
 }
