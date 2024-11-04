@@ -46,6 +46,6 @@ using Microsoft.EntityFrameworkCore;
                 modelBuilder.Entity<UsuarioCryptoDTO>().Property(u => u.CryptoID).IsRequired().HasMaxLength(100);  
                 modelBuilder.Entity<UsuarioCryptoDTO>().Property(u => u.UsuarioID).IsRequired().HasMaxLength(100);  
                 modelBuilder.Entity<UsuarioCryptoDTO>().Property(u => u.ValorAlerta).HasColumnType("decimal(18,2)"); 
-        }
+            }
         }
     }

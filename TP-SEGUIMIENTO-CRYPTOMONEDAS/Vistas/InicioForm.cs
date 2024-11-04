@@ -20,6 +20,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             InitializeComponent();
             InitializeListView();
             _unitOfWork = unitOfWork;
+
         }
 
         private async void InicioForm_Load(object sender, EventArgs e)
@@ -38,28 +39,46 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         {
 
             // Obtener las criptomonedas
-            var cryptos = await _unitOfWork.Usuarios.ObtenerCryptosFavoritas(1);
+            var cryptos = await _unitOfWork.Usuarios.ObtenerCryptosFavoritas(2);      
 
             // Limpiar el ListView antes de llenarlo
-            CryptosFavoritasLista.Items.Clear();
+
             
             // Agregar cada criptomoneda al ListView
             foreach (var crypto in cryptos)
             {
-                var item = new ListViewItem(crypto.UsuarioID.ToString());
-                item.SubItems.Add(crypto.CryptoID.ToString()); ;
-                
-                CryptosFavoritasLista.Items.Add(item);
+                // Obtener los detalles de la criptomoneda mediante su ID
+                var DatosCrypto = await _unitOfWork.CryptosFavoritas.BuscarCryptoMedianteId(crypto.CryptoID);
+
+                // Verifica si DatosCrypto no es null
+                if (DatosCrypto != null)
+                {
+                    // Crear un nuevo ListViewItem y agregar las propiedades de la criptomoneda
+                    var item = new ListViewItem(DatosCrypto.id); // Nombre de la criptomoneda
+                    item.SubItems.Add(DatosCrypto.rank.ToString());
+                    item.SubItems.Add(DatosCrypto.symbol);
+                    item.SubItems.Add(DatosCrypto.priceUsd.ToString("C2", CultureInfo.CreateSpecificCulture("en-US"))); // Precio en USD, formato de moneda
+                    item.SubItems.Add(DatosCrypto.changePercent24Hr.ToString("F2"));
+                    item.SubItems.Add(DatosCrypto.marketCapUsd.ToString("F2"));
+                    item.SubItems.Add(DatosCrypto.supply.ToString("F2"));
+                    CryptosFavoritasLista.Items.Add(item);
+                }
             }
         }
+
 
 
 
         private void InitializeListView()
         {
             CryptosFavoritasLista.View = View.Details;
-            CryptosFavoritasLista.Columns.Add("idUsuario", 100);
-            CryptosFavoritasLista.Columns.Add("Crypto", 60);
+            CryptosFavoritasLista.Columns.Add("Cryptomoneda", 100);
+            CryptosFavoritasLista.Columns.Add("Rank", 60);
+            CryptosFavoritasLista.Columns.Add("Simbolo", 70);
+            CryptosFavoritasLista.Columns.Add("Precio (USD)", 100);
+            CryptosFavoritasLista.Columns.Add("24Hs%", 70);
+            CryptosFavoritasLista.Columns.Add("MarketCap", 100);
+            CryptosFavoritasLista.Columns.Add("Supply", 100);
         }
     }
 }

@@ -38,6 +38,25 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
         {
             public List<CryptoCurrencyDTO> Data { get; set; }
         }
+        private class SingleCryptoResponse
+        {
+            public CryptoCurrencyDTO Data { get; set; }
+        }
+
+        public async Task<CryptoCurrencyDTO> BuscarCryptoMedianteId(string IdCrypto)
+        {
+            var request = new RestRequest($"assets/{IdCrypto}", Method.Get);
+            var response = await _client.ExecuteAsync<SingleCryptoResponse>(request);
+
+            if (response.IsSuccessful && response.Data?.Data != null)
+            {
+                return response.Data.Data; // Devuelve el objeto de criptomoneda
+            }
+
+            return null;
+        }
+
+
         //public IEnumerable<CryptoCurrencyDTO> GetAll() { /* Lógica para obtener todos */ }
         //public CryptoCurrencyDTO GetById(string id) { /* Lógica para obtener por ID */ }
         //public void Add(CryptoCurrencyDTO cryptoCurrency) { /* Lógica para agregar */ }
