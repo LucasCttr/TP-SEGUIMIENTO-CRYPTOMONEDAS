@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
@@ -34,6 +35,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             if (user != null)
             {
                 // Autenticación exitosa
+                SessionManager.CurrentUserId = user.Id; // Guardar ID de usuario en SessionManager
                 this.Hide();
                 var inicioForm = new InicioForm(_unitOfWork); // Cambia esto al nombre de tu formulario principal
                 inicioForm.Show();
@@ -41,7 +43,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             else
             {
                 // Mostrar mensaje de error
-                //lblErrorMessage.Text = "Correo electrónico o contraseña incorrectos.";
+                MessageBox.Show("Correo electrónico o contraseña incorrectos.");
             }
         }
     }

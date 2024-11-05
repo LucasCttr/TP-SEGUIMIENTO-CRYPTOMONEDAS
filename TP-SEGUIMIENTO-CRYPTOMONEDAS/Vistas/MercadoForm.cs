@@ -11,6 +11,7 @@ using TP_SEGUIMIENTO_CRYPTOMONEDAS.Data;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
 using System.Globalization;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
@@ -22,6 +23,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             _unitOfWork = unitOfWork;
             InitializeComponent();
             InitializeListView();
+            CryptosLista.SelectedIndexChanged += listView1_SelectedIndexChanged;
+            OpcionesBoton.Enabled = false;
+
         }
 
         private async void MercadoForm_Load(object sender, EventArgs e)
@@ -44,11 +48,12 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             {
                 var item = new ListViewItem(crypto.name);
                 item.SubItems.Add(crypto.rank.ToString());
-                item.SubItems.Add(crypto.symbol); 
+                item.SubItems.Add(crypto.symbol);
                 item.SubItems.Add(crypto.priceUsd.ToString("C2", CultureInfo.CreateSpecificCulture("en-US"))); // Precio en USD, formato de moneda
-                item.SubItems.Add(crypto.changePercent24Hr.ToString("F2")) ;
+                item.SubItems.Add(crypto.changePercent24Hr.ToString("F2"));
                 item.SubItems.Add(crypto.marketCapUsd.ToString("F2"));
                 item.SubItems.Add(crypto.supply.ToString("F2"));
+                item.SubItems.Add(crypto.id.ToString());
                 CryptosLista.Items.Add(item);
             }
         }
@@ -63,6 +68,29 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             CryptosLista.Columns.Add("24Hs%", 70);
             CryptosLista.Columns.Add("MarketCap", 100);
             CryptosLista.Columns.Add("Supply", 100);
+            CryptosLista.Columns.Add("Id", 100);
+        }
+
+        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (CryptosLista.SelectedItems.Count > 0)
+            {
+                OpcionesBoton.Enabled = CryptosLista.SelectedItems.Count > 0;
+            }
+        }
+
+        private void OpcionesBoton_Click(object sender, EventArgs e)
+        {
+            if (CryptosLista.SelectedItems.Count > 0)
+            {
+                // Obtener el ítem seleccionado
+                ListViewItem selectedItem = CryptosLista.SelectedItems[0];
+                string idCrypto = selectedItem.SubItems[7].Text;
+                string cadena = selectedItem.Text + " " + "[" + selectedItem.SubItems[2].Text + "]"; ; // Obtener el nombre del ítem
+                // Crear e iniciar el nuevo formulario pasando los datos
+                OpcionesCrypto opcionesForm = new OpcionesCrypto(cadena, idCrypto, _unitOfWork);
+                opcionesForm.ShowDialog(); // Usar ShowDialog para abrir como modal, o Show para no modal
+            }
         }
     }
 }

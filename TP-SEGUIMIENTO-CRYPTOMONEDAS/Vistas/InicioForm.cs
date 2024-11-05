@@ -26,7 +26,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         private async void InicioForm_Load(object sender, EventArgs e)
         {
 
-            await CargarCryptosFavoritas();
+            CargarCryptosFavoritas();
         }
 
         private void MercadoBoton_Click(object sender, EventArgs e)
@@ -35,11 +35,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             MercadoForm.Show();
         }
 
-        private async Task CargarCryptosFavoritas()
+        private void CargarCryptosFavoritas()
         {
 
             // Obtener las criptomonedas
-            var cryptos = await _unitOfWork.Usuarios.ObtenerCryptosFavoritas(2);      
+            var cryptos =  _unitOfWork.Usuarios.ObtenerCryptosFavoritas();      
 
             // Limpiar el ListView antes de llenarlo
 
@@ -48,7 +48,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             foreach (var crypto in cryptos)
             {
                 // Obtener los detalles de la criptomoneda mediante su ID
-                var DatosCrypto = await _unitOfWork.CryptosFavoritas.BuscarCryptoMedianteId(crypto.CryptoID);
+                var DatosCrypto =  _unitOfWork.CryptosFavoritas.BuscarCryptoMedianteId(crypto.CryptoID);
 
                 // Verifica si DatosCrypto no es null
                 if (DatosCrypto != null)
@@ -65,8 +65,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 }
             }
         }
-
-
 
 
         private void InitializeListView()

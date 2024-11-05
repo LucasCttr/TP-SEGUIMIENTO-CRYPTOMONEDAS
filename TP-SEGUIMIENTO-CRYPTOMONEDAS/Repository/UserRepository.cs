@@ -34,17 +34,20 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             else    return null;
         }
 
-        public async Task<List<UsuarioCryptoDTO>> ObtenerCryptosFavoritas(int userId)
+        public List<UsuarioCryptoDTO> ObtenerCryptosFavoritas()
         {
-            // Obtiene las criptomonedas favoritas del usuario especificado
-            var favoriteCryptos = await _context.UsuariosCryptos
-                .Where(fc => fc.UsuarioID == userId) // Usa el userId proporcionado
+            // Accede al userId desde la sesión (suponiendo que tienes una forma de acceder a la sesión)
+            int userId = SessionManager.CurrentUserId; // Cambia esto según tu implementación de sesión
+
+            // Obtiene las criptomonedas favoritas del usuario especificado de manera síncrona
+            var favoriteCryptos = _context.UsuariosCryptos
+                .Where(fc => fc.UsuarioID == userId) // Usa el userId de la sesión
                 .Select(fc => new UsuarioCryptoDTO // Mapea a UsuarioCryptoDTO
                 {
                     UsuarioID = fc.UsuarioID,
                     CryptoID = fc.CryptoID
                 })
-                .ToListAsync(); // Utiliza ToListAsync para operaciones asincrónicas
+                .ToList(); // Usa ToList() para una operación síncrona
 
             return favoriteCryptos; // Retorna la lista de criptomonedas favoritas
         }

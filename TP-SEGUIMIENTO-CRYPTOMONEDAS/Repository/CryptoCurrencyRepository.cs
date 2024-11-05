@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.Data;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using RestSharp;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
+using Microsoft.EntityFrameworkCore;
 
 //UTILIZO RESTSHARP
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
@@ -43,10 +45,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             public CryptoCurrencyDTO Data { get; set; }
         }
 
-        public async Task<CryptoCurrencyDTO> BuscarCryptoMedianteId(string IdCrypto)
+        public CryptoCurrencyDTO BuscarCryptoMedianteId(string IdCrypto)
         {
             var request = new RestRequest($"assets/{IdCrypto}", Method.Get);
-            var response = await _client.ExecuteAsync<SingleCryptoResponse>(request);
+            var response = _client.Execute<SingleCryptoResponse>(request);
 
             if (response.IsSuccessful && response.Data?.Data != null)
             {
@@ -56,11 +58,41 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             return null;
         }
 
+        public void EliminarCryptoDeFavorito(string idCrypto)
+        {
 
-        //public IEnumerable<CryptoCurrencyDTO> GetAll() { /* Lógica para obtener todos */ }
-        //public CryptoCurrencyDTO GetById(string id) { /* Lógica para obtener por ID */ }
-        //public void Add(CryptoCurrencyDTO cryptoCurrency) { /* Lógica para agregar */ }
-        // public void Update(CryptoCurrencyDTO cryptoCurrency) { /* Lógica para actualizar */ }
-        // public void Delete(string id) { /* Lógica para eliminar */ }
+
+        }
+
+        public void AgregarCryptoAFavorito(string idCrypto)
+        {
+            int userId = SessionManager.CurrentUserId;
+
+            // Crear una nueva instancia del modelo de favorito
+            var nuevoFavorito = new UsuarioCryptoDTO
+            {
+                UsuarioID = userId,
+                ValorAlerta = 0,
+                CryptoID = idCrypto
+            };
+            // Agregar el nuevo favorito a la base de datos
+            _context.UsuariosCryptos.Add(nuevoFavorito); // Agregar la entidad
+
+            // Mensaje de éxito
+            MessageBox.Show("Criptomoneda agregada a favoritos.");
+        }
+
+        public bool VerificarSiEsFavorito(string idCrypto)
+        {
+            int userId = SessionManager.CurrentUserId;
+
+            // Usar LINQ para hacer la comparación correctamente
+            var crypto = _context.UsuariosCryptos
+                .FirstOrDefault(u => u.UsuarioID == userId && u.CryptoID == idCrypto);
+
+            // Devolver true si se encontró, false en caso contrario
+            return crypto != null; // Devuelve true si existe, false si no
+        }
     }
 }
+

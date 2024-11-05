@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
 {
-    //En carpeta dominio se agregan todas las tablas de la base de dato
-
-    internal class Usuario_Cryptomoneda
+    public static class SessionManager
     {
+        public static int CurrentUserId { get; set; }
+
     }
 }

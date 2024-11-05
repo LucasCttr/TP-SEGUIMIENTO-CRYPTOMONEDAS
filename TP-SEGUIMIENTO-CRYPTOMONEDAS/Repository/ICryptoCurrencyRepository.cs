@@ -11,7 +11,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
     public interface ICryptoCurrencyRepository
     {
         Task<List<CryptoCurrencyDTO>> MostrarCryptos(); // Definición del método asíncrono
-        Task<CryptoCurrencyDTO> BuscarCryptoMedianteId(string IdCrypto);
+        CryptoCurrencyDTO BuscarCryptoMedianteId(string IdCrypto);
+
+        void EliminarCryptoDeFavorito(string idCrypto);
+        void AgregarCryptoAFavorito(string idCrypto);
+        bool VerificarSiEsFavorito(string idCrypto);
         //IEnumerable<CryptoCurrencyDTO> GetAll();
         // CryptoCurrencyDTO GetById(string id);
         //  void Add(CryptoCurrencyDTO cryptoCurrency);
