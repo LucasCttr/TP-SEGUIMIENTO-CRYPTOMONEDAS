@@ -53,7 +53,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 item.SubItems.Add(crypto.rank.ToString());
                 item.SubItems.Add(crypto.symbol);
                 item.SubItems.Add(crypto.priceUsd.ToString("C2", CultureInfo.CreateSpecificCulture("en-US"))); // Precio en USD, formato de moneda
-                item.SubItems.Add(crypto.changePercent24Hr.ToString("F2"));
+                item.SubItems.Add(crypto.changePercent24Hr.ToString("F2")+" %");
                 item.SubItems.Add(crypto.marketCapUsd.ToString("F2"));
                 item.SubItems.Add(crypto.supply.ToString("F2"));
                 CryptosLista.Items.Add(item);
@@ -63,7 +63,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         private void InitializeListView()
         {
             CryptosLista.View = View.Details;
-            CryptosLista.Columns.Add("Id", 100);
+            CryptosLista.Columns.Add("Id", 0);
             CryptosLista.Columns.Add("Nombre", 100);
             CryptosLista.Columns.Add("Rank", 60);
             CryptosLista.Columns.Add("Simbolo", 70);
@@ -71,7 +71,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             CryptosLista.Columns.Add("24Hs%", 70);
             CryptosLista.Columns.Add("MarketCap", 100);
             CryptosLista.Columns.Add("Supply", 100);
-            
+
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -88,11 +88,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             {
                 // Obtener el ítem seleccionado
                 ListViewItem selectedItem = CryptosLista.SelectedItems[0];
-                string cadena = selectedItem.Text + " " + "[" + selectedItem.SubItems[2].Text + "]";  // Obtener el nombre del ítem
-
+                
                 // Crear e iniciar el nuevo formulario pasando los datos
                 OpcionesCrypto opcionesForm = new OpcionesCrypto(selectedItem, _unitOfWork, _inicioForm);
-                opcionesForm.ShowDialog(); // Usar ShowDialog para abrir como modal, o Show para no modal
+                opcionesForm.Show(); 
             }
         }
     }

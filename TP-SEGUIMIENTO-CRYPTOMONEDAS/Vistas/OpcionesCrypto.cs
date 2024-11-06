@@ -19,7 +19,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         public ListViewItem Crypto;
         public IUnitOfWork _unitOfWork;
         private ICryptoState _estadoActual;
-        public InicioForm InicioForm; 
+        public InicioForm InicioForm;
 
         public OpcionesCrypto(ListViewItem CryptoSelect, IUnitOfWork unitOfWork, InicioForm inicioForm)
         {
@@ -32,19 +32,19 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private void CargarDatos(ListViewItem Crypto)
         {
-            CryptomonedaNombre.Text = Crypto.SubItems[1].Text + "  " + "[" + Crypto.SubItems[3].Text+"]";
+            CryptomonedaNombre.Text = Crypto.SubItems[1].Text + "  " + "[" + Crypto.SubItems[3].Text + "]";
             CryptomonedaNombre.AutoSize = false;
-            
+
             CryptomonedaNombre.TextAlign = ContentAlignment.MiddleCenter;
             if (_unitOfWork.CryptosFavoritas.VerificarSiEsFavorito(Crypto.SubItems[0].Text))
             {
                 CambiarEstado(new EliminarState());  // Asigna el estado inicial a Eliminar
-                ActualizarBoton("Eliminar");
+                ActualizarBotones("Eliminar", true);
             }
             else
             {
                 CambiarEstado(new AgregarState());  // Asigna el estado inicial a Agregar
-                ActualizarBoton("Agregar");
+                ActualizarBotones("Agregar", false);
             }
         }
 
@@ -54,14 +54,28 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             _estadoActual = nuevoEstado;
         }
 
-        public void ActualizarBoton(string texto)
+        public void ActualizarBotones(string texto,bool mostrar)
         {
             AgregarEliminarBoton.Text = texto;
+            GraficoBoton.Enabled= mostrar;
+            AlertaBoton.Enabled= mostrar;
+        }
+
+        public void MostrarBotones()
+        {
+            GraficoBoton.Visible = true;
+
         }
 
         private void AgregarEliminarBoton_Click(object sender, EventArgs e)
         {
             _estadoActual.Handle(this);
+        }
+
+        private void GraficoBoton_Click(object sender, EventArgs e)
+        {
+            GraficoForm graficoForm =  new GraficoForm(Crypto.SubItems[0].Text, _unitOfWork);
+            graficoForm.Show();
         }
     }
 }

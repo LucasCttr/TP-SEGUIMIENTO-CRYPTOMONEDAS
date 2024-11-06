@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using System.Collections.Generic;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
 {
@@ -12,7 +13,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
     {
         Task<List<CryptoCurrencyDTO>> MostrarCryptos(); // Definición del método asíncrono
         CryptoCurrencyDTO BuscarCryptoMedianteId(string IdCrypto);
-
+        List<PuntoHistorial> ObtenerHistorialDeCrypto(string idCrypto, string intervalo);
         void EliminarFavorito(ListViewItem Crypto);
         void AgregarFavorito(ListViewItem Crypto);
         bool VerificarSiEsFavorito(string idCrypto);

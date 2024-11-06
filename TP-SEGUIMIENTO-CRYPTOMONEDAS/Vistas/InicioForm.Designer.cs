@@ -32,6 +32,7 @@
             CryptosFavoritasLista = new ListView();
             label1 = new Label();
             OpcionesBoton = new Button();
+            GraficoBoton = new Button();
             SuspendLayout();
             // 
             // MercadoBoton
@@ -74,11 +75,22 @@
             OpcionesBoton.UseVisualStyleBackColor = true;
             OpcionesBoton.Click += OpcionesBoton_Click;
             // 
+            // GraficoBoton
+            // 
+            GraficoBoton.Location = new Point(198, 415);
+            GraficoBoton.Name = "GraficoBoton";
+            GraficoBoton.Size = new Size(75, 23);
+            GraficoBoton.TabIndex = 4;
+            GraficoBoton.Text = "Grafico";
+            GraficoBoton.UseVisualStyleBackColor = true;
+            GraficoBoton.Click += GraficoBoton_Click;
+            // 
             // InicioForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(GraficoBoton);
             Controls.Add(OpcionesBoton);
             Controls.Add(label1);
             Controls.Add(CryptosFavoritasLista);
@@ -97,5 +109,6 @@
         private ListView CryptosFavoritasLista;
         private Label label1;
         private Button OpcionesBoton;
+        private Button GraficoBoton;
     }
 }

@@ -54,7 +54,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                     item.SubItems.Add(DatosCrypto.rank.ToString());
                     item.SubItems.Add(DatosCrypto.symbol);
                     item.SubItems.Add(DatosCrypto.priceUsd.ToString("C2", CultureInfo.CreateSpecificCulture("en-US"))); // Precio en USD, formato de moneda
-                    item.SubItems.Add(DatosCrypto.changePercent24Hr.ToString("F2"));
+                    item.SubItems.Add(DatosCrypto.changePercent24Hr.ToString("F2") + " %");
                     item.SubItems.Add(DatosCrypto.marketCapUsd.ToString("F2"));
                     item.SubItems.Add(DatosCrypto.supply.ToString("F2"));
                     CryptosFavoritasLista.Items.Add(item);
@@ -64,7 +64,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
 
 
-        public void CargarUnaCrypto(ListViewItem Crypto)
+        public void CargarUnaCryptoAlView(ListViewItem Crypto)
         {
             var Item = new ListViewItem(Crypto.SubItems[0].Text);
             Item.SubItems.Add(Crypto.SubItems[1]);
@@ -75,9 +75,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             Item.SubItems.Add(Crypto.SubItems[6]);
             Item.SubItems.Add(Crypto.SubItems[7]);
             CryptosFavoritasLista.Items.Add(Item);
+            // Mensaje de éxito
+            MessageBox.Show(Crypto.SubItems[1].Text + " agregado a favoritos");
         }
 
-        public void EliminarUnaCrypto(string idCrypto)
+        public void EliminarUnaCryptoDelView(string idCrypto)
         {
             // Buscar el item en el ListView que tenga el ID especificado
             foreach (ListViewItem item in CryptosFavoritasLista.Items)
@@ -85,9 +87,22 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 if (item.SubItems[0].Text == idCrypto) // Cambia el índice si el ID está en otra columna
                 {
                     CryptosFavoritasLista.Items.Remove(item); // Eliminar el item encontrado
-                    MessageBox.Show("Criptomoneda eliminada de favoritos.");
+                    MessageBox.Show(item.SubItems[1].Text + " eliminado de favoritos");
                     return;
                 }
+            }
+        }
+
+        private void OpcionesBoton_Click(object sender, EventArgs e)
+        {
+            if (CryptosFavoritasLista.SelectedItems.Count > 0)
+            {
+                // Obtener el ítem seleccionado
+                ListViewItem selectedItem = CryptosFavoritasLista.SelectedItems[0];
+
+                // Crear e iniciar el nuevo formulario pasando los datos
+                OpcionesCrypto opcionesForm = new OpcionesCrypto(selectedItem, _unitOfWork, this);
+                opcionesForm.ShowDialog(); // Usar ShowDialog para abrir como modal, o Show para no modal
             }
         }
 
@@ -102,7 +117,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         private void InitializeListView()
         {
             CryptosFavoritasLista.View = View.Details;
-            CryptosFavoritasLista.Columns.Add("Id", 100);
+            CryptosFavoritasLista.Columns.Add("Id", 0);
             CryptosFavoritasLista.Columns.Add("Crypto", 100);
             CryptosFavoritasLista.Columns.Add("Rank", 60);
             CryptosFavoritasLista.Columns.Add("Simbolo", 70);
@@ -111,19 +126,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             CryptosFavoritasLista.Columns.Add("MarketCap", 100);
             CryptosFavoritasLista.Columns.Add("Supply", 100);
         }
-        private void OpcionesBoton_Click(object sender, EventArgs e)
+
+        private void GraficoBoton_Click(object sender, EventArgs e)
         {
-            if (CryptosFavoritasLista.SelectedItems.Count > 0)
-            {
-                // Obtener el ítem seleccionado
-                ListViewItem selectedItem = CryptosFavoritasLista.SelectedItems[0];
-                string cadena = selectedItem.Text + " " + "[" + selectedItem.SubItems[2].Text + "]"; ; // Obtener el nombre del ítem
 
-                // Crear e iniciar el nuevo formulario pasando los datos
-                OpcionesCrypto opcionesForm = new OpcionesCrypto(selectedItem, _unitOfWork, this);
-                opcionesForm.ShowDialog(); // Usar ShowDialog para abrir como modal, o Show para no modal
-            }
         }
-
     }
 }

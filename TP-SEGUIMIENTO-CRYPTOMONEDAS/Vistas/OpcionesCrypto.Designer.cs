@@ -52,6 +52,7 @@
             GraficoBoton.TabIndex = 1;
             GraficoBoton.Text = "Grafico";
             GraficoBoton.UseVisualStyleBackColor = true;
+            GraficoBoton.Click += GraficoBoton_Click;
             // 
             // AlertaBoton
             // 

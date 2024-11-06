@@ -8,6 +8,7 @@ using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using RestSharp;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json; // Necesitas importar esta librería
 
 //UTILIZO RESTSHARP
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
@@ -38,7 +39,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             return new List<CryptoCurrencyDTO>(); // Retorna una lista vacía en caso de error
         }
 
-        private class CryptoResponse
+        private class CryptoResponse       //uTILIZAR librerias (otro metodo) para remplazar estas clases.
         {
             public List<CryptoCurrencyDTO> Data { get; set; }
         }
@@ -61,15 +62,14 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
 
         public void EliminarFavorito(ListViewItem CryptoSeleccionada)
         {
-
-            var cryptoFavorita = _context.UsuariosCryptos.FirstOrDefault(c => c.CryptoID == CryptoSeleccionada.SubItems[0].Text && c.UsuarioID == SessionManager.CurrentUserId );
+            var cryptoFavorita = _context.UsuariosCryptos.FirstOrDefault(c => c.CryptoID == CryptoSeleccionada.SubItems[0].Text && c.UsuarioID == SessionManager.CurrentUserId);
             if (cryptoFavorita != null)
             {
                 _context.UsuariosCryptos.Remove(cryptoFavorita);
                 _context.SaveChanges();
             }
         }
-     
+
         public void AgregarFavorito(ListViewItem CryptoSeleccionada)
         {
             int userId = SessionManager.CurrentUserId;
@@ -84,10 +84,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             // Agregar el nuevo favorito a la base de datos
             _context.UsuariosCryptos.Add(nuevoFavorito); // Agregar la entidad
             _context.SaveChanges(); // Guardar los cambios en la base de datos
-
-            // Mensaje de éxito
-            MessageBox.Show("Criptomoneda agregada a favoritos.");
-
         }
 
         public bool VerificarSiEsFavorito(string idCrypto)
@@ -101,6 +97,44 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             // Devolver true si se encontró, false en caso contrario
             return crypto != null; // Devuelve true si existe, false si no
         }
+
+
+        // Método para obtener el historial de precios
+
+        public List<PuntoHistorial> ObtenerHistorialDeCrypto(string cryptoId, string intervalo)
+        {
+            var request = new RestRequest($"assets/{cryptoId}/history?interval={intervalo}", Method.Get);
+            var response = _client.Execute(request);
+
+            if (response.IsSuccessful)
+            {
+                // Deserializar el JSON directamente a un objeto de tipo List<Dictionary<string, object>>
+                var data = response.Content;
+
+                var historial = new List<PuntoHistorial>();
+
+                // Puedes usar RestSharp para hacer el parseo manual si prefieres
+                dynamic resultado = Newtonsoft.Json.JsonConvert.DeserializeObject(data);
+                foreach (var item in resultado.data)
+                {
+                    historial.Add(new PuntoHistorial
+                    {
+                        Fecha = DateTimeOffset.FromUnixTimeMilliseconds((long)item.time).DateTime,
+                        Precio = Convert.ToDouble(item.priceUsd)
+                    });
+                }
+
+                return historial;
+            }
+            else
+            {
+                Console.WriteLine("Error al obtener datos del historial: " + response.ErrorMessage);
+                return new List<PuntoHistorial>();
+            }
+
+
+        }
+
     }
 }
 

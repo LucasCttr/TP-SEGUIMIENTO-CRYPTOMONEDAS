@@ -18,9 +18,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
         public void Handle(OpcionesCrypto opcionesCrypto)
         {
             opcionesCrypto._unitOfWork.CryptosFavoritas.AgregarFavorito(opcionesCrypto.Crypto);
-            opcionesCrypto.InicioForm.CargarUnaCrypto(opcionesCrypto.Crypto);
+            opcionesCrypto.InicioForm.CargarUnaCryptoAlView(opcionesCrypto.Crypto);
             opcionesCrypto.CambiarEstado(new EliminarState());
-            opcionesCrypto.ActualizarBoton("Eliminar");
+            opcionesCrypto.ActualizarBotones("Eliminar",true);
         }
     }
 
@@ -28,10 +28,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
     {
         public void Handle(OpcionesCrypto opcionesCrypto)
         {
-            opcionesCrypto.InicioForm.EliminarUnaCrypto(opcionesCrypto.Crypto.SubItems[0].Text);
+            opcionesCrypto.InicioForm.EliminarUnaCryptoDelView(opcionesCrypto.Crypto.SubItems[0].Text);
             opcionesCrypto._unitOfWork.CryptosFavoritas.EliminarFavorito(opcionesCrypto.Crypto);
             opcionesCrypto.CambiarEstado(new AgregarState());
-            opcionesCrypto.ActualizarBoton("Agregar");
+            opcionesCrypto.ActualizarBotones("Agregar",false);
         }
     }
 }
