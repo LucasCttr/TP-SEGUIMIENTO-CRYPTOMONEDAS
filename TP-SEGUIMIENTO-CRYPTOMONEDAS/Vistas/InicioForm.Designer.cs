@@ -31,6 +31,7 @@
             MercadoBoton = new Button();
             CryptosFavoritasLista = new ListView();
             label1 = new Label();
+            OpcionesBoton = new Button();
             SuspendLayout();
             // 
             // MercadoBoton
@@ -45,11 +46,14 @@
             // 
             // CryptosFavoritasLista
             // 
+            CryptosFavoritasLista.FullRowSelect = true;
             CryptosFavoritasLista.Location = new Point(12, 41);
+            CryptosFavoritasLista.MultiSelect = false;
             CryptosFavoritasLista.Name = "CryptosFavoritasLista";
             CryptosFavoritasLista.Size = new Size(776, 368);
             CryptosFavoritasLista.TabIndex = 1;
             CryptosFavoritasLista.UseCompatibleStateImageBehavior = false;
+            CryptosFavoritasLista.View = View.Details;
             // 
             // label1
             // 
@@ -60,15 +64,27 @@
             label1.TabIndex = 2;
             label1.Text = "inicio";
             // 
+            // OpcionesBoton
+            // 
+            OpcionesBoton.Location = new Point(103, 415);
+            OpcionesBoton.Name = "OpcionesBoton";
+            OpcionesBoton.Size = new Size(75, 23);
+            OpcionesBoton.TabIndex = 3;
+            OpcionesBoton.Text = "Opciones";
+            OpcionesBoton.UseVisualStyleBackColor = true;
+            OpcionesBoton.Click += OpcionesBoton_Click;
+            // 
             // InicioForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(OpcionesBoton);
             Controls.Add(label1);
             Controls.Add(CryptosFavoritasLista);
             Controls.Add(MercadoBoton);
             Name = "InicioForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "InicioForm";
             Load += InicioForm_Load;
             ResumeLayout(false);
@@ -80,5 +96,6 @@
         private Button MercadoBoton;
         private ListView CryptosFavoritasLista;
         private Label label1;
+        private Button OpcionesBoton;
     }
 }

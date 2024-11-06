@@ -16,12 +16,14 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
     {
         private readonly AppDbContext _context;
         private readonly RestClient _client;
+
         // Constructor que acepta un DbContext
         public CryptoCurrencyRepository(AppDbContext context)
         {
             _client = new RestClient("https://api.coincap.io/v2/");
             _context = context;
         }
+
 
         public async Task<List<CryptoCurrencyDTO>> MostrarCryptos()
         {
@@ -54,17 +56,21 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             {
                 return response.Data.Data; // Devuelve el objeto de criptomoneda
             }
-
             return null;
         }
 
-        public void EliminarCryptoDeFavorito(string idCrypto)
+        public void EliminarFavorito(ListViewItem CryptoSeleccionada)
         {
 
-
+            var cryptoFavorita = _context.UsuariosCryptos.FirstOrDefault(c => c.CryptoID == CryptoSeleccionada.SubItems[0].Text && c.UsuarioID == SessionManager.CurrentUserId );
+            if (cryptoFavorita != null)
+            {
+                _context.UsuariosCryptos.Remove(cryptoFavorita);
+                _context.SaveChanges();
+            }
         }
-
-        public void AgregarCryptoAFavorito(string idCrypto)
+     
+        public void AgregarFavorito(ListViewItem CryptoSeleccionada)
         {
             int userId = SessionManager.CurrentUserId;
 
@@ -73,13 +79,15 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             {
                 UsuarioID = userId,
                 ValorAlerta = 0,
-                CryptoID = idCrypto
+                CryptoID = CryptoSeleccionada.SubItems[0].Text
             };
             // Agregar el nuevo favorito a la base de datos
             _context.UsuariosCryptos.Add(nuevoFavorito); // Agregar la entidad
+            _context.SaveChanges(); // Guardar los cambios en la base de datos
 
             // Mensaje de éxito
             MessageBox.Show("Criptomoneda agregada a favoritos.");
+
         }
 
         public bool VerificarSiEsFavorito(string idCrypto)

@@ -42,6 +42,7 @@
             AgregarEliminarBoton.TabIndex = 0;
             AgregarEliminarBoton.Text = "AgregarEliminar";
             AgregarEliminarBoton.UseVisualStyleBackColor = true;
+            AgregarEliminarBoton.Click += AgregarEliminarBoton_Click;
             // 
             // GraficoBoton
             // 
@@ -70,7 +71,7 @@
             CryptomonedaNombre.TabIndex = 3;
             CryptomonedaNombre.Text = "CryptoMonedaNombre";
             // 
-            // OpcionesCryptow
+            // OpcionesCrypto
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -79,7 +80,8 @@
             Controls.Add(AlertaBoton);
             Controls.Add(GraficoBoton);
             Controls.Add(AgregarEliminarBoton);
-            Name = "OpcionesCryptow";
+            Name = "OpcionesCrypto";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "OpcionesCryptow";
             ResumeLayout(false);
             PerformLayout();

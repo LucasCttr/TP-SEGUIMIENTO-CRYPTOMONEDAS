@@ -61,6 +61,7 @@
             Controls.Add(OpcionesBoton);
             Controls.Add(CryptosLista);
             Name = "MercadoForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "MercadoForm";
             Load += MercadoForm_Load;
             ResumeLayout(false);
