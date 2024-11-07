@@ -26,6 +26,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         private async void InicioForm_Load(object sender, EventArgs e)
         {
             CargarCryptosFavoritas();
+            CargarAlertas();
         }
 
         private void MercadoBoton_Click(object sender, EventArgs e)
@@ -64,7 +65,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
 
 
-        public void CargarUnaCryptoAlView(ListViewItem Crypto)
+        public void CargarUnaCryptoAlView(ListViewItem Crypto)      //IMPLEMENTAR ESTO EN EL METODO DE ARRIBA
         {
             var Item = new ListViewItem(Crypto.SubItems[0].Text);
             Item.SubItems.Add(Crypto.SubItems[1]);
@@ -91,6 +92,12 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                     return;
                 }
             }
+        }
+
+        private void CargarAlertas()
+        {
+            // Obtener las alertas
+            var cryptos = _unitOfWork.Alerta.ObtenerAlertas();
         }
 
         private void OpcionesBoton_Click(object sender, EventArgs e)
@@ -125,11 +132,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             CryptosFavoritasLista.Columns.Add("24Hs%", 70);
             CryptosFavoritasLista.Columns.Add("MarketCap", 100);
             CryptosFavoritasLista.Columns.Add("Supply", 100);
-        }
-
-        private void GraficoBoton_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }

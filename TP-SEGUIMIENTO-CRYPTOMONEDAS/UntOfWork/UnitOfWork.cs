@@ -13,12 +13,14 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork
         private readonly AppDbContext _context;
         public ICryptoCurrencyRepository CryptosFavoritas { get; private set; }
         public IUserRepository Usuarios { get; private set; }
+        public IAlertaRepository Alerta { get; private set; }
 
         public UnitOfWork(AppDbContext context)
         {
             _context = context;
             CryptosFavoritas = new CryptoCurrencyRepository(_context);
             Usuarios = new UserRepository(_context);
+            Alerta = new AlertaRepository(_context);
         }
 
         public void Save()

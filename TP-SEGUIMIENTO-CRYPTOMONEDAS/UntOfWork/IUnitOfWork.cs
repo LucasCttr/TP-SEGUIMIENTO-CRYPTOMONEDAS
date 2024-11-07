@@ -11,6 +11,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork
     {
         ICryptoCurrencyRepository CryptosFavoritas { get; }
         IUserRepository Usuarios { get; }
+        IAlertaRepository Alerta { get; }
+
         void Save();
     }
 }

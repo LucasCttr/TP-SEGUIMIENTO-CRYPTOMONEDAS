@@ -19,6 +19,8 @@ using Microsoft.EntityFrameworkCore;
             public DbSet<CryptoCurrencyDTO> CryptosFavoritas { get; set; }
             public DbSet<UserDTO> Usuarios { get; set; }
             public DbSet<UsuarioCryptoDTO> UsuariosCryptos { get; set; }
+            public DbSet<AlertaDTO> AlertasCrypto { get; set; }
+            
 
             // Configuración adicional de las entidades
             protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -46,6 +48,14 @@ using Microsoft.EntityFrameworkCore;
                 modelBuilder.Entity<UsuarioCryptoDTO>().Property(u => u.CryptoID).IsRequired().HasMaxLength(100);  
                 modelBuilder.Entity<UsuarioCryptoDTO>().Property(u => u.UsuarioID).IsRequired().HasMaxLength(100);  
                 modelBuilder.Entity<UsuarioCryptoDTO>().Property(u => u.ValorAlerta).HasColumnType("decimal(18,2)"); 
+
+                modelBuilder.Entity<AlertaDTO>().ToTable("AlertasCrypto");
+                modelBuilder.Entity<AlertaDTO>().HasKey(u => u.Id);
+                modelBuilder.Entity<AlertaDTO>().Property(u => u.UsuarioID).IsRequired().HasMaxLength(100);  
+                modelBuilder.Entity<AlertaDTO>().Property(u => u.CryptoID).IsRequired().HasColumnType("HasMaxLength(20)");  
+                modelBuilder.Entity<AlertaDTO>().Property(u => u.CambioPorcentual).HasColumnType("decimal(5,2)");
+                modelBuilder.Entity<AlertaDTO>().Property(u => u.FechaAlerta).HasColumnType("DateTime");
+                modelBuilder.Entity<AlertaDTO>().Property(u => u.TipoCambio).HasColumnType("HasMaxLength(20)");
             }
         }
     }

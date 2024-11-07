@@ -32,7 +32,10 @@
             CryptosFavoritasLista = new ListView();
             label1 = new Label();
             OpcionesBoton = new Button();
-            GraficoBoton = new Button();
+            MiCuentaBoton = new Button();
+            listView1 = new ListView();
+            AlertasBoton = new Button();
+            HistorialAlertas = new Button();
             SuspendLayout();
             // 
             // MercadoBoton
@@ -51,7 +54,7 @@
             CryptosFavoritasLista.Location = new Point(12, 41);
             CryptosFavoritasLista.MultiSelect = false;
             CryptosFavoritasLista.Name = "CryptosFavoritasLista";
-            CryptosFavoritasLista.Size = new Size(776, 368);
+            CryptosFavoritasLista.Size = new Size(772, 368);
             CryptosFavoritasLista.TabIndex = 1;
             CryptosFavoritasLista.UseCompatibleStateImageBehavior = false;
             CryptosFavoritasLista.View = View.Details;
@@ -67,7 +70,7 @@
             // 
             // OpcionesBoton
             // 
-            OpcionesBoton.Location = new Point(103, 415);
+            OpcionesBoton.Location = new Point(93, 415);
             OpcionesBoton.Name = "OpcionesBoton";
             OpcionesBoton.Size = new Size(75, 23);
             OpcionesBoton.TabIndex = 3;
@@ -75,22 +78,50 @@
             OpcionesBoton.UseVisualStyleBackColor = true;
             OpcionesBoton.Click += OpcionesBoton_Click;
             // 
-            // GraficoBoton
+            // MiCuentaBoton
             // 
-            GraficoBoton.Location = new Point(198, 415);
-            GraficoBoton.Name = "GraficoBoton";
-            GraficoBoton.Size = new Size(75, 23);
-            GraficoBoton.TabIndex = 4;
-            GraficoBoton.Text = "Grafico";
-            GraficoBoton.UseVisualStyleBackColor = true;
-            GraficoBoton.Click += GraficoBoton_Click;
+            MiCuentaBoton.Location = new Point(174, 415);
+            MiCuentaBoton.Name = "MiCuentaBoton";
+            MiCuentaBoton.Size = new Size(75, 23);
+            MiCuentaBoton.TabIndex = 4;
+            MiCuentaBoton.Text = "Mi Cuenta";
+            MiCuentaBoton.UseVisualStyleBackColor = true;
+            // 
+            // listView1
+            // 
+            listView1.Location = new Point(815, 41);
+            listView1.Name = "listView1";
+            listView1.Size = new Size(394, 368);
+            listView1.TabIndex = 5;
+            listView1.UseCompatibleStateImageBehavior = false;
+            // 
+            // AlertasBoton
+            // 
+            AlertasBoton.Location = new Point(815, 415);
+            AlertasBoton.Name = "AlertasBoton";
+            AlertasBoton.Size = new Size(75, 23);
+            AlertasBoton.TabIndex = 6;
+            AlertasBoton.Text = "Alertas";
+            AlertasBoton.UseVisualStyleBackColor = true;
+            // 
+            // HistorialAlertas
+            // 
+            HistorialAlertas.Location = new Point(896, 415);
+            HistorialAlertas.Name = "HistorialAlertas";
+            HistorialAlertas.Size = new Size(75, 23);
+            HistorialAlertas.TabIndex = 7;
+            HistorialAlertas.Text = "Historial";
+            HistorialAlertas.UseVisualStyleBackColor = true;
             // 
             // InicioForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
-            Controls.Add(GraficoBoton);
+            ClientSize = new Size(1229, 450);
+            Controls.Add(HistorialAlertas);
+            Controls.Add(AlertasBoton);
+            Controls.Add(listView1);
+            Controls.Add(MiCuentaBoton);
             Controls.Add(OpcionesBoton);
             Controls.Add(label1);
             Controls.Add(CryptosFavoritasLista);
@@ -109,6 +140,9 @@
         private ListView CryptosFavoritasLista;
         private Label label1;
         private Button OpcionesBoton;
-        private Button GraficoBoton;
+        private Button MiCuentaBoton;
+        private ListView listView1;
+        private Button AlertasBoton;
+        private Button HistorialAlertas;
     }
 }
