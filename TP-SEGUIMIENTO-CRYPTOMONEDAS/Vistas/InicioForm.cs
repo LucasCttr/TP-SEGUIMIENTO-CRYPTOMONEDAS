@@ -74,10 +74,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             // Obtener las criptomonedas
             var cryptos = _unitOfWork.Usuarios.ObtenerCryptosFavoritas();
 
-            // Suspender la actualización para evitar parpadeos
-            listaCryptosFavoritas.BeginUpdate();
-            listaCryptosFavoritas.Items.Clear();
-            // Agregar cada criptomoneda al ListView
             foreach (var crypto in cryptos)
             {
                 // Obtener los detalles de la criptomoneda mediante su ID
@@ -103,8 +99,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                     listaCryptosFavoritas.Items.Add(item);
                 }
             }
-            // Reanudar la actualización
-            listaCryptosFavoritas.EndUpdate();
+            listaCryptosFavoritas.Sort();
         }
 
 
@@ -277,9 +272,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                     {
                         Tag = f // Guardar el objeto para futuras actualizaciones
                     };
-                    newItem.SubItems.Add("");
+                    newItem.SubItems.Add(crypto.id);
                     newItem.SubItems.Add(crypto.name);
-                    newItem.SubItems.Add(""); // Placeholder para columnas adicionales si es necesario
+                    newItem.SubItems.Add(crypto.symbol); // Placeholder para columnas adicionales si es necesario
                     newItem.SubItems.Add(crypto.priceUsd.ToString("C2", CultureInfo.CreateSpecificCulture("en-US")));
                     newItem.SubItems.Add(crypto.changePercent24Hr.ToString("F2") + "%");
 
