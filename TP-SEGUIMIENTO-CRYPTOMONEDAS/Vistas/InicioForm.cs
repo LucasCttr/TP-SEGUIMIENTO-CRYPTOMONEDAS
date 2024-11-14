@@ -150,13 +150,16 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             var alertasHistorial = _unitOfWork.Alerta.ObtenerAlertasHistorial();
             listaAlertas.View = View.Details;
             listaAlertas.Sort();
+            listaAlertas.Columns.Add("Orden", 0);
             listaAlertas.Columns.Add("Fecha", 120);
             listaAlertas.Columns.Add("Crypto", 100);
             listaAlertas.Columns.Add("Valor", 100);
 
             foreach (var historial in alertasHistorial)
             {
+
                 var item = new ListViewItem(historial.FechaAlerta.ToString());
+                item.SubItems.Add(historial.FechaAlerta.ToString());
                 item.SubItems.Add(historial.CryptoNombre);
                 item.SubItems.Add(historial.TipoCambio + "" + historial.CambioPorcentual.ToString());
                 listaAlertas.Items.Add(item);
