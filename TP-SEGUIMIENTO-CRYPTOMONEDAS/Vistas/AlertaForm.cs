@@ -13,22 +13,22 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
     public partial class AlertaForm : Form
     {
-        public ListViewItem Crypto;
+        public string nombreCrypto;
         public IUnitOfWork _unitOfWork;
-        public AlertaForm(ListViewItem crypto, IUnitOfWork unitOfWork)
+        public AlertaForm(string crypto, IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
-            Crypto = crypto;
+            nombreCrypto = crypto;
             InitializeComponent();
         }
 
         private void AlertaForm_Load(object sender, EventArgs e)
         {
-            var alerta = _unitOfWork.Alerta.ObtenerUnaAlerta(Crypto);
+            var alerta = _unitOfWork.Alerta.ObtenerUnaAlerta(nombreCrypto);
 
             valorPositivo.Text = alerta.ValorPositivo.ToString("F2");
             valorNegativo.Text = alerta.ValorNegativo.ToString("F2");
-            cryptonombre.Text = Crypto.SubItems[1].Text;
+            cryptonombre.Text = nombreCrypto;
         }
 
         private void botonGuardar_Click(object sender, EventArgs e)
@@ -36,7 +36,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             decimal nuevoValorPositivo = Convert.ToDecimal(valorPositivo.Text);  // Convierte el texto a decimal
             decimal nuevoValorNegativo = Convert.ToDecimal(valorNegativo.Text);  // Convierte el texto a decimal
 
-            _unitOfWork.Alerta.GuardarValoresAlerta(Crypto, nuevoValorPositivo, nuevoValorNegativo);
+            _unitOfWork.Alerta.GuardarValoresAlerta(nombreCrypto, nuevoValorPositivo, nuevoValorNegativo);
             this.Close();
         }
 

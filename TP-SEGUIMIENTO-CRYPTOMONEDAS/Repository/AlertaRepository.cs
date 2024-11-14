@@ -53,10 +53,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             return alertasActivas;
         }
 
-        public UsuarioCryptoDTO ObtenerUnaAlerta(ListViewItem itemCrypto)
+        public UsuarioCryptoDTO ObtenerUnaAlerta(string nombreCrypto)
         {
             int userId = SessionManager.CurrentUserId;
-            var alerta = _context.UsuariosCryptos.Where(fc => fc.UsuarioID == userId && fc.CryptoID == itemCrypto.SubItems[0].Text)
+            var alerta = _context.UsuariosCryptos.Where(fc => fc.UsuarioID == userId && fc.CryptoNombre == nombreCrypto)
                 .Select(fc => new UsuarioCryptoDTO
                 {
                     ValorPositivo = fc.ValorPositivo,
@@ -66,19 +66,22 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             return alerta;
         }
 
-        public void GuardarValoresAlerta(ListViewItem itemCrypto, decimal valorPositivo, decimal valorNegativo)
+        public void GuardarValoresAlerta(string nobreCrypto, decimal valorPositivo, decimal valorNegativo)
         {
             int userId = SessionManager.CurrentUserId;
-
-            var alerta = _context.UsuariosCryptos.Where(fc => fc.UsuarioID == userId && fc.CryptoID == itemCrypto.SubItems[0].Text)
+            var alerta = _context.UsuariosCryptos.Where(fc => fc.UsuarioID == userId && fc.CryptoNombre == nobreCrypto)
                 .FirstOrDefault();
-
             // Sobrescribir las propiedades directamente
             alerta.ValorPositivo = valorPositivo;
             alerta.ValorNegativo = valorNegativo;
 
             // Guardar los cambios en la base de datos
             _context.SaveChanges();
+        }
+
+        public void EliminarAlerta(string nombreCrypto)
+        {
+            GuardarValoresAlerta(nombreCrypto, 0, 0);
         }
     }
 }

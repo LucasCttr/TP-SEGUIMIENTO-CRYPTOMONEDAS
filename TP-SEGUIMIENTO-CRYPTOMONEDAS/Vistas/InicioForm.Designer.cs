@@ -36,6 +36,7 @@
             listaAlertas = new ListView();
             AlertasBoton = new Button();
             HistorialAlertas = new Button();
+            botonModificar = new Button();
             SuspendLayout();
             // 
             // MercadoBoton
@@ -89,6 +90,7 @@
             // 
             // listaAlertas
             // 
+            listaAlertas.FullRowSelect = true;
             listaAlertas.Location = new Point(308, 41);
             listaAlertas.Name = "listaAlertas";
             listaAlertas.Size = new Size(325, 368);
@@ -116,11 +118,22 @@
             HistorialAlertas.UseVisualStyleBackColor = true;
             HistorialAlertas.Click += HistorialAlertas_Click;
             // 
+            // botonModificar
+            // 
+            botonModificar.Location = new Point(470, 415);
+            botonModificar.Name = "botonModificar";
+            botonModificar.Size = new Size(75, 23);
+            botonModificar.TabIndex = 8;
+            botonModificar.Text = "Modificar";
+            botonModificar.UseVisualStyleBackColor = true;
+            botonModificar.Click += botonModificar_Click;
+            // 
             // InicioForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(645, 450);
+            Controls.Add(botonModificar);
             Controls.Add(HistorialAlertas);
             Controls.Add(AlertasBoton);
             Controls.Add(listaAlertas);
@@ -147,5 +160,6 @@
         private ListView listaAlertas;
         private Button AlertasBoton;
         private Button HistorialAlertas;
+        private Button botonModificar;
     }
 }
