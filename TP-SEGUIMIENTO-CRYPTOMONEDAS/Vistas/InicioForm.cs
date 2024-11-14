@@ -126,12 +126,12 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             CryptosFavoritasLista.View = View.Details;
             CryptosFavoritasLista.Columns.Add("Id", 0);
             CryptosFavoritasLista.Columns.Add("Crypto", 100);
-            CryptosFavoritasLista.Columns.Add("Rank", 60);
-            CryptosFavoritasLista.Columns.Add("Simbolo", 70);
+            CryptosFavoritasLista.Columns.Add("Rank", 0);
+            CryptosFavoritasLista.Columns.Add("Simbolo", 0);
             CryptosFavoritasLista.Columns.Add("Precio (USD)", 100);
             CryptosFavoritasLista.Columns.Add("24Hs%", 70);
-            CryptosFavoritasLista.Columns.Add("MarketCap", 100);
-            CryptosFavoritasLista.Columns.Add("Supply", 100);
+            CryptosFavoritasLista.Columns.Add("MarketCap", 0);
+            CryptosFavoritasLista.Columns.Add("Supply", 0);
         }
     }
 }

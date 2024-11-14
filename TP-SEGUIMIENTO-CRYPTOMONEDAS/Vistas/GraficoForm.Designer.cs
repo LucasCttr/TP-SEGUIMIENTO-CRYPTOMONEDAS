@@ -52,6 +52,7 @@
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
             series1.Legend = "Legend1";
             series1.Name = "Series1";
+            series1.ToolTip = "X: {#VALX}, Y: {#VALY}";
             grafico.Series.Add(series1);
             grafico.Size = new Size(948, 486);
             grafico.TabIndex = 0;
@@ -108,6 +109,7 @@
             Controls.Add(boton6Meses);
             Controls.Add(grafico);
             Name = "GraficoForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "GraficoForm";
             ((System.ComponentModel.ISupportInitialize)grafico).EndInit();
             ResumeLayout(false);

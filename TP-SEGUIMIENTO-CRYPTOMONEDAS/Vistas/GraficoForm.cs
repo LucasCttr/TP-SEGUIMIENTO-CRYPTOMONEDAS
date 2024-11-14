@@ -17,7 +17,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
     {
         private string Crypto;
         IUnitOfWork _unitOfWork;
-        private bool isMouseWheelInProgress = false; // Para evitar que el evento se dispare varias veces en una sola rueda
+        
 
         public GraficoForm(string idCrypto, IUnitOfWork unitOfWork)
         {
@@ -28,7 +28,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             // grafico.Series[0].ToolTip = "#VALY, #VALX"; // Muestra el valor Y (por ejemplo, el precio de la criptomoneda)
 
             // Asociamos el evento MouseWheel al gráfico
-            grafico.MouseWheel += Grafico_MouseWheel;
+            grafico.MouseDown += chart1_MouseDown;
 
         }
         private void CargarHistorialCrypto(string idCrypto, string intervalo)
@@ -49,7 +49,15 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             grafico.Series[0].BorderWidth = 2;
             grafico.ChartAreas[0].AxisX.LabelStyle.Format = "dd-MM";
             grafico.ChartAreas[0].AxisY.LabelStyle.Format = "$0.00";
-           
+            grafico.ChartAreas[0].CursorX.IsUserEnabled = true;
+            grafico.ChartAreas[0].CursorX.IsUserSelectionEnabled = true;
+            grafico.ChartAreas[0].AxisX.ScaleView.Zoomable = true;
+            grafico.ChartAreas[0].CursorY.IsUserEnabled = true;
+            grafico.ChartAreas[0].CursorY.IsUserSelectionEnabled = true;
+            grafico.ChartAreas[0].AxisY.ScaleView.Zoomable = true;
+            grafico.ChartAreas[0].AxisX.ScrollBar.Enabled = false;
+            grafico.ChartAreas[0].AxisY.ScrollBar.Enabled = false;
+
         }
 
         private void boton12Meses_Click_1(object sender, EventArgs e)
@@ -78,39 +86,16 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             ResetZoom();
             grafico.Series.Clear();
             CargarHistorialCrypto(Crypto, "m1");
-            AjustarZoomY();
         }
 
-        private void Grafico_MouseWheel(object sender, MouseEventArgs e)
+        private void chart1_MouseDown(object sender, MouseEventArgs e)
         {
-            // Solo ejecutamos el zoom si la rueda del mouse está siendo movida
-            if (isMouseWheelInProgress) return;
-            isMouseWheelInProgress = true;
-
-            try
+            // Verificar si el clic fue con el botón derecho del mouse
+            if (e.Button == MouseButtons.Right)
             {
-                var chartArea = grafico.ChartAreas[0];
-
-                // Determina la dirección de la rueda del mouse
-                double zoomFactor = (e.Delta > 0) ? 1.0001 : 0.9999; // Hacer zoom in o out
-
-                // Para el eje X (puedes hacerlo también para el eje Y si lo necesitas)
-                double newMinX = chartArea.AxisX.ScaleView.ViewMinimum * zoomFactor;
-                double newMaxX = chartArea.AxisX.ScaleView.ViewMaximum * zoomFactor;
-
-                // Establecer el nuevo rango de escala del eje X
-                chartArea.AxisX.ScaleView.Zoom(newMinX, newMaxX);
-
-                // Si necesitas hacer zoom en el eje Y también, puedes hacer algo similar
-                double newMinY = chartArea.AxisY.ScaleView.ViewMinimum * zoomFactor;
-                double newMaxY = chartArea.AxisY.ScaleView.ViewMaximum * zoomFactor;
-
-                // Establecer el nuevo rango de escala del eje Y
-                chartArea.AxisY.ScaleView.Zoom(newMinY, newMaxY);
-            }
-            finally
-            {
-                isMouseWheelInProgress = false;
+                grafico.ChartAreas[0].AxisX.ScaleView.ZoomReset();
+                grafico.ChartAreas[0].AxisY.ScaleView.ZoomReset();
+                grafico.Invalidate();
             }
         }
         private void ResetZoom()
@@ -120,22 +105,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             // Restablecer el zoom de los ejes X e Y
             chartArea.AxisX.ScaleView.ZoomReset();
             chartArea.AxisY.ScaleView.ZoomReset();
-        }
-
-        private void AjustarZoomY()  //Se usa en 1 dia, ya que si no queda la funcion muy sobre el borde superior
-        {
-            var chartArea = grafico.ChartAreas[0];
-
-            // Obtén el rango actual del eje Y
-            double minY = chartArea.AxisY.ScaleView.ViewMinimum;
-            double maxY = chartArea.AxisY.ScaleView.ViewMaximum;
-
-            // Aumenta el rango para darle espacio adicional al gráfico
-            double newMinY = minY - (maxY - minY) * 0.3; // 30% menos en la parte inferior
-            double newMaxY = maxY + (maxY - minY) * 0.3; // 30% más en la parte superior
-
-            // Establecer los nuevos rangos
-            chartArea.AxisY.ScaleView.Zoom(newMinY, newMaxY);
         }
     }
 }

@@ -54,7 +54,7 @@
             CryptosFavoritasLista.Location = new Point(12, 41);
             CryptosFavoritasLista.MultiSelect = false;
             CryptosFavoritasLista.Name = "CryptosFavoritasLista";
-            CryptosFavoritasLista.Size = new Size(772, 368);
+            CryptosFavoritasLista.Size = new Size(274, 368);
             CryptosFavoritasLista.TabIndex = 1;
             CryptosFavoritasLista.UseCompatibleStateImageBehavior = false;
             CryptosFavoritasLista.View = View.Details;
@@ -89,7 +89,7 @@
             // 
             // listView1
             // 
-            listView1.Location = new Point(815, 41);
+            listView1.Location = new Point(308, 41);
             listView1.Name = "listView1";
             listView1.Size = new Size(394, 368);
             listView1.TabIndex = 5;
@@ -97,7 +97,7 @@
             // 
             // AlertasBoton
             // 
-            AlertasBoton.Location = new Point(815, 415);
+            AlertasBoton.Location = new Point(308, 415);
             AlertasBoton.Name = "AlertasBoton";
             AlertasBoton.Size = new Size(75, 23);
             AlertasBoton.TabIndex = 6;
@@ -106,7 +106,7 @@
             // 
             // HistorialAlertas
             // 
-            HistorialAlertas.Location = new Point(896, 415);
+            HistorialAlertas.Location = new Point(389, 415);
             HistorialAlertas.Name = "HistorialAlertas";
             HistorialAlertas.Size = new Size(75, 23);
             HistorialAlertas.TabIndex = 7;
@@ -117,7 +117,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1229, 450);
+            ClientSize = new Size(718, 450);
             Controls.Add(HistorialAlertas);
             Controls.Add(AlertasBoton);
             Controls.Add(listView1);
