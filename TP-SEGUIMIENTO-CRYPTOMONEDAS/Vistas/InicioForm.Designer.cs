@@ -56,6 +56,7 @@
             listaCryptosFavoritas.MultiSelect = false;
             listaCryptosFavoritas.Name = "listaCryptosFavoritas";
             listaCryptosFavoritas.Size = new Size(274, 368);
+            listaCryptosFavoritas.Sorting = SortOrder.Ascending;
             listaCryptosFavoritas.TabIndex = 1;
             listaCryptosFavoritas.UseCompatibleStateImageBehavior = false;
             listaCryptosFavoritas.View = View.Details;

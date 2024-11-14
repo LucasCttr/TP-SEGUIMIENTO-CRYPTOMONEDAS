@@ -62,7 +62,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
 
         public void EliminarFavorito(ListViewItem CryptoSeleccionada)
         {
-            var cryptoFavorita = _context.UsuariosCryptos.FirstOrDefault(c => c.CryptoID == CryptoSeleccionada.SubItems[0].Text && c.UsuarioID == SessionManager.CurrentUserId);
+            var cryptoFavorita = _context.UsuariosCryptos.FirstOrDefault(c => c.CryptoID == CryptoSeleccionada.SubItems[1].Text && c.UsuarioID == SessionManager.CurrentUserId);
             if (cryptoFavorita != null)
             {
                 _context.UsuariosCryptos.Remove(cryptoFavorita);
@@ -80,8 +80,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
                 UsuarioID = userId,
                 ValorPositivo = 0,
                 ValorNegativo = 0,
-                CryptoID = CryptoSeleccionada.SubItems[0].Text,
-                CryptoNombre = CryptoSeleccionada.SubItems[1].Text
+                CryptoID = CryptoSeleccionada.SubItems[1].Text,
+                CryptoNombre = CryptoSeleccionada.SubItems[2].Text
             };
             // Agregar el nuevo favorito a la base de datos
             _context.UsuariosCryptos.Add(nuevoFavorito); // Agregar la entidad

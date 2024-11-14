@@ -82,12 +82,17 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 if (DatosCrypto != null)
                 {
                     // Crear un nuevo ListViewItem y agregar las propiedades de la criptomoneda
-                    var item = new ListViewItem(DatosCrypto.id); // Nombre de la criptomoneda
+                    var item = new ListViewItem(DatosCrypto.rank.ToString()); // Nombre de la criptomoneda
+                    item.SubItems.Add(DatosCrypto.id);
                     item.SubItems.Add(DatosCrypto.name);
-                    item.SubItems.Add(DatosCrypto.rank.ToString());
                     item.SubItems.Add(DatosCrypto.symbol);
                     item.SubItems.Add(DatosCrypto.priceUsd.ToString("C2", CultureInfo.CreateSpecificCulture("en-US"))); // Precio en USD, formato de moneda
-                    item.SubItems.Add(DatosCrypto.changePercent24Hr.ToString("F2") + " %");
+
+                    //Para que los numeros no queden desalineados por el signo "-"
+                    if (DatosCrypto.changePercent24Hr.ToString("F2").StartsWith("-")) 
+                        item.SubItems.Add(DatosCrypto.changePercent24Hr.ToString("F2") + " %");  
+                    else item.SubItems.Add("  "+DatosCrypto.changePercent24Hr.ToString("F2") + " %");
+
                     item.SubItems.Add(DatosCrypto.marketCapUsd.ToString("F2"));
                     item.SubItems.Add(DatosCrypto.supply.ToString("F2"));
                     listaCryptosFavoritas.Items.Add(item);
@@ -111,7 +116,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             listaCryptosFavoritas.Items.Add(Item);
 
             // Mostrar mensaje de éxito
-            MessageBox.Show(Crypto.SubItems[1].Text + " agregado a favoritos");
+            MessageBox.Show(Crypto.SubItems[2].Text + " agregado a favoritos");
         }
 
         public void EliminarUnaCryptoDelView(string idCrypto)
@@ -119,10 +124,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             // Buscar el item en el ListView que tenga el ID especificado
             foreach (ListViewItem item in listaCryptosFavoritas.Items)
             {
-                if (item.SubItems[0].Text == idCrypto) // Cambia el índice si el ID está en otra columna
+                if (item.SubItems[1].Text == idCrypto) // Cambia el índice si el ID está en otra columna
                 {
                     listaCryptosFavoritas.Items.Remove(item); // Eliminar el item encontrado
-                    MessageBox.Show(item.SubItems[1].Text + " eliminado de favoritos");
+                    MessageBox.Show(item.SubItems[2].Text + " eliminado de favoritos");
                     return;
                 }
             }
@@ -132,9 +137,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         private void InitializeListView()
         {
             listaCryptosFavoritas.View = View.Details;
+            listaCryptosFavoritas.Columns.Add("Rank", 0);
             listaCryptosFavoritas.Columns.Add("Id", 0);
             listaCryptosFavoritas.Columns.Add("Crypto", 100);
-            listaCryptosFavoritas.Columns.Add("Rank", 0);
             listaCryptosFavoritas.Columns.Add("Simbolo", 0);
             listaCryptosFavoritas.Columns.Add("Precio (USD)", 100);
             listaCryptosFavoritas.Columns.Add("24Hs%", 70);

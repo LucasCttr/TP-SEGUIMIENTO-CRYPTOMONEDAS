@@ -32,11 +32,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private void CargarDatos(ListViewItem Crypto)
         {
-            CryptomonedaNombre.Text = Crypto.SubItems[1].Text + "  " + "[" + Crypto.SubItems[3].Text + "]";
+            CryptomonedaNombre.Text = Crypto.SubItems[2].Text + "  " + "[" + Crypto.SubItems[3].Text + "]";
             CryptomonedaNombre.AutoSize = false;
 
             CryptomonedaNombre.TextAlign = ContentAlignment.MiddleCenter;
-            if (_unitOfWork.CryptosFavoritas.VerificarSiEsFavorito(Crypto.SubItems[0].Text))
+            if (_unitOfWork.CryptosFavoritas.VerificarSiEsFavorito(Crypto.SubItems[1].Text))
             {
                 CambiarEstado(new EliminarState());  // Asigna el estado inicial a Eliminar
                 ActualizarBotones("Eliminar", true);
@@ -73,13 +73,13 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private void GraficoBoton_Click(object sender, EventArgs e)
         {
-            GraficoForm graficoForm = new GraficoForm(Crypto.SubItems[0].Text, _unitOfWork);
+            GraficoForm graficoForm = new GraficoForm(Crypto.SubItems[1].Text, _unitOfWork);
             graficoForm.Show();
         }
 
         private void AlertaBoton_Click(object sender, EventArgs e)
         {
-            AlertaForm alertaForm = new AlertaForm(Crypto.SubItems[1].Text, _unitOfWork);
+            AlertaForm alertaForm = new AlertaForm(Crypto.SubItems[2].Text, _unitOfWork);
             alertaForm.Show();
         }
     }
