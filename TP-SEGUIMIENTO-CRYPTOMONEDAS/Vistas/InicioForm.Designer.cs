@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             MercadoBoton = new Button();
-            CryptosFavoritasLista = new ListView();
+            listaCryptosFavoritas = new ListView();
             label1 = new Label();
             OpcionesBoton = new Button();
             MiCuentaBoton = new Button();
-            listView1 = new ListView();
+            listaAlertas = new ListView();
             AlertasBoton = new Button();
             HistorialAlertas = new Button();
             SuspendLayout();
@@ -48,16 +48,16 @@
             MercadoBoton.UseVisualStyleBackColor = true;
             MercadoBoton.Click += MercadoBoton_Click;
             // 
-            // CryptosFavoritasLista
+            // listaCryptosFavoritas
             // 
-            CryptosFavoritasLista.FullRowSelect = true;
-            CryptosFavoritasLista.Location = new Point(12, 41);
-            CryptosFavoritasLista.MultiSelect = false;
-            CryptosFavoritasLista.Name = "CryptosFavoritasLista";
-            CryptosFavoritasLista.Size = new Size(274, 368);
-            CryptosFavoritasLista.TabIndex = 1;
-            CryptosFavoritasLista.UseCompatibleStateImageBehavior = false;
-            CryptosFavoritasLista.View = View.Details;
+            listaCryptosFavoritas.FullRowSelect = true;
+            listaCryptosFavoritas.Location = new Point(12, 41);
+            listaCryptosFavoritas.MultiSelect = false;
+            listaCryptosFavoritas.Name = "listaCryptosFavoritas";
+            listaCryptosFavoritas.Size = new Size(274, 368);
+            listaCryptosFavoritas.TabIndex = 1;
+            listaCryptosFavoritas.UseCompatibleStateImageBehavior = false;
+            listaCryptosFavoritas.View = View.Details;
             // 
             // label1
             // 
@@ -87,13 +87,14 @@
             MiCuentaBoton.Text = "Mi Cuenta";
             MiCuentaBoton.UseVisualStyleBackColor = true;
             // 
-            // listView1
+            // listaAlertas
             // 
-            listView1.Location = new Point(308, 41);
-            listView1.Name = "listView1";
-            listView1.Size = new Size(394, 368);
-            listView1.TabIndex = 5;
-            listView1.UseCompatibleStateImageBehavior = false;
+            listaAlertas.Location = new Point(308, 41);
+            listaAlertas.Name = "listaAlertas";
+            listaAlertas.Size = new Size(325, 368);
+            listaAlertas.Sorting = SortOrder.Descending;
+            listaAlertas.TabIndex = 5;
+            listaAlertas.UseCompatibleStateImageBehavior = false;
             // 
             // AlertasBoton
             // 
@@ -103,6 +104,7 @@
             AlertasBoton.TabIndex = 6;
             AlertasBoton.Text = "Alertas";
             AlertasBoton.UseVisualStyleBackColor = true;
+            AlertasBoton.Click += AlertasBoton_Click;
             // 
             // HistorialAlertas
             // 
@@ -112,19 +114,20 @@
             HistorialAlertas.TabIndex = 7;
             HistorialAlertas.Text = "Historial";
             HistorialAlertas.UseVisualStyleBackColor = true;
+            HistorialAlertas.Click += HistorialAlertas_Click;
             // 
             // InicioForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(718, 450);
+            ClientSize = new Size(645, 450);
             Controls.Add(HistorialAlertas);
             Controls.Add(AlertasBoton);
-            Controls.Add(listView1);
+            Controls.Add(listaAlertas);
             Controls.Add(MiCuentaBoton);
             Controls.Add(OpcionesBoton);
             Controls.Add(label1);
-            Controls.Add(CryptosFavoritasLista);
+            Controls.Add(listaCryptosFavoritas);
             Controls.Add(MercadoBoton);
             Name = "InicioForm";
             StartPosition = FormStartPosition.CenterScreen;
@@ -137,11 +140,11 @@
         #endregion
 
         private Button MercadoBoton;
-        private ListView CryptosFavoritasLista;
+        private ListView listaCryptosFavoritas;
         private Label label1;
         private Button OpcionesBoton;
         private Button MiCuentaBoton;
-        private ListView listView1;
+        private ListView listaAlertas;
         private Button AlertasBoton;
         private Button HistorialAlertas;
     }

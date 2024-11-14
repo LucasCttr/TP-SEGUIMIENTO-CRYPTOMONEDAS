@@ -12,6 +12,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs
         public int FavoritoID { get; set; }
         public int UsuarioID { get; set; }
         public string CryptoID { get; set; }
-        public decimal ValorAlerta { get; set; }  
+        public decimal ValorPositivo { get; set; }  
+        public decimal ValorNegativo { get; set; }
+
+        public string CryptoNombre { get; set; }
     }
 }

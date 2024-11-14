@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs
 {
-    public class CryptoCurrencyDTO
+    public class CryptoDTO
     {
         public string id { get; set; }
         public string name { get; set; }

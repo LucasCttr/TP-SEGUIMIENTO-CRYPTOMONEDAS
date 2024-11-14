@@ -64,7 +64,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         {
             CryptosLista.View = View.Details;
             CryptosLista.Columns.Add("Id", 0);
-            CryptosLista.Columns.Add("Nombre", 100);
+            CryptosLista.Columns.Add("Nombre", 150);
             CryptosLista.Columns.Add("Rank", 60);
             CryptosLista.Columns.Add("Simbolo", 70);
             CryptosLista.Columns.Add("Precio (USD)", 100);

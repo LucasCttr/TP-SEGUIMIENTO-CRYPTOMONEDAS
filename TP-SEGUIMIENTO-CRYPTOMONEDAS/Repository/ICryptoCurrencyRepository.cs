@@ -11,8 +11,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
 {
     public interface ICryptoCurrencyRepository
     {
-        Task<List<CryptoCurrencyDTO>> MostrarCryptos(); // Definición del método asíncrono
-        CryptoCurrencyDTO BuscarCryptoMedianteId(string IdCrypto);
+        Task<List<CryptoDTO>> MostrarCryptos(); // Definición del método asíncrono
+        CryptoDTO BuscarCryptoMedianteId(string IdCrypto);
         List<PuntoHistorial> ObtenerHistorialDeCrypto(string idCrypto, string intervalo);
         void EliminarFavorito(ListViewItem Crypto);
         void AgregarFavorito(ListViewItem Crypto);

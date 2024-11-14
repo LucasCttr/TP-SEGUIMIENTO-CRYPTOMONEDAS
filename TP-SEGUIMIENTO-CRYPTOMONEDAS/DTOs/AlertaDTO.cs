@@ -17,6 +17,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs
         public DateTime FechaAlerta { get; set; }
         public string TipoCambio { get; set; }
 
+        public string CryptoNombre { get; set; }
+
     }
 }
 

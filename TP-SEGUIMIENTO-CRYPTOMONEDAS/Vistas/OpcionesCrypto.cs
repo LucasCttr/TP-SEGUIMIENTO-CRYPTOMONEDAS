@@ -54,11 +54,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             _estadoActual = nuevoEstado;
         }
 
-        public void ActualizarBotones(string texto,bool mostrar)
+        public void ActualizarBotones(string texto, bool mostrar)
         {
             AgregarEliminarBoton.Text = texto;
-            GraficoBoton.Enabled= mostrar;
-            AlertaBoton.Enabled= mostrar;
+            AlertaBoton.Enabled = mostrar;
         }
 
         public void MostrarBotones()
@@ -74,8 +73,14 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private void GraficoBoton_Click(object sender, EventArgs e)
         {
-            GraficoForm graficoForm =  new GraficoForm(Crypto.SubItems[0].Text, _unitOfWork);
+            GraficoForm graficoForm = new GraficoForm(Crypto.SubItems[0].Text, _unitOfWork);
             graficoForm.Show();
+        }
+
+        private void AlertaBoton_Click(object sender, EventArgs e)
+        {
+            AlertaForm alertaForm = new AlertaForm(Crypto, _unitOfWork);
+            alertaForm.Show();
         }
     }
 }

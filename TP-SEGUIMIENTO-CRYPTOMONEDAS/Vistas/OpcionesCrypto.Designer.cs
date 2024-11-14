@@ -36,7 +36,7 @@
             // 
             // AgregarEliminarBoton
             // 
-            AgregarEliminarBoton.Location = new Point(37, 102);
+            AgregarEliminarBoton.Location = new Point(27, 87);
             AgregarEliminarBoton.Name = "AgregarEliminarBoton";
             AgregarEliminarBoton.Size = new Size(75, 23);
             AgregarEliminarBoton.TabIndex = 0;
@@ -46,7 +46,7 @@
             // 
             // GraficoBoton
             // 
-            GraficoBoton.Location = new Point(141, 102);
+            GraficoBoton.Location = new Point(118, 87);
             GraficoBoton.Name = "GraficoBoton";
             GraficoBoton.Size = new Size(75, 23);
             GraficoBoton.TabIndex = 1;
@@ -56,17 +56,18 @@
             // 
             // AlertaBoton
             // 
-            AlertaBoton.Location = new Point(249, 102);
+            AlertaBoton.Location = new Point(214, 88);
             AlertaBoton.Name = "AlertaBoton";
             AlertaBoton.Size = new Size(75, 23);
             AlertaBoton.TabIndex = 2;
             AlertaBoton.Text = "Alerta";
             AlertaBoton.UseVisualStyleBackColor = true;
+            AlertaBoton.Click += AlertaBoton_Click;
             // 
             // CryptomonedaNombre
             // 
             CryptomonedaNombre.AutoSize = true;
-            CryptomonedaNombre.Location = new Point(118, 39);
+            CryptomonedaNombre.Location = new Point(88, 36);
             CryptomonedaNombre.Name = "CryptomonedaNombre";
             CryptomonedaNombre.Size = new Size(131, 15);
             CryptomonedaNombre.TabIndex = 3;
@@ -76,7 +77,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(378, 138);
+            ClientSize = new Size(320, 122);
             Controls.Add(CryptomonedaNombre);
             Controls.Add(AlertaBoton);
             Controls.Add(GraficoBoton);

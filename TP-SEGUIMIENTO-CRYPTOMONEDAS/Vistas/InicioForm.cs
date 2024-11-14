@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -9,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
@@ -19,14 +21,15 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         {
             InitializeComponent();
             InitializeListView();
+
             _unitOfWork = unitOfWork;
-            CryptosFavoritasLista.SelectedIndexChanged += listView1_SelectedIndexChanged;
+            listaCryptosFavoritas.SelectedIndexChanged += listaCryptosFavoritas_SelectedIndexChanged;
         }
 
         private async void InicioForm_Load(object sender, EventArgs e)
         {
             CargarCryptosFavoritas();
-            CargarAlertas();
+            CargarHistorial();
         }
 
         private void MercadoBoton_Click(object sender, EventArgs e)
@@ -34,6 +37,32 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             var MercadoForm = new MercadoForm(_unitOfWork, this); // Cambia esto al nombre de tu formulario principal
             MercadoForm.Show();
         }
+
+        private void OpcionesBoton_Click(object sender, EventArgs e)
+        {
+            if (listaCryptosFavoritas.SelectedItems.Count > 0)
+            {
+                // Obtener el ítem seleccionado
+                ListViewItem selectedItem = listaCryptosFavoritas.SelectedItems[0];
+
+                // Crear e iniciar el nuevo formulario pasando los datos
+                OpcionesCrypto opcionesForm = new OpcionesCrypto(selectedItem, _unitOfWork, this);
+                opcionesForm.ShowDialog(); // Usar ShowDialog para abrir como modal, o Show para no modal
+            }
+        }
+
+        private void AlertasBoton_Click(object sender, EventArgs e)
+        {
+            listaAlertas.Clear();
+            CargarAlertasActivas();
+        }
+
+        private void HistorialAlertas_Click(object sender, EventArgs e)
+        {
+            listaAlertas.Clear();
+            CargarHistorial();
+        }
+
 
         private void CargarCryptosFavoritas()
         {
@@ -58,80 +87,104 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                     item.SubItems.Add(DatosCrypto.changePercent24Hr.ToString("F2") + " %");
                     item.SubItems.Add(DatosCrypto.marketCapUsd.ToString("F2"));
                     item.SubItems.Add(DatosCrypto.supply.ToString("F2"));
-                    CryptosFavoritasLista.Items.Add(item);
+                    listaCryptosFavoritas.Items.Add(item);
                 }
             }
         }
 
 
-
-        public void CargarUnaCryptoAlView(ListViewItem Crypto)      //IMPLEMENTAR ESTO EN EL METODO DE ARRIBA
+        public void CargarUnaCryptoAlView(ListViewItem Crypto)
         {
+            // Crear el nuevo ListViewItem con el primer subítem
             var Item = new ListViewItem(Crypto.SubItems[0].Text);
-            Item.SubItems.Add(Crypto.SubItems[1]);
-            Item.SubItems.Add(Crypto.SubItems[2]);
-            Item.SubItems.Add(Crypto.SubItems[3]);
-            Item.SubItems.Add(Crypto.SubItems[4]); // Precio en USD, formato de moneda
-            Item.SubItems.Add(Crypto.SubItems[5]);
-            Item.SubItems.Add(Crypto.SubItems[6]);
-            Item.SubItems.Add(Crypto.SubItems[7]);
-            CryptosFavoritasLista.Items.Add(Item);
-            // Mensaje de éxito
+
+            // Iterar sobre los subítems restantes y agregarlos al nuevo Item
+            for (int i = 1; i < Crypto.SubItems.Count; i++)
+            {
+                Item.SubItems.Add(Crypto.SubItems[i]);
+            }
+
+            // Añadir el nuevo item a la lista de favoritos
+            listaCryptosFavoritas.Items.Add(Item);
+
+            // Mostrar mensaje de éxito
             MessageBox.Show(Crypto.SubItems[1].Text + " agregado a favoritos");
         }
 
         public void EliminarUnaCryptoDelView(string idCrypto)
         {
             // Buscar el item en el ListView que tenga el ID especificado
-            foreach (ListViewItem item in CryptosFavoritasLista.Items)
+            foreach (ListViewItem item in listaCryptosFavoritas.Items)
             {
                 if (item.SubItems[0].Text == idCrypto) // Cambia el índice si el ID está en otra columna
                 {
-                    CryptosFavoritasLista.Items.Remove(item); // Eliminar el item encontrado
+                    listaCryptosFavoritas.Items.Remove(item); // Eliminar el item encontrado
                     MessageBox.Show(item.SubItems[1].Text + " eliminado de favoritos");
                     return;
                 }
             }
         }
-
-        private void CargarAlertas()
-        {
-            // Obtener las alertas
-            var cryptos = _unitOfWork.Alerta.ObtenerAlertas();
-        }
-
-        private void OpcionesBoton_Click(object sender, EventArgs e)
-        {
-            if (CryptosFavoritasLista.SelectedItems.Count > 0)
-            {
-                // Obtener el ítem seleccionado
-                ListViewItem selectedItem = CryptosFavoritasLista.SelectedItems[0];
-
-                // Crear e iniciar el nuevo formulario pasando los datos
-                OpcionesCrypto opcionesForm = new OpcionesCrypto(selectedItem, _unitOfWork, this);
-                opcionesForm.ShowDialog(); // Usar ShowDialog para abrir como modal, o Show para no modal
-            }
-        }
-
-        private void listView1_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            if (CryptosFavoritasLista.SelectedItems.Count > 0)
-            {
-                CryptosFavoritasLista.Enabled = CryptosFavoritasLista.SelectedItems.Count > 0;
-            }
-        }
+        
 
         private void InitializeListView()
         {
-            CryptosFavoritasLista.View = View.Details;
-            CryptosFavoritasLista.Columns.Add("Id", 0);
-            CryptosFavoritasLista.Columns.Add("Crypto", 100);
-            CryptosFavoritasLista.Columns.Add("Rank", 0);
-            CryptosFavoritasLista.Columns.Add("Simbolo", 0);
-            CryptosFavoritasLista.Columns.Add("Precio (USD)", 100);
-            CryptosFavoritasLista.Columns.Add("24Hs%", 70);
-            CryptosFavoritasLista.Columns.Add("MarketCap", 0);
-            CryptosFavoritasLista.Columns.Add("Supply", 0);
+            listaCryptosFavoritas.View = View.Details;
+            listaCryptosFavoritas.Columns.Add("Id", 0);
+            listaCryptosFavoritas.Columns.Add("Crypto", 100);
+            listaCryptosFavoritas.Columns.Add("Rank", 0);
+            listaCryptosFavoritas.Columns.Add("Simbolo", 0);
+            listaCryptosFavoritas.Columns.Add("Precio (USD)", 100);
+            listaCryptosFavoritas.Columns.Add("24Hs%", 70);
+            listaCryptosFavoritas.Columns.Add("MarketCap", 0);
+            listaCryptosFavoritas.Columns.Add("Supply", 0);
+        }
+
+        private void CargarHistorial()
+        {
+            var alertasHistorial = _unitOfWork.Alerta.ObtenerAlertasHistorial();
+            listaAlertas.View = View.Details;
+            listaAlertas.Sort();
+            listaAlertas.Columns.Add("Fecha", 120);
+            listaAlertas.Columns.Add("Crypto", 100);
+            listaAlertas.Columns.Add("Valor", 100);
+
+            foreach (var historial in alertasHistorial)
+            {
+                var item = new ListViewItem(historial.FechaAlerta.ToString());
+                item.SubItems.Add(historial.CryptoNombre);
+                item.SubItems.Add(historial.TipoCambio + "" + historial.CambioPorcentual.ToString());
+                listaAlertas.Items.Add(item);
+            }
+        }
+
+
+        private void CargarAlertasActivas()
+        {
+            var alertasActivas = _unitOfWork.Alerta.ObtenerAlertasActivas();
+            listaAlertas.View = View.Details;
+            listaAlertas.Columns.Add("Activas", 120);
+            listaAlertas.Columns.Add("Valor +", 100);
+            listaAlertas.Columns.Add("Valor -", 100);
+
+            foreach (var alerta in alertasActivas)
+            {
+                var item = new ListViewItem(alerta.CryptoNombre);
+                if (alerta.ValorPositivo == 0) item.SubItems.Add("    -");
+                else item.SubItems.Add(alerta.ValorPositivo.ToString());
+
+                if (alerta.ValorNegativo == 0) item.SubItems.Add("    -");
+                else item.SubItems.Add(alerta.ValorNegativo.ToString());
+
+                listaAlertas.Items.Add(item);
+            }
+        }
+
+        private void listaCryptosFavoritas_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (listaCryptosFavoritas.SelectedItems.Count > 0)
+            {
+                listaCryptosFavoritas.Enabled = listaCryptosFavoritas.SelectedItems.Count > 0;
+            }
         }
     }
 }

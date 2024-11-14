@@ -26,7 +26,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
         }
 
 
-        public async Task<List<CryptoCurrencyDTO>> MostrarCryptos()
+        public async Task<List<CryptoDTO>> MostrarCryptos()
         {
             var request = new RestRequest("assets", Method.Get);
             var response = await _client.ExecuteAsync<CryptoResponse>(request);
@@ -36,19 +36,19 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
                 return response.Data.Data; // Accede a la propiedad 'Data'
             }
 
-            return new List<CryptoCurrencyDTO>(); // Retorna una lista vacía en caso de error
+            return new List<CryptoDTO>(); // Retorna una lista vacía en caso de error
         }
 
         private class CryptoResponse       //uTILIZAR librerias (otro metodo) para remplazar estas clases.
         {
-            public List<CryptoCurrencyDTO> Data { get; set; }
+            public List<CryptoDTO> Data { get; set; }
         }
         private class SingleCryptoResponse
         {
-            public CryptoCurrencyDTO Data { get; set; }
+            public CryptoDTO Data { get; set; }
         }
 
-        public CryptoCurrencyDTO BuscarCryptoMedianteId(string IdCrypto)
+        public CryptoDTO BuscarCryptoMedianteId(string IdCrypto)
         {
             var request = new RestRequest($"assets/{IdCrypto}", Method.Get);
             var response = _client.Execute<SingleCryptoResponse>(request);
@@ -78,8 +78,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             var nuevoFavorito = new UsuarioCryptoDTO
             {
                 UsuarioID = userId,
-                ValorAlerta = 0,
-                CryptoID = CryptoSeleccionada.SubItems[0].Text
+                ValorPositivo = 0,
+                ValorNegativo = 0,
+                CryptoID = CryptoSeleccionada.SubItems[0].Text,
+                CryptoNombre = CryptoSeleccionada.SubItems[1].Text
             };
             // Agregar el nuevo favorito a la base de datos
             _context.UsuariosCryptos.Add(nuevoFavorito); // Agregar la entidad
