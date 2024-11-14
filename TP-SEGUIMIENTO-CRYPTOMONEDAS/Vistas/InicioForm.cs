@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -17,12 +18,13 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
     public partial class InicioForm : Form
     {
         private IUnitOfWork _unitOfWork;
+
         public InicioForm(IUnitOfWork unitOfWork)
         {
             InitializeComponent();
             InitializeListView();
-
             _unitOfWork = unitOfWork;
+            InicializarTimer();
             listaCryptosFavoritas.SelectedIndexChanged += listaCryptosFavoritas_SelectedIndexChanged;
             listaCryptosFavoritas.SelectedIndexChanged += listaAlertasActivas_SelectedIndexChanged;
             listaAlertas.SelectedIndexChanged += listaAlertas_SelectedIndexChanged;
@@ -72,6 +74,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             // Obtener las criptomonedas
             var cryptos = _unitOfWork.Usuarios.ObtenerCryptosFavoritas();
 
+            // Suspender la actualización para evitar parpadeos
+            listaCryptosFavoritas.BeginUpdate();
+            listaCryptosFavoritas.Items.Clear();
             // Agregar cada criptomoneda al ListView
             foreach (var crypto in cryptos)
             {
@@ -98,6 +103,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                     listaCryptosFavoritas.Items.Add(item);
                 }
             }
+            // Reanudar la actualización
+            listaCryptosFavoritas.EndUpdate();
         }
 
 
@@ -232,5 +239,65 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 botonModificar.Visible = false;  // Oculta el botón si no hay ítem seleccionado
             }
         }
+
+        private void InicializarTimer()
+        {
+            timer = new System.Windows.Forms.Timer();
+            timer.Interval = 10000; // 1 minuto (60000 ms)
+            timer.Tick += Timer_Tick;
+            timer.Start();
+        }
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            ActualizarListaFavoritas();
+
+        }
+
+
+
+        //Metodo para que cuando la lista se actualice no parpadee
+        private void ActualizarListaFavoritas()
+        {
+            try
+            {
+                // Obtén la lista de criptomonedas favoritas desde tu unidad de trabajo
+                var favoritas = _unitOfWork.Usuarios.ObtenerCryptosFavoritas();
+
+                // Construir una lista temporal para los nuevos elementos
+                List<ListViewItem> nuevosItems = new List<ListViewItem>();
+
+                foreach (var f in favoritas)
+                {
+                    // Obtén la información actualizada del precio y la tendencia
+                    var crypto = _unitOfWork.CryptosFavoritas.BuscarCryptoMedianteId(f.CryptoID);
+                    if (crypto == null) continue;
+
+                    // Crear un nuevo ListViewItem
+                    ListViewItem newItem = new ListViewItem(crypto.rank.ToString())
+                    {
+                        Tag = f // Guardar el objeto para futuras actualizaciones
+                    };
+                    newItem.SubItems.Add("");
+                    newItem.SubItems.Add(crypto.name);
+                    newItem.SubItems.Add(""); // Placeholder para columnas adicionales si es necesario
+                    newItem.SubItems.Add(crypto.priceUsd.ToString("C2", CultureInfo.CreateSpecificCulture("en-US")));
+                    newItem.SubItems.Add(crypto.changePercent24Hr.ToString("F2") + "%");
+
+                    // Agregar el nuevo item a la lista temporal
+                    nuevosItems.Add(newItem);
+                }
+
+                // Actualizar la ListView de una sola vez con los nuevos elementos
+                listaCryptosFavoritas.BeginUpdate();
+                listaCryptosFavoritas.Items.Clear();
+                listaCryptosFavoritas.Items.AddRange(nuevosItems.ToArray());
+                listaCryptosFavoritas.EndUpdate();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al actualizar la lista de favoritas: " + ex.Message);
+            }
+        }
     }
+
 }

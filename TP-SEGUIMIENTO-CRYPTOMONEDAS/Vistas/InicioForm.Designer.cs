@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             MercadoBoton = new Button();
             listaCryptosFavoritas = new ListView();
             label1 = new Label();
@@ -37,6 +38,7 @@
             AlertasBoton = new Button();
             HistorialAlertas = new Button();
             botonModificar = new Button();
+            timer = new System.Windows.Forms.Timer(components);
             SuspendLayout();
             // 
             // MercadoBoton
@@ -129,6 +131,11 @@
             botonModificar.UseVisualStyleBackColor = true;
             botonModificar.Click += botonModificar_Click;
             // 
+            // timer
+            // 
+            timer.Enabled = true;
+            timer.Interval = 10000;
+            // 
             // InicioForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -162,5 +169,6 @@
         private Button AlertasBoton;
         private Button HistorialAlertas;
         private Button botonModificar;
+        private System.Windows.Forms.Timer timer;
     }
 }
