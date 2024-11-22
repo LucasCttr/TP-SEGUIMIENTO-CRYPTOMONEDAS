@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs
 {
-    public class CryptoDTO
+    public class CryptoDTO //Fusionar con otros DTO UsuarioCrypto?
     {
         public string id { get; set; }
         public string name { get; set; }

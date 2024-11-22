@@ -34,6 +34,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         {
             CargarCryptosFavoritas();
             CargarHistorial();
+            _unitOfWork.Alerta.CargarObservadores();
         }
 
         private void MercadoBoton_Click(object sender, EventArgs e)
@@ -138,7 +139,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private void InitializeListView()
         {
-            listaCryptosFavoritas.View = View.Details;
+            listaCryptosFavoritas.View = View.Details;          //MODIFICAR
             listaCryptosFavoritas.Columns.Add("Rank", 0);
             listaCryptosFavoritas.Columns.Add("Id", 0);
             listaCryptosFavoritas.Columns.Add("Crypto", 100);
@@ -177,24 +178,32 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         private void CargarAlertasActivas()
         {
             listaAlertas.FullRowSelect = true;
-            var alertasActivas = _unitOfWork.Alerta.ObtenerAlertasActivas();
             listaAlertas.View = View.Details;
             listaAlertas.Columns.Add("Activas", 120);
-            listaAlertas.Columns.Add("Valor +", 100);
-            listaAlertas.Columns.Add("Valor -", 100);
+            listaAlertas.Columns.Add("Valor +", 60);
+            listaAlertas.Columns.Add("Valor -", 60);
 
+            ActualizarListaAlertasActivas();
+        }
+
+        public void ActualizarListaAlertasActivas()
+        {
+            listaAlertas.Items.Clear();
+            var alertasActivas = _unitOfWork.Alerta.ObtenerAlertasActivas();
             foreach (var alerta in alertasActivas)
             {
                 var item = new ListViewItem(alerta.CryptoNombre);
                 if (alerta.ValorPositivo == 0) item.SubItems.Add("    -");
-                else item.SubItems.Add("+ "+alerta.ValorPositivo.ToString());
+                else item.SubItems.Add("+ " + alerta.ValorPositivo.ToString());
 
                 if (alerta.ValorNegativo == 0) item.SubItems.Add("    -");
-                else item.SubItems.Add("- "+alerta.ValorNegativo.ToString());
+                else item.SubItems.Add("- " + alerta.ValorNegativo.ToString());
+
 
                 listaAlertas.Items.Add(item);
             }
         }
+
 
         private void listaCryptosFavoritas_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -218,7 +227,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             {
                 // Obtener el ítem seleccionado
                 ListViewItem selectedItem = listaAlertas.SelectedItems[0];
-                AlertaForm alerta = new AlertaForm(selectedItem.Text, _unitOfWork);
+                AlertaForm alerta = new AlertaForm(selectedItem.Text, _unitOfWork, this);
                 alerta.Show();    
             }       
         }
@@ -235,37 +244,38 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             }
         }
 
-        private void InicializarTimer()
+        private async void InicializarTimer()
         {
             timer = new System.Windows.Forms.Timer();
-            timer.Interval = 10000; // 1 minuto (60000 ms)
-            timer.Tick += Timer_Tick;
+            timer.Interval = 10000; // 10 segundos
+            timer.Tick += async (sender, e) => await Timer_TickAsync();
             timer.Start();
         }
-        private void Timer_Tick(object sender, EventArgs e)
+        private async Task Timer_TickAsync()
         {
-            ActualizarListaFavoritas();
+            ActualizarListaFavoritasAsync();
 
         }
-
 
 
         //Metodo para que cuando la lista se actualice no parpadee
-        private void ActualizarListaFavoritas()
+        private async Task ActualizarListaFavoritasAsync()
         {
             try
             {
-                // Obtén la lista de criptomonedas favoritas desde tu unidad de trabajo
-                var favoritas = _unitOfWork.Usuarios.ObtenerCryptosFavoritas();
+                // Obtener la lista de criptomonedas favoritas en un hilo separado
+                var favoritas = await Task.Run(() => _unitOfWork.Usuarios.ObtenerCryptosFavoritas());
 
-                // Construir una lista temporal para los nuevos elementos
                 List<ListViewItem> nuevosItems = new List<ListViewItem>();
 
                 foreach (var f in favoritas)
                 {
-                    // Obtén la información actualizada del precio y la tendencia
-                    var crypto = _unitOfWork.CryptosFavoritas.BuscarCryptoMedianteId(f.CryptoID);
+                    // Obtener la información actualizada del precio y la tendencia
+                    var crypto = await Task.Run(() => _unitOfWork.CryptosFavoritas.BuscarCryptoMedianteId(f.CryptoID));
                     if (crypto == null) continue;
+
+                    // Notificar las alertas si es necesario
+                    _unitOfWork.Alerta.NotificarObservadores(crypto.name, crypto.changePercent24Hr);
 
                     // Crear un nuevo ListViewItem
                     ListViewItem newItem = new ListViewItem(crypto.rank.ToString())
@@ -274,19 +284,21 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                     };
                     newItem.SubItems.Add(crypto.id);
                     newItem.SubItems.Add(crypto.name);
-                    newItem.SubItems.Add(crypto.symbol); // Placeholder para columnas adicionales si es necesario
+                    newItem.SubItems.Add(crypto.symbol);
                     newItem.SubItems.Add(crypto.priceUsd.ToString("C2", CultureInfo.CreateSpecificCulture("en-US")));
                     newItem.SubItems.Add(crypto.changePercent24Hr.ToString("F2") + "%");
 
-                    // Agregar el nuevo item a la lista temporal
                     nuevosItems.Add(newItem);
                 }
 
-                // Actualizar la ListView de una sola vez con los nuevos elementos
-                listaCryptosFavoritas.BeginUpdate();
-                listaCryptosFavoritas.Items.Clear();
-                listaCryptosFavoritas.Items.AddRange(nuevosItems.ToArray());
-                listaCryptosFavoritas.EndUpdate();
+                // Actualizar la ListView en el hilo de la interfaz de usuario
+                listaCryptosFavoritas.Invoke((MethodInvoker)(() =>
+                {
+                    listaCryptosFavoritas.BeginUpdate();
+                    listaCryptosFavoritas.Items.Clear();
+                    listaCryptosFavoritas.Items.AddRange(nuevosItems.ToArray());
+                    listaCryptosFavoritas.EndUpdate();
+                }));
             }
             catch (Exception ex)
             {

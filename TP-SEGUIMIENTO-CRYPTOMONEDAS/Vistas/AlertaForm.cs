@@ -15,10 +15,12 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
     {
         public string nombreCrypto;
         public IUnitOfWork _unitOfWork;
-        public AlertaForm(string crypto, IUnitOfWork unitOfWork)
+        public InicioForm _inicioForm;
+        public AlertaForm(string crypto, IUnitOfWork unitOfWork, InicioForm inicioForm)
         {
             _unitOfWork = unitOfWork;
             nombreCrypto = crypto;
+            _inicioForm = inicioForm;
             InitializeComponent();
         }
 
@@ -37,6 +39,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             decimal nuevoValorNegativo = Convert.ToDecimal(valorNegativo.Text);  // Convierte el texto a decimal
 
             _unitOfWork.Alerta.GuardarValoresAlerta(nombreCrypto, nuevoValorPositivo, nuevoValorNegativo);
+            _inicioForm.ActualizarListaAlertasActivas();
             this.Close();
         }
 

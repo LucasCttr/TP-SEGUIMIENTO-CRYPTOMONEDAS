@@ -79,7 +79,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private void AlertaBoton_Click(object sender, EventArgs e)
         {
-            AlertaForm alertaForm = new AlertaForm(Crypto.SubItems[2].Text, _unitOfWork);
+            AlertaForm alertaForm = new AlertaForm(Crypto.SubItems[2].Text, _unitOfWork, InicioForm);
             alertaForm.Show();
         }
     }

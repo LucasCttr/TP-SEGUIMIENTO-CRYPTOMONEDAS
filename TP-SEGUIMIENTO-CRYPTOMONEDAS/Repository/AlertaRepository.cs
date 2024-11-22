@@ -9,6 +9,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
     {
         private readonly AppDbContext _context;
         private readonly RestClient _client;
+        private readonly List<IAlertaObserver> observadores = new List<IAlertaObserver>();
         public AlertaRepository(AppDbContext context)
         {
             _context = context;
@@ -75,6 +76,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             alerta.ValorPositivo = valorPositivo;
             alerta.ValorNegativo = valorNegativo;
 
+            if (valorPositivo == 0 && valorNegativo == 0) EliminarObservador(nobreCrypto);
+            else ModificarObservador(nobreCrypto, valorPositivo, valorNegativo);
             // Guardar los cambios en la base de datos
             _context.SaveChanges();
         }
@@ -83,5 +86,66 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
         {
             GuardarValoresAlerta(nombreCrypto, 0, 0);
         }
+
+        // Método para agregar un observador
+        public void AgregarObservador(IAlertaObserver observador)
+        {
+            observadores.Add(observador);
+        }
+
+        // Método para eliminar un observador
+        public void EliminarObservador(string nombreCrypto)
+        {
+            // Buscar el observador asociado a la criptomoneda
+            var observadorAEliminar = observadores.FirstOrDefault(o => o is AlertaPorcentaje alerta && alerta.nombreCrypto== nombreCrypto);
+
+            observadores.Remove(observadorAEliminar);
+        }
+
+        // Método para notificar a los observadores
+        public void NotificarObservadores(string nombreCrypto, decimal cambio24Hs)
+        {
+            foreach (var observador in observadores)
+            {
+                if (observador.nombreCrypto == nombreCrypto) observador.Notificar(cambio24Hs);
+            }
+        }
+
+        public void CargarObservadores()
+        {
+            int userId = SessionManager.CurrentUserId;
+
+            // Obtener las alertas activas del usuario
+            var alertasActivas = ObtenerAlertasActivas();
+
+            foreach (var alerta in alertasActivas)
+            {
+                // Crear el observador para cada alerta activa
+                var observador = new AlertaPorcentaje((message) => MessageBox.Show(message)); // O el método adecuado para mostrar la alerta
+
+
+                observador.ConfigurarAlerta(alerta.CryptoNombre, alerta.ValorPositivo, alerta.ValorNegativo);
+
+                // Agregar el observador a la lista de observadores
+                AgregarObservador(observador);
+
+            }
+        }
+
+        public void ModificarObservador(string nombreCrypto, decimal valorPositivo, decimal valorNegativo)
+        {
+            // Buscar el observador asociado a la criptomoneda
+            var observadorAModificar = observadores.FirstOrDefault(o => o is AlertaPorcentaje alerta && alerta.nombreCrypto == nombreCrypto);
+
+            if (observadorAModificar != null)
+            {
+                // Convertir el observador a tipo AlertaPorcentaje y modificar sus valores
+                var alertaPorcentaje = observadorAModificar as AlertaPorcentaje;
+
+                // Actualizar los valores de la alerta
+                alertaPorcentaje.ConfigurarAlerta(nombreCrypto, valorPositivo, valorNegativo);
+            }
+        }
     }
-}
+ }
+
