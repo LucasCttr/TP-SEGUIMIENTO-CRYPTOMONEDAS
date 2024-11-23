@@ -37,7 +37,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 // Autenticación exitosa
                 SessionManager.CurrentUserId = user.Id; // Guardar ID de usuario en SessionManager
                 this.Hide();
-                var inicioForm = new InicioForm(_unitOfWork); // Cambia esto al nombre de tu formulario principal
+                var alertaObserver = new AlertaObserverManager();
+                var _alertaService = new AlertaService(_unitOfWork, alertaObserver);
+                var inicioForm = new InicioForm(_unitOfWork,_alertaService); // Cambia esto al nombre de tu formulario principal
                 inicioForm.Show();
             }
             else

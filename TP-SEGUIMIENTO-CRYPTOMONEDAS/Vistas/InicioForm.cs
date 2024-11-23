@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -18,23 +19,33 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
     public partial class InicioForm : Form
     {
         private IUnitOfWork _unitOfWork;
+        public AlertaService _alertaService;
 
-        public InicioForm(IUnitOfWork unitOfWork)
+
+        public InicioForm(IUnitOfWork unitOfWork, AlertaService alertaService)
         {
             InitializeComponent();
             InitializeListView();
             _unitOfWork = unitOfWork;
+            _alertaService = alertaService;
             InicializarTimer();
             listaCryptosFavoritas.SelectedIndexChanged += listaCryptosFavoritas_SelectedIndexChanged;
             listaCryptosFavoritas.SelectedIndexChanged += listaAlertasActivas_SelectedIndexChanged;
             listaAlertas.SelectedIndexChanged += listaAlertas_SelectedIndexChanged;
+
+            // Suscribirse al evento
+            _alertaService.AlertaEliminada += (nombreCrypto) =>
+            {
+                // Lógica para actualizar la lista de UI
+                ActualizarListaAlertasActivas();
+            };
         }
 
         private async void InicioForm_Load(object sender, EventArgs e)
         {
             CargarCryptosFavoritas();
             CargarHistorial();
-            _unitOfWork.Alerta.CargarObservadores();
+            _alertaService.CargarAlertasActivas();
         }
 
         private void MercadoBoton_Click(object sender, EventArgs e)
@@ -275,7 +286,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                     if (crypto == null) continue;
 
                     // Notificar las alertas si es necesario
-                    _unitOfWork.Alerta.NotificarObservadores(crypto.name, crypto.changePercent24Hr);
+                    _alertaService.NotificarCambio
+                        (crypto.name, crypto.changePercent24Hr);
 
                     // Crear un nuevo ListViewItem
                     ListViewItem newItem = new ListViewItem(crypto.rank.ToString())

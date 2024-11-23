@@ -110,7 +110,7 @@
             Controls.Add(grafico);
             Name = "GraficoForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "GraficoForm";
+            Text = " ";
             ((System.ComponentModel.ISupportInitialize)grafico).EndInit();
             ResumeLayout(false);
         }

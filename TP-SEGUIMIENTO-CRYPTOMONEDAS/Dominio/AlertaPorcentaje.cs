@@ -10,13 +10,15 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
     public class AlertaPorcentaje : IAlertaObserver
     {
         private readonly Action<string> accionAlerta;
+        private readonly Action<string> eliminarObservador; // Acción para eliminar el observador
         public string nombreCrypto { get; set; }
         private decimal valorPositivo;
         private decimal valorNegativo;
 
-    public AlertaPorcentaje(Action<string> accion)
+        public AlertaPorcentaje(Action<string> accion, Action<string> eliminar)
         {
             accionAlerta = accion;
+            eliminarObservador = eliminar;
         }
 
         // Configuramos la alerta con los valores de la criptomoneda y los umbrales
@@ -24,7 +26,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
         {
             this.nombreCrypto = nombre;
             this.valorPositivo = valorPositivo;
-            this.valorNegativo = valorNegativo;
+            this.valorNegativo = -valorNegativo;
         }
 
         public void Notificar(decimal cambio24Hs)
@@ -32,12 +34,13 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
             if (cambio24Hs >= valorPositivo)
             {
                 accionAlerta($"🔔 Alerta positiva: {nombreCrypto} ha aumentado un {cambio24Hs:F2}% en las últimas 24 horas.");
-                ConfigurarAlerta(nombreCrypto, 0, 0);
+                eliminarObservador(nombreCrypto);
+
             }
-            else if (Math.Abs(cambio24Hs) >= valorNegativo)
+            else if (cambio24Hs <= valorNegativo)
             {
                 accionAlerta($"🔔 Alerta negativa: {nombreCrypto} ha disminuido un {cambio24Hs:F2}% en las últimas 24 horas.");
-                ConfigurarAlerta(nombreCrypto, 0, 0);
+                eliminarObservador(nombreCrypto);
             }
         }
     }
