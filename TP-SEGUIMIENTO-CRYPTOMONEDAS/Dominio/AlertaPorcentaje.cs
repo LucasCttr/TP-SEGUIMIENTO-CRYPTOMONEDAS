@@ -57,13 +57,14 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
         //Crear Contrasena de aplicaciones
         private void EnviarMail(string tipo, decimal valor)
         {
-            var mail = "carottalucas2@gmail.com";
+            var mailFrom = "carottalucas2@gmail.com";
+            var mailTo = SessionManager.CurrentMail;
             try
             {
                 // Crear el mensaje
                 var mensaje = new MimeMessage();
-                mensaje.From.Add(new MailboxAddress("Alertas", mail));
-                mensaje.To.Add(new MailboxAddress(SessionManager.CurrentName, SessionManager.CurrentMail));
+                mensaje.From.Add(new MailboxAddress("Alertas", mailFrom));
+                mensaje.To.Add(new MailboxAddress(SessionManager.CurrentName, "carottalucas@gmail.com"));   // Modificar, poner mailTo 
                 mensaje.Subject = "Alerta Activada: " + nombreCrypto;
 
                 // Cuerpo del correo
@@ -76,7 +77,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
                 using (var cliente = new SmtpClient())
                 {
                     cliente.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-                    cliente.Authenticate(mail, "asda");
+                    cliente.Authenticate(mailFrom, "asda");
 
                     // Enviar el correo
                     cliente.Send(mensaje);
