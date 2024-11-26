@@ -55,7 +55,6 @@ using Microsoft.EntityFrameworkCore;
                 modelBuilder.Entity<AlertaDTO>().ToTable("AlertasCrypto");
                 modelBuilder.Entity<AlertaDTO>().HasKey(u => u.Id);
                 modelBuilder.Entity<AlertaDTO>().Property(u => u.UsuarioID).IsRequired().HasMaxLength(100);  
-                modelBuilder.Entity<AlertaDTO>().Property(u => u.CryptoID).IsRequired().HasColumnType("HasMaxLength(20)");  
                 modelBuilder.Entity<AlertaDTO>().Property(u => u.CambioPorcentual).HasColumnType("decimal(5,2)");
                 modelBuilder.Entity<AlertaDTO>().Property(u => u.FechaAlerta).HasColumnType("DateTime");
                 modelBuilder.Entity<AlertaDTO>().Property(u => u.TipoCambio).HasColumnType("HasMaxLength(20)");

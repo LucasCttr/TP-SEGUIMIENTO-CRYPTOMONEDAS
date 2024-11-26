@@ -25,10 +25,12 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
                  // Usa el repositorio desde el Unit of Work
                  var alertasActivas = _unitOfWork.Alerta.ObtenerAlertasActivas();
 
-                 // Carga los observadores en memoria
-                 _observerManager.CargarObservadores(alertasActivas,
-                (mensaje) => MessageBox.Show(mensaje), // Acción para mostrar el mensaje
-                (nombreCrypto) => EliminarAlerta(nombreCrypto)); // Acción para eliminar el observador
+            // Carga los observadores en memoria
+            _observerManager.CargarObservadores(alertasActivas,
+           (mensaje) => MessageBox.Show(mensaje), // Acción para mostrar el mensaje
+           (nombreCrypto) => EliminarAlerta(nombreCrypto),// Acción para eliminar el observador
+           (nombreCrypto, valor, tipo) => CrearNuevoHistoricoAlerta(nombreCrypto, valor, "Incremento"),
+           (nombreCrypto, valor, tipo) => CrearNuevoHistoricoAlerta(nombreCrypto, valor, "Decremento"));
             }
 
             public void NotificarCambio(string nombreCrypto, decimal cambio24Hs)
@@ -46,7 +48,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
             {
                     var nuevoObservador = new AlertaPorcentaje(
                         (mensaje) => MessageBox.Show(mensaje), // Acción para mostrar el mensaje
-                        (nombreCrypto) => EliminarAlerta(nombreCrypto) // Acción para eliminar el observador
+                        (nombreCrypto) => EliminarAlerta(nombreCrypto), // Acción para eliminar el observador
+                        (nombreCrypto, valor, tipo) => CrearNuevoHistoricoAlerta(nombreCrypto, valor, "Incremento"),
+                        (nombreCrypto, valor, tipo) => CrearNuevoHistoricoAlerta(nombreCrypto, valor, "Decremento")
                     );
 
                     // Configurar la nueva alerta
@@ -70,6 +74,14 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
 
                  // Notificar a los suscriptores
                 AlertaEliminada?.Invoke(nombreCrypto);
+
+                // Confirma los cambios
+                _unitOfWork.Save();
+            }
+
+            private void CrearNuevoHistoricoAlerta(string nombreCrpyto, decimal umbralSuperado, string tipo)
+            {
+                _unitOfWork.Alerta.CrearHistoriaAlerta(nombreCrpyto, umbralSuperado, tipo);
 
                 // Confirma los cambios
                 _unitOfWork.Save();

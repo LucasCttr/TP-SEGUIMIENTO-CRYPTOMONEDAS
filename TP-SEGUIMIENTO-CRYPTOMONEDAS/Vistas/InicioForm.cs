@@ -33,11 +33,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             listaCryptosFavoritas.SelectedIndexChanged += listaAlertasActivas_SelectedIndexChanged;
             listaAlertas.SelectedIndexChanged += listaAlertas_SelectedIndexChanged;
 
-            // Suscribirse al evento
+            // Suscribirse al evento para actualizar UI despues de que salte una alerta
             _alertaService.AlertaEliminada += (nombreCrypto) =>
             {
                 // Lógica para actualizar la lista de UI
-                ActualizarListaAlertasActivas();
+                CargarHistorial();
             };
         }
 
@@ -69,7 +69,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private void AlertasBoton_Click(object sender, EventArgs e)
         {
-            listaAlertas.Clear();
             CargarAlertasActivas();
         }
 
@@ -165,6 +164,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private void CargarHistorial()
         {
+            listaAlertas.Clear();
             listaAlertas.FullRowSelect = false;
             var alertasHistorial = _unitOfWork.Alerta.ObtenerAlertasHistorial();
             listaAlertas.View = View.Details;
@@ -172,7 +172,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             listaAlertas.Columns.Add("Orden", 0);
             listaAlertas.Columns.Add("Fecha", 120);
             listaAlertas.Columns.Add("Crypto", 100);
-            listaAlertas.Columns.Add("Valor", 100);
+            listaAlertas.Columns.Add("Valor", 48);
+            listaAlertas.Columns.Add("Tipo", 82);
 
             foreach (var historial in alertasHistorial)
             {
@@ -180,19 +181,21 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 var item = new ListViewItem(historial.FechaAlerta.ToString());
                 item.SubItems.Add(historial.FechaAlerta.ToString());
                 item.SubItems.Add(historial.CryptoNombre);
-                item.SubItems.Add(historial.TipoCambio + "" + historial.CambioPorcentual.ToString());
+                item.SubItems.Add(historial.CambioPorcentual.ToString());
+                item.SubItems.Add(historial.TipoCambio);
                 listaAlertas.Items.Add(item);
             }
         }
 
 
-        private void CargarAlertasActivas()
+        public void CargarAlertasActivas()
         {
+            listaAlertas.Clear();
             listaAlertas.FullRowSelect = true;
             listaAlertas.View = View.Details;
-            listaAlertas.Columns.Add("Activas", 120);
-            listaAlertas.Columns.Add("Valor +", 60);
-            listaAlertas.Columns.Add("Valor -", 60);
+            listaAlertas.Columns.Add("Activas", 125);
+            listaAlertas.Columns.Add("Incremento", 100);
+            listaAlertas.Columns.Add("Decremento", 80);
 
             ActualizarListaAlertasActivas();
         }
@@ -205,11 +208,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             {
                 var item = new ListViewItem(alerta.CryptoNombre);
                 if (alerta.ValorPositivo == 0) item.SubItems.Add("    -");
-                else item.SubItems.Add("+ " + alerta.ValorPositivo.ToString());
+                else item.SubItems.Add(alerta.ValorPositivo.ToString());
 
                 if (alerta.ValorNegativo == 0) item.SubItems.Add("    -");
-                else item.SubItems.Add("- " + alerta.ValorNegativo.ToString());
-
+                else item.SubItems.Add(alerta.ValorNegativo.ToString());
 
                 listaAlertas.Items.Add(item);
             }
@@ -243,6 +245,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             }       
         }
 
+
         private void listaAlertas_SelectedIndexChanged(object sender, EventArgs e)
         {
             if (listaAlertas.SelectedItems.Count > 0)
@@ -265,7 +268,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         private async Task Timer_TickAsync()
         {
             ActualizarListaFavoritasAsync();
-
         }
 
 

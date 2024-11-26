@@ -39,7 +39,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             decimal nuevoValorNegativo = Convert.ToDecimal(valorNegativo.Text);  // Convierte el texto a decimal
 
             _inicioForm._alertaService.ActualizarOCrearAlerta(nombreCrypto, nuevoValorPositivo, nuevoValorNegativo);
-            _inicioForm.ActualizarListaAlertasActivas();
+            _inicioForm.CargarAlertasActivas();
             this.Close();
         }
 

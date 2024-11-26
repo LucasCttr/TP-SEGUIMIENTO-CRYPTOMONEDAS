@@ -39,7 +39,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(133, 82);
+            label1.Location = new Point(71, 81);
             label1.Name = "label1";
             label1.Size = new Size(30, 15);
             label1.TabIndex = 0;
@@ -48,7 +48,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(96, 141);
+            label2.Location = new Point(34, 140);
             label2.Name = "label2";
             label2.Size = new Size(67, 15);
             label2.TabIndex = 1;
@@ -56,14 +56,14 @@
             // 
             // MailBox
             // 
-            MailBox.Location = new Point(169, 79);
+            MailBox.Location = new Point(107, 78);
             MailBox.Name = "MailBox";
             MailBox.Size = new Size(233, 23);
             MailBox.TabIndex = 2;
             // 
             // ContrasenaBox
             // 
-            ContrasenaBox.Location = new Point(169, 138);
+            ContrasenaBox.Location = new Point(107, 137);
             ContrasenaBox.Name = "ContrasenaBox";
             ContrasenaBox.Size = new Size(233, 23);
             ContrasenaBox.TabIndex = 3;
@@ -71,7 +71,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(245, 31);
+            label3.Location = new Point(183, 30);
             label3.Name = "label3";
             label3.Size = new Size(66, 15);
             label3.TabIndex = 4;
@@ -79,7 +79,7 @@
             // 
             // BotonIniciar
             // 
-            BotonIniciar.Location = new Point(236, 188);
+            BotonIniciar.Location = new Point(174, 187);
             BotonIniciar.Name = "BotonIniciar";
             BotonIniciar.Size = new Size(75, 23);
             BotonIniciar.TabIndex = 5;
@@ -91,7 +91,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(569, 257);
+            ClientSize = new Size(442, 244);
             Controls.Add(BotonIniciar);
             Controls.Add(label3);
             Controls.Add(ContrasenaBox);

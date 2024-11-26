@@ -35,7 +35,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             if (user != null)
             {
                 // Autenticación exitosa
-                SessionManager.CurrentUserId = user.Id; // Guardar ID de usuario en SessionManager
+                // Guardar ID y Mail de usuario en SessionManager
+                SessionManager.CurrentUserId = user.Id; 
+                SessionManager.CurrentMail = user.Mail;
+                SessionManager.CurrentName = user.NombreUsuario;
                 this.Hide();
                 var alertaObserver = new AlertaObserverManager();
                 var _alertaService = new AlertaService(_unitOfWork, alertaObserver);

@@ -65,11 +65,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
         }
 
         // Método para cargar observadores desde un repositorio
-        public void CargarObservadores(IEnumerable<UsuarioCryptoDTO> alertasActivas, Action<string> accionAlerta, Action<string> eliminarObservador)
+        public void CargarObservadores(IEnumerable<UsuarioCryptoDTO> alertasActivas, Action<string> accionAlerta, Action<string> eliminarObservador, Action<string,decimal,string> alertaPositiva, Action<string,decimal,string> alertaNegativa)
         {
             foreach (var alerta in alertasActivas)
             {
-                var observador = new AlertaPorcentaje(accionAlerta, eliminarObservador);
+                var observador = new AlertaPorcentaje(accionAlerta, eliminarObservador,alertaPositiva,alertaNegativa);
                 observador.ConfigurarAlerta(alerta.CryptoNombre, alerta.ValorPositivo, alerta.ValorNegativo);
                 AgregarObservador(observador);
             }

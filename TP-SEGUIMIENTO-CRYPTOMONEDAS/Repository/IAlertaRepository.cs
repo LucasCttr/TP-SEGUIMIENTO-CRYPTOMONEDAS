@@ -13,8 +13,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
         UsuarioCryptoDTO ObtenerUnaAlerta(string nombreCrypto);
         void GuardarValoresAlerta(string nombreCrypto, decimal valorPositivo, decimal valorNegativo);
         void EliminarAlerta(string nombreCrypto);
-        //void NotificarObservadores(string nombreCrypto, decimal cambio24Hs);
-        //void CargarObservadores();
+        void CrearHistoriaAlerta(string nombreCrypto, decimal umbralSuperado, string tipo);
         List<UsuarioCryptoDTO> ObtenerAlertasActivas();
     }
 }

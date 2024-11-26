@@ -83,53 +83,26 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             GuardarValoresAlerta(nombreCrypto, 0, 0);
         }
      
+        public void CrearHistoriaAlerta(string nombreCrypto, decimal umbralSuperado, string tipo)
+        {
+            int userId = SessionManager.CurrentUserId;
 
+            var nuevaAlertaHistoria = new AlertaDTO
+            {
+                UsuarioID = userId,
 
+                CryptoNombre = nombreCrypto,
 
-        //// Método para notificar a los observadores
-        //public void NotificarObservadores(string nombreCrypto, decimal cambio24Hs)
-        //{
-        //    foreach (var observador in observadores)
-        //    {
-        //        if (observador.nombreCrypto == nombreCrypto) observador.Notificar(cambio24Hs);
-        //    }
-        //}
+                CambioPorcentual = umbralSuperado,
 
-        //public void CargarObservadores()
-        //{
-        //    int userId = SessionManager.CurrentUserId;
+                TipoCambio = tipo,
 
-        //    // Obtener las alertas activas del usuario
-        //    var alertasActivas = ObtenerAlertasActivas();
+                FechaAlerta = DateTime.Now
+            };
 
-        //    foreach (var alerta in alertasActivas)
-        //    {
-        //        // Crear el observador para cada alerta activa
-        //        var observador = new AlertaPorcentaje((message) => MessageBox.Show(message)); // O el método adecuado para mostrar la alerta
-
-
-        //        observador.ConfigurarAlerta(alerta.CryptoNombre, alerta.ValorPositivo, alerta.ValorNegativo);
-
-        //        // Agregar el observador a la lista de observadores
-        //        AgregarObservador(observador);
-
-        //    }
-        //}
-
-        //public void ModificarObservador(string nombreCrypto, decimal valorPositivo, decimal valorNegativo)
-        //{
-        //    // Buscar el observador asociado a la criptomoneda
-        //    var observadorAModificar = observadores.FirstOrDefault(o => o is AlertaPorcentaje alerta && alerta.nombreCrypto == nombreCrypto);
-
-        //    if (observadorAModificar != null)
-        //    {
-        //        // Convertir el observador a tipo AlertaPorcentaje y modificar sus valores
-        //        var alertaPorcentaje = observadorAModificar as AlertaPorcentaje;
-
-        //        // Actualizar los valores de la alerta
-        //        alertaPorcentaje.ConfigurarAlerta(nombreCrypto, valorPositivo, valorNegativo);
-        //    }
-        //}
+            _context.AlertasCrypto.Add(nuevaAlertaHistoria);
+            _context.SaveChanges();
+        }
     }
  }
 

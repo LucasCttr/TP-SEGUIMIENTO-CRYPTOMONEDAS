@@ -41,33 +41,33 @@
             // 
             valorPositivo.Location = new Point(134, 75);
             valorPositivo.Name = "valorPositivo";
-            valorPositivo.Size = new Size(44, 23);
+            valorPositivo.Size = new Size(56, 23);
             valorPositivo.TabIndex = 0;
             // 
             // valorNegativo
             // 
             valorNegativo.Location = new Point(134, 104);
             valorNegativo.Name = "valorNegativo";
-            valorNegativo.Size = new Size(44, 23);
+            valorNegativo.Size = new Size(56, 23);
             valorNegativo.TabIndex = 1;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(44, 78);
+            label1.Location = new Point(23, 78);
             label1.Name = "label1";
-            label1.Size = new Size(78, 15);
+            label1.Size = new Size(97, 15);
             label1.TabIndex = 2;
-            label1.Text = "Valor Positivo";
+            label1.Text = "Valor Incremento";
             // 
             // valor
             // 
             valor.AutoSize = true;
-            valor.Location = new Point(44, 107);
+            valor.Location = new Point(23, 107);
             valor.Name = "valor";
-            valor.Size = new Size(84, 15);
+            valor.Size = new Size(101, 15);
             valor.TabIndex = 3;
-            valor.Text = "Valor Negativo";
+            valor.Text = "Valor Decremento";
             // 
             // botonGuardar
             // 
@@ -87,7 +87,6 @@
             botonCancelar.TabIndex = 6;
             botonCancelar.Text = "Cancelar";
             botonCancelar.UseVisualStyleBackColor = true;
-//            botonCancelar.Click += botonCancelar_Click;
             // 
             // cryptonombre
             // 

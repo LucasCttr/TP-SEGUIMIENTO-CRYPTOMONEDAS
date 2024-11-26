@@ -9,6 +9,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
     public static class SessionManager
     {
         public static int CurrentUserId { get; set; }
+        public static string CurrentMail { get; set; }
+        public static string CurrentName { get; set;}
 
     }
 }
