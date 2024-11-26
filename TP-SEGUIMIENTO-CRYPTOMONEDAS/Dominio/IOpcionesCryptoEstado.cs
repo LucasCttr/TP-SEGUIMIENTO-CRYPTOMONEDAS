@@ -17,8 +17,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
     {
         public void Handle(OpcionesCrypto opcionesCrypto)
         {
-            opcionesCrypto._unitOfWork.CryptosFavoritas.AgregarFavorito(opcionesCrypto.cryptoNombre, opcionesCrypto.cryptoId);
             opcionesCrypto.InicioForm.CargarUnaCryptoAlView(opcionesCrypto.cryptoId);
+            opcionesCrypto._unitOfWork.CryptosFavoritas.AgregarFavorito(opcionesCrypto.cryptoNombre, opcionesCrypto.cryptoId);
             opcionesCrypto.CambiarEstado(new EliminarState());
             opcionesCrypto.ActualizarBotones("Eliminar",true);
         }

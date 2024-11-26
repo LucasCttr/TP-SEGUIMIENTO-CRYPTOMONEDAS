@@ -138,17 +138,22 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         public void EliminarUnaCryptoDelView(string idCrypto)
         {
-            // Buscar el item en el ListView que tenga el ID especificado
+            // Suspender redibujado
+            listaCryptosFavoritas.BeginUpdate();
+
             foreach (ListViewItem item in listaCryptosFavoritas.Items)
             {
-                MessageBox.Show("Ads");
                 if (item.SubItems[1].Text == idCrypto) // Cambia el índice si el ID está en otra columna
                 {
                     listaCryptosFavoritas.Items.Remove(item); // Eliminar el item encontrado
+                    listaCryptosFavoritas.EndUpdate(); // Reactivar redibujado
                     MessageBox.Show(item.SubItems[2].Text + " eliminado de favoritos");
                     return;
                 }
             }
+
+            // Reactivar redibujado en caso de que no se encuentre el ítem
+            listaCryptosFavoritas.EndUpdate();
         }
 
 
