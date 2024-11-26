@@ -70,7 +70,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
             foreach (var alerta in alertasActivas)
             {
                 var observador = new AlertaPorcentaje(accionAlerta, eliminarObservador,alertaPositiva,alertaNegativa);
-                observador.ConfigurarAlerta(alerta.CryptoNombre, alerta.ValorPositivo, alerta.ValorNegativo);
+            //    observador.ConfigurarAlerta(alerta.CryptomonedaID, alerta.ValorPositivo, alerta.ValorNegativo);
                 AgregarObservador(observador);
             }
         }

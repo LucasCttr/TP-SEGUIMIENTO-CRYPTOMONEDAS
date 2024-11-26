@@ -16,27 +16,27 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
     public partial class OpcionesCrypto : Form
     {
-        public ListViewItem Crypto;
+        public string Crypto;
         public IUnitOfWork _unitOfWork;
         private ICryptoState _estadoActual;
         public InicioForm InicioForm;
 
-        public OpcionesCrypto(ListViewItem CryptoSelect, IUnitOfWork unitOfWork, InicioForm inicioForm)
+        public OpcionesCrypto(string nombreCrypto, IUnitOfWork unitOfWork, InicioForm inicioForm)
         {
             InitializeComponent();
             _unitOfWork = unitOfWork;
-            Crypto = CryptoSelect;
-            CargarDatos(Crypto);
+            Crypto = nombreCrypto;
+            CargarDatos();
             InicioForm = inicioForm;
         }
 
-        private void CargarDatos(ListViewItem Crypto)
+        private void CargarDatos()
         {
-            CryptomonedaNombre.Text = Crypto.SubItems[2].Text + "  " + "[" + Crypto.SubItems[3].Text + "]";
+            CryptomonedaNombre.Text = Crypto + "  " + "[" + Crypto + "]";
             CryptomonedaNombre.AutoSize = false;
 
             CryptomonedaNombre.TextAlign = ContentAlignment.MiddleCenter;
-            if (_unitOfWork.CryptosFavoritas.VerificarSiEsFavorito(Crypto.SubItems[1].Text))
+            if (_unitOfWork.CryptosFavoritas.VerificarSiEsFavorito(Crypto))
             {
                 CambiarEstado(new EliminarState());  // Asigna el estado inicial a Eliminar
                 ActualizarBotones("Eliminar", true);
@@ -73,13 +73,13 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private void GraficoBoton_Click(object sender, EventArgs e)
         {
-            GraficoForm graficoForm = new GraficoForm(Crypto.SubItems[1].Text, _unitOfWork);
+            GraficoForm graficoForm = new GraficoForm(Crypto, _unitOfWork);
             graficoForm.Show();
         }
 
         private void AlertaBoton_Click(object sender, EventArgs e)
         {
-            AlertaForm alertaForm = new AlertaForm(Crypto.SubItems[2].Text, _unitOfWork, InicioForm);
+            AlertaForm alertaForm = new AlertaForm(Crypto, _unitOfWork, InicioForm);
             alertaForm.Show();
         }
     }

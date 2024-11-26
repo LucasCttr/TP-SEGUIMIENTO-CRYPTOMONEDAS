@@ -21,7 +21,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS
                 // Configuración de opciones para el DbContext
                 var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
                 // Aquí asegúrate de utilizar tu cadena de conexión real
-                optionsBuilder.UseSqlServer("server=LUCAS\\SQLEXPRESS; database=Seguimiento_Cryptos; integrated security=true;TrustServerCertificate = True");
+                optionsBuilder.UseSqlServer("server=LUCAS\\SQLEXPRESS; database=CryptoApp; integrated security=true;TrustServerCertificate = True");
 
                 // Crear el contexto pasando las opciones
                 using (var context = new AppDbContext(optionsBuilder.Options))

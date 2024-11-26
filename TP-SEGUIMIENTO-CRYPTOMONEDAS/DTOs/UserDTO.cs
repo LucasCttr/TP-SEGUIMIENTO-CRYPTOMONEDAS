@@ -8,9 +8,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs
 {
     public class UserDTO
     {
-        public int Id { get; set; }
-        public string NombreUsuario { get; set; }
-        public string Contrasena { get; set; }  // Guardar contraseñas como hashes por seguridad
-        public string Mail { get; set; }
+        public int UsuarioId { get; set; }
+        public string Nombre { get; set; }
+        public string Contraseña { get; set; }  // Guardar contraseñas como hashes por seguridad
+        public string Correo { get; set; }
     }
 }

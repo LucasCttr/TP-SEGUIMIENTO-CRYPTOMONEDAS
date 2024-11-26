@@ -48,9 +48,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             public CryptoDTO Data { get; set; }
         }
 
-        public CryptoDTO BuscarCryptoMedianteId(string IdCrypto)
+        public CryptoDTO BuscarCryptoMedianteId(string nombreCrypto)
         {
-            var request = new RestRequest($"assets/{IdCrypto}", Method.Get);
+            var request = new RestRequest($"assets/{nombreCrypto}", Method.Get);
             var response = _client.Execute<SingleCryptoResponse>(request);
 
             if (response.IsSuccessful && response.Data?.Data != null)
@@ -60,9 +60,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             return null;
         }
 
-        public void EliminarFavorito(ListViewItem CryptoSeleccionada)
+        public void EliminarFavorito(string nombreCrypto)
         {
-            var cryptoFavorita = _context.UsuariosCryptos.FirstOrDefault(c => c.CryptoID == CryptoSeleccionada.SubItems[1].Text && c.UsuarioID == SessionManager.CurrentUserId);
+            var cryptoFavorita = _context.UsuariosCryptos.FirstOrDefault(c => c.CryptomonedaID == nombreCrypto && c.UsuarioID == SessionManager.CurrentUserId);
             if (cryptoFavorita != null)
             {
                 _context.UsuariosCryptos.Remove(cryptoFavorita);
@@ -70,7 +70,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             }
         }
 
-        public void AgregarFavorito(ListViewItem CryptoSeleccionada)
+        public void AgregarFavorito(string nombreCrypto)
         {
             int userId = SessionManager.CurrentUserId;
 
@@ -78,10 +78,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             var nuevoFavorito = new UsuarioCryptoDTO
             {
                 UsuarioID = userId,
-                ValorPositivo = 0,
-                ValorNegativo = 0,
-                CryptoID = CryptoSeleccionada.SubItems[1].Text,
-                CryptoNombre = CryptoSeleccionada.SubItems[2].Text
+                CryptomonedaID = nombreCrypto
             };
             // Agregar el nuevo favorito a la base de datos
             _context.UsuariosCryptos.Add(nuevoFavorito); // Agregar la entidad
@@ -94,7 +91,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
 
             // Usar LINQ para hacer la comparación correctamente
             var crypto = _context.UsuariosCryptos
-                .FirstOrDefault(u => u.UsuarioID == userId && u.CryptoID == idCrypto);
+                .FirstOrDefault(u => u.UsuarioID == userId && u.CryptomonedaID == idCrypto);
 
             // Devolver true si se encontró, false en caso contrario
             return crypto != null; // Devuelve true si existe, false si no

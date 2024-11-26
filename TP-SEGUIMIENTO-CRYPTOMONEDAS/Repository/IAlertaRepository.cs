@@ -9,11 +9,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
 {
     public interface IAlertaRepository
     {
-        List<AlertaDTO> ObtenerAlertasHistorial();
-        UsuarioCryptoDTO ObtenerUnaAlerta(string nombreCrypto);
-        void GuardarValoresAlerta(string nombreCrypto, decimal valorPositivo, decimal valorNegativo);
-        void EliminarAlerta(string nombreCrypto);
+      // List<AlertaDTO> ObtenerAlertasHistorial();
+        //UsuarioCryptoDTO ObtenerUnaAlerta(string nombreCrypto);
+       // void GuardarValoresAlerta(string nombreCrypto, decimal valorPositivo, decimal valorNegativo);
+       // void EliminarAlerta(string nombreCrypto);
         void CrearHistoriaAlerta(string nombreCrypto, decimal umbralSuperado, string tipo);
-        List<UsuarioCryptoDTO> ObtenerAlertasActivas();
+        //List<UsuarioCryptoDTO> ObtenerAlertasActivas();
     }
 }

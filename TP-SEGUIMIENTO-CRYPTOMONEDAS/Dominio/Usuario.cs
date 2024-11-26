@@ -35,14 +35,14 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
 
         public UserDTO GetUserById(int userId)
         {
-            var user = _context.Usuarios.FirstOrDefault(u => u.Id == userId);
+            var user = _context.Usuarios.FirstOrDefault(u => u.UsuarioId == userId);
             if (user != null)
             {
                 return new UserDTO
                 {
-                    NombreUsuario = user.NombreUsuario,
-                    Mail = user.Mail,
-                    Contrasena = user.Contrasena
+                    Nombre = user.Nombre,
+                    Correo = user.Correo,
+                    Contraseña = user.Contraseña
                 };
             }
             return null;

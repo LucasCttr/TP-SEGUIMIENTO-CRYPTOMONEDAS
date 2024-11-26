@@ -37,19 +37,16 @@ using Microsoft.EntityFrameworkCore;
 
                 // Configuración de la tabla para UserDTO
                 modelBuilder.Entity<UserDTO>().ToTable("Usuarios");
-                modelBuilder.Entity<UserDTO>().HasKey(u => u.Id);
-                modelBuilder.Entity<UserDTO>().Property(u => u.NombreUsuario).IsRequired().HasMaxLength(20);  // Nombre de usuario obligatorio, máx. 20 caracteres
-                modelBuilder.Entity<UserDTO>().Property(u => u.Contrasena).IsRequired().HasMaxLength(100);  // Contraseña obligatoria, máx. 100 caracteres
-                modelBuilder.Entity<UserDTO>().Property(u => u.Mail).IsRequired().HasMaxLength(50);  // Correo obligatorio, máx. 50 caracteres
+                modelBuilder.Entity<UserDTO>().HasKey(u => u.UsuarioId);
+                modelBuilder.Entity<UserDTO>().Property(u => u.Nombre).IsRequired().HasMaxLength(20);  // Nombre de usuario obligatorio, máx. 20 caracteres
+                modelBuilder.Entity<UserDTO>().Property(u => u.Contraseña).IsRequired().HasMaxLength(100);  // Contraseña obligatoria, máx. 100 caracteres
+                modelBuilder.Entity<UserDTO>().Property(u => u.Correo).IsRequired().HasMaxLength(50);  // Correo obligatorio, máx. 50 caracteres
 
             // Configuración de la tabla para UserDTO
-                modelBuilder.Entity<UsuarioCryptoDTO>().ToTable("CryptosFavoritas");
+                modelBuilder.Entity<UsuarioCryptoDTO>().ToTable("CryptomonedasFavoritas");
                 modelBuilder.Entity<UsuarioCryptoDTO>().HasKey(u => u.FavoritoID);
-                modelBuilder.Entity<UsuarioCryptoDTO>().Property(u => u.CryptoID).IsRequired().HasMaxLength(100);  
-                modelBuilder.Entity<UsuarioCryptoDTO>().Property(u => u.UsuarioID).IsRequired().HasMaxLength(100);  
-                modelBuilder.Entity<UsuarioCryptoDTO>().Property(u => u.ValorPositivo).HasColumnType("decimal(5,2)");
-                modelBuilder.Entity<UsuarioCryptoDTO>().Property(u => u.ValorNegativo).HasColumnType("decimal(5,2)");
-                modelBuilder.Entity<UsuarioCryptoDTO>().Property(u => u.CryptoNombre).HasMaxLength(50);
+                modelBuilder.Entity<UsuarioCryptoDTO>().Property(u => u.CryptomonedaID).IsRequired().HasMaxLength(50);  
+                modelBuilder.Entity<UsuarioCryptoDTO>().Property(u => u.UsuarioID).IsRequired().HasMaxLength(50);  
 
 
                 modelBuilder.Entity<AlertaDTO>().ToTable("AlertasCrypto");

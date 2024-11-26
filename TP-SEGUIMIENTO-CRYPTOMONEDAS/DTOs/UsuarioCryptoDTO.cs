@@ -8,13 +8,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs
 {
     public class UsuarioCryptoDTO
     {
-
+        //Transformar a clase de dominio
         public int FavoritoID { get; set; }
         public int UsuarioID { get; set; }
-        public string CryptoID { get; set; }
-        public decimal ValorPositivo { get; set; }  
-        public decimal ValorNegativo { get; set; }
-
-        public string CryptoNombre { get; set; }
+        public string CryptomonedaID { get; set; }
     }
 }

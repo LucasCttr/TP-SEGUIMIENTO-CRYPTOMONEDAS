@@ -24,7 +24,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
         {
             // Lógica para obtener el usuario de la base de datos
             var usuario= _context.Usuarios
-                .FirstOrDefault(u => u.Mail== mail && u.Contrasena == contrasena);
+                .FirstOrDefault(u => u.Correo== mail && u.Contraseña == contrasena);
 
             if (usuario != null)
             {
@@ -45,7 +45,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
                 .Select(fc => new UsuarioCryptoDTO // Mapea a UsuarioCryptoDTO
                 {
                     UsuarioID = fc.UsuarioID,
-                    CryptoID = fc.CryptoID
+                    CryptomonedaID = fc.CryptomonedaID
                 })
                 .ToList(); // Usa ToList() para una operación síncrona
 

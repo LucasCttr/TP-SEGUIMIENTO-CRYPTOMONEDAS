@@ -26,10 +26,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private void AlertaForm_Load(object sender, EventArgs e)
         {
-            var alerta = _unitOfWork.Alerta.ObtenerUnaAlerta(nombreCrypto);
+            //var alerta = _unitOfWork.Alerta.ObtenerUnaAlerta(nombreCrypto);
 
-            valorPositivo.Text = alerta.ValorPositivo.ToString("F2");
-            valorNegativo.Text = alerta.ValorNegativo.ToString("F2");
+            //valorPositivo.Text = alerta.ValorPositivo.ToString("F2");
+            //valorNegativo.Text = alerta.ValorNegativo.ToString("F2");
             cryptonombre.Text = nombreCrypto;
         }
 
@@ -38,7 +38,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             decimal nuevoValorPositivo = Convert.ToDecimal(valorPositivo.Text);  // Convierte el texto a decimal
             decimal nuevoValorNegativo = Convert.ToDecimal(valorNegativo.Text);  // Convierte el texto a decimal
 
-            _inicioForm._alertaService.ActualizarOCrearAlerta(nombreCrypto, nuevoValorPositivo, nuevoValorNegativo);
+           // _inicioForm._alertaService.ActualizarOCrearAlerta(nombreCrypto, nuevoValorPositivo, nuevoValorNegativo);
             _inicioForm.CargarAlertasActivas();
             this.Close();
         }

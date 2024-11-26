@@ -26,19 +26,19 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private void BotonIniciar_Click(object sender, EventArgs e)
         {
-            string mail = MailBox.Text;
-            string contrasena = ContrasenaBox.Text;
+            string Correo = MailBox.Text;
+            string Contraseña = ContrasenaBox.Text;
 
             // Llamar a la función para validar las credenciales
-            var user = _unitOfWork.Usuarios.ValidarUsuario(mail, contrasena);
+            var user = _unitOfWork.Usuarios.ValidarUsuario(Correo, Contraseña);
 
             if (user != null)
             {
                 // Autenticación exitosa
                 // Guardar ID y Mail de usuario en SessionManager
-                SessionManager.CurrentUserId = user.Id; 
-                SessionManager.CurrentMail = user.Mail;
-                SessionManager.CurrentName = user.NombreUsuario;
+                SessionManager.CurrentUserId = user.UsuarioId; 
+                SessionManager.CurrentMail = user.Correo;
+                SessionManager.CurrentName = user.Nombre;
                 this.Hide();
                 var alertaObserver = new AlertaObserverManager();
                 var _alertaService = new AlertaService(_unitOfWork, alertaObserver);
