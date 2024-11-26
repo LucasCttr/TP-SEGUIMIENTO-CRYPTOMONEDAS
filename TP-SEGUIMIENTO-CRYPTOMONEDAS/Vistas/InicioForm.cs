@@ -143,11 +143,12 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
             foreach (ListViewItem item in listaCryptosFavoritas.Items)
             {
-                if (item.SubItems[1].Text == idCrypto) // Cambia el índice si el ID está en otra columna
+
+                if (item.SubItems[5].Text == idCrypto) // Cambia el índice si el ID está en otra columna
                 {
                     listaCryptosFavoritas.Items.Remove(item); // Eliminar el item encontrado
                     listaCryptosFavoritas.EndUpdate(); // Reactivar redibujado
-                    MessageBox.Show(item.SubItems[2].Text + " eliminado de favoritos");
+                    MessageBox.Show(item.SubItems[1].Text + " eliminado de favoritos");
                     return;
                 }
             }
