@@ -9,13 +9,13 @@ using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
 {
-    public interface ICryptoCurrencyRepository
+    public interface ICryptosFavoritasRepository
     {
         Task<List<CryptoDTO>> MostrarCryptos(); // Definición del método asíncrono
         CryptoDTO BuscarCryptoMedianteId(string IdCrypto);
         List<PuntoHistorial> ObtenerHistorialDeCrypto(string idCrypto, string intervalo);
         void EliminarFavorito(string nombreCrypto);
-        void AgregarFavorito(string nombreCrypto);
+        void AgregarFavorito(string nombreCrypto, string idCrypto);
         bool VerificarSiEsFavorito(string idCrypto);
         //IEnumerable<CryptoCurrencyDTO> GetAll();
         // CryptoCurrencyDTO GetById(string id);

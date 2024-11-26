@@ -62,7 +62,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 ListViewItem selectedItem = listaCryptosFavoritas.SelectedItems[0];
 
                 // Crear e iniciar el nuevo formulario pasando los datos
-                OpcionesCrypto opcionesForm = new OpcionesCrypto(selectedItem.SubItems[1].Text, _unitOfWork, this);
+                OpcionesCrypto opcionesForm = new OpcionesCrypto(selectedItem.SubItems[1].Text,selectedItem.SubItems[5].Text, _unitOfWork, this);
                 opcionesForm.ShowDialog(); // Usar ShowDialog para abrir como modal, o Show para no modal
             }
         }
@@ -85,6 +85,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             // Obtener las criptomonedas
             var cryptos = _unitOfWork.Usuarios.ObtenerCryptosFavoritas();
 
+            listaCryptosFavoritas.Items.Clear();
+
             foreach (var crypto in cryptos)
             {
                 // Obtener los detalles de la criptomoneda mediante su ID
@@ -95,7 +97,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 {
                     // Crear un nuevo ListViewItem y agregar las propiedades de la criptomoneda
                     var item = new ListViewItem(DatosCrypto.rank.ToString()); // Nombre de la criptomoneda
-                    item.SubItems.Add(DatosCrypto.id);
                     item.SubItems.Add(DatosCrypto.name);
                     item.SubItems.Add(DatosCrypto.symbol);
                     item.SubItems.Add(DatosCrypto.priceUsd.ToString("C2", CultureInfo.CreateSpecificCulture("en-US"))); // Precio en USD, formato de moneda
@@ -105,8 +106,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                         item.SubItems.Add(DatosCrypto.changePercent24Hr.ToString("F2") + " %");  
                     else item.SubItems.Add("  "+DatosCrypto.changePercent24Hr.ToString("F2") + " %");
 
-                    item.SubItems.Add(DatosCrypto.marketCapUsd.ToString("F2"));
-                    item.SubItems.Add(DatosCrypto.supply.ToString("F2"));
+                    item.SubItems.Add(DatosCrypto.id);
                     listaCryptosFavoritas.Items.Add(item);
                 }
             }
@@ -114,22 +114,26 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         }
 
 
-        public void CargarUnaCryptoAlView(ListViewItem Crypto)
+        public void CargarUnaCryptoAlView(string idCrypto)   //Hacerr un metodo para combinar con l ode arriba.
         {
+            var crypto = _unitOfWork.CryptosFavoritas.BuscarCryptoMedianteId(idCrypto);
             // Crear el nuevo ListViewItem con el primer subítem
-            var Item = new ListViewItem(Crypto.SubItems[0].Text);
+            var Item = new ListViewItem(crypto.rank.ToString());
 
-            // Iterar sobre los subítems restantes y agregarlos al nuevo Item
-            for (int i = 1; i < Crypto.SubItems.Count; i++)
-            {
-                Item.SubItems.Add(Crypto.SubItems[i]);
-            }
+            Item.SubItems.Add(crypto.name);
+            Item.SubItems.Add(crypto.symbol);
+            Item.SubItems.Add(crypto.priceUsd.ToString("C2", CultureInfo.CreateSpecificCulture("en-US"))); // Precio en USD, formato de moneda
 
-            // Añadir el nuevo item a la lista de favoritos
+            //Para que los numeros no queden desalineados por el signo "-"
+            if (crypto.changePercent24Hr.ToString("F2").StartsWith("-"))
+                Item.SubItems.Add(crypto.changePercent24Hr.ToString("F2") + " %");
+            else Item.SubItems.Add("  " + crypto.changePercent24Hr.ToString("F2") + " %");
+
+            Item.SubItems.Add(crypto.id);
             listaCryptosFavoritas.Items.Add(Item);
 
             // Mostrar mensaje de éxito
-            MessageBox.Show(Crypto.SubItems[2].Text + " agregado a favoritos");
+            MessageBox.Show(crypto.name + " agregado a favoritos");
         }
 
         public void EliminarUnaCryptoDelView(string idCrypto)
@@ -137,6 +141,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             // Buscar el item en el ListView que tenga el ID especificado
             foreach (ListViewItem item in listaCryptosFavoritas.Items)
             {
+                MessageBox.Show("Ads");
                 if (item.SubItems[1].Text == idCrypto) // Cambia el índice si el ID está en otra columna
                 {
                     listaCryptosFavoritas.Items.Remove(item); // Eliminar el item encontrado
@@ -151,14 +156,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         {
             listaCryptosFavoritas.View = View.Details;          //MODIFICAR
             listaCryptosFavoritas.Columns.Add("Rank", 0);
-            listaCryptosFavoritas.Columns.Add("Id", 0);
             listaCryptosFavoritas.Columns.Add("Crypto", 100);
             listaCryptosFavoritas.Columns.Add("Simbolo", 0);
             listaCryptosFavoritas.Columns.Add("Precio (USD)", 100);
             listaCryptosFavoritas.Columns.Add("24Hs%", 70);
-            listaCryptosFavoritas.Columns.Add("MarketCap", 0);
-            listaCryptosFavoritas.Columns.Add("Supply", 0);
-
+            listaCryptosFavoritas.Columns.Add("Id", 0);
             botonModificar.Visible = false;
         }
 
@@ -286,7 +288,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                     // Obtener la información actualizada del precio y la tendencia
                     var crypto = await Task.Run(() => _unitOfWork.CryptosFavoritas.BuscarCryptoMedianteId(f.CryptomonedaID));
                     if (crypto == null) continue;
-
                     // Notificar las alertas si es necesario
                     //_alertaService.NotificarCambio
                         //(crypto.name, crypto.changePercent24Hr);
@@ -296,12 +297,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                     {
                         Tag = f // Guardar el objeto para futuras actualizaciones
                     };
-                    newItem.SubItems.Add(crypto.id);
                     newItem.SubItems.Add(crypto.name);
                     newItem.SubItems.Add(crypto.symbol);
                     newItem.SubItems.Add(crypto.priceUsd.ToString("C2", CultureInfo.CreateSpecificCulture("en-US")));
                     newItem.SubItems.Add(crypto.changePercent24Hr.ToString("F2") + "%");
-
+                    newItem.SubItems.Add(crypto.id);
                     nuevosItems.Add(newItem);
                 }
 

@@ -88,9 +88,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             {
                 // Obtener el ítem seleccionado
                 ListViewItem selectedItem = CryptosLista.SelectedItems[0];
-                
+
                 // Crear e iniciar el nuevo formulario pasando los datos
-                OpcionesCrypto opcionesForm = new OpcionesCrypto(selectedItem.SubItems[1].Text, _unitOfWork, _inicioForm);
+                OpcionesCrypto opcionesForm = new OpcionesCrypto(selectedItem.SubItems[2].Text, selectedItem.SubItems[1].Text, _unitOfWork, _inicioForm);
                 opcionesForm.Show(); 
             }
         }

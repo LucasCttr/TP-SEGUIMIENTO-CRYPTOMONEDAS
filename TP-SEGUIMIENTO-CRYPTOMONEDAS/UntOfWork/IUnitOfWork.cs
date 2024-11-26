@@ -9,7 +9,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork
 {
     public interface IUnitOfWork : IDisposable
     {
-        ICryptoCurrencyRepository CryptosFavoritas { get; }
+        ICryptosFavoritasRepository CryptosFavoritas { get; }
         IUserRepository Usuarios { get; }
         IAlertaRepository Alerta { get; }
 

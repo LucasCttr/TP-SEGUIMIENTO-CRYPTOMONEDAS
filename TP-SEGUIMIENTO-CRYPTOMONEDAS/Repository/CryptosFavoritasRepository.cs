@@ -13,13 +13,13 @@ using Newtonsoft.Json; // Necesitas importar esta librería
 //UTILIZO RESTSHARP
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
 {
-    public class CryptoCurrencyRepository : ICryptoCurrencyRepository
+    public class CryptosFavoritasRepository : ICryptosFavoritasRepository
     {
         private readonly AppDbContext _context;
         private readonly RestClient _client;
 
         // Constructor que acepta un DbContext
-        public CryptoCurrencyRepository(AppDbContext context)
+        public CryptosFavoritasRepository(AppDbContext context)
         {
             _client = new RestClient("https://api.coincap.io/v2/");
             _context = context;
@@ -70,7 +70,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             }
         }
 
-        public void AgregarFavorito(string nombreCrypto)
+        public void AgregarFavorito(string nombreCrypto, string idCryptomoneda)
         {
             int userId = SessionManager.CurrentUserId;
 
@@ -78,8 +78,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             var nuevoFavorito = new UsuarioCryptoDTO
             {
                 UsuarioID = userId,
-                CryptomonedaID = nombreCrypto
+                CryptomonedaID = idCryptomoneda,
+                CryptomonedaNombre = nombreCrypto
             };
+                
             // Agregar el nuevo favorito a la base de datos
             _context.UsuariosCryptos.Add(nuevoFavorito); // Agregar la entidad
             _context.SaveChanges(); // Guardar los cambios en la base de datos
@@ -88,7 +90,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
         public bool VerificarSiEsFavorito(string idCrypto)
         {
             int userId = SessionManager.CurrentUserId;
-
             // Usar LINQ para hacer la comparación correctamente
             var crypto = _context.UsuariosCryptos
                 .FirstOrDefault(u => u.UsuarioID == userId && u.CryptomonedaID == idCrypto);

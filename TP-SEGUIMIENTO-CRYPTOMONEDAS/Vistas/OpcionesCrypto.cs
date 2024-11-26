@@ -16,27 +16,29 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
     public partial class OpcionesCrypto : Form
     {
-        public string Crypto;
+        public string cryptoNombre;
+        public string cryptoId;
         public IUnitOfWork _unitOfWork;
         private ICryptoState _estadoActual;
         public InicioForm InicioForm;
 
-        public OpcionesCrypto(string nombreCrypto, IUnitOfWork unitOfWork, InicioForm inicioForm)
+        public OpcionesCrypto(string nombreCrypto, string idCrypto, IUnitOfWork unitOfWork, InicioForm inicioForm)
         {
             InitializeComponent();
             _unitOfWork = unitOfWork;
-            Crypto = nombreCrypto;
+            cryptoNombre = nombreCrypto;
+            cryptoId = idCrypto; 
             CargarDatos();
             InicioForm = inicioForm;
         }
 
         private void CargarDatos()
         {
-            CryptomonedaNombre.Text = Crypto + "  " + "[" + Crypto + "]";
+            CryptomonedaNombre.Text = cryptoNombre;
             CryptomonedaNombre.AutoSize = false;
 
             CryptomonedaNombre.TextAlign = ContentAlignment.MiddleCenter;
-            if (_unitOfWork.CryptosFavoritas.VerificarSiEsFavorito(Crypto))
+            if (_unitOfWork.CryptosFavoritas.VerificarSiEsFavorito(cryptoId))
             {
                 CambiarEstado(new EliminarState());  // Asigna el estado inicial a Eliminar
                 ActualizarBotones("Eliminar", true);
@@ -73,13 +75,13 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private void GraficoBoton_Click(object sender, EventArgs e)
         {
-            GraficoForm graficoForm = new GraficoForm(Crypto, _unitOfWork);
+            GraficoForm graficoForm = new GraficoForm(cryptoId, _unitOfWork);
             graficoForm.Show();
         }
 
         private void AlertaBoton_Click(object sender, EventArgs e)
         {
-            AlertaForm alertaForm = new AlertaForm(Crypto, _unitOfWork, InicioForm);
+            AlertaForm alertaForm = new AlertaForm(cryptoNombre, _unitOfWork, InicioForm);
             alertaForm.Show();
         }
     }
