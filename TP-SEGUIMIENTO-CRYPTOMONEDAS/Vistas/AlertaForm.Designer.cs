@@ -39,7 +39,7 @@
             // 
             // valorAlerta
             // 
-            valorAlerta.Location = new Point(62, 74);
+            valorAlerta.Location = new Point(49, 65);
             valorAlerta.Name = "valorAlerta";
             valorAlerta.Size = new Size(103, 23);
             valorAlerta.TabIndex = 0;
@@ -47,7 +47,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(10, 77);
+            label1.Location = new Point(10, 68);
             label1.Name = "label1";
             label1.Size = new Size(33, 15);
             label1.TabIndex = 2;
@@ -56,7 +56,7 @@
             // valor
             // 
             valor.AutoSize = true;
-            valor.Location = new Point(13, 106);
+            valor.Location = new Point(13, 97);
             valor.Name = "valor";
             valor.Size = new Size(30, 15);
             valor.TabIndex = 3;
@@ -64,9 +64,9 @@
             // 
             // botonGuardar
             // 
-            botonGuardar.Location = new Point(99, 146);
+            botonGuardar.Location = new Point(101, 136);
             botonGuardar.Name = "botonGuardar";
-            botonGuardar.Size = new Size(75, 23);
+            botonGuardar.Size = new Size(61, 23);
             botonGuardar.TabIndex = 5;
             botonGuardar.Text = "Guardar";
             botonGuardar.UseVisualStyleBackColor = true;
@@ -74,9 +74,9 @@
             // 
             // botonCancelar
             // 
-            botonCancelar.Location = new Point(18, 146);
+            botonCancelar.Location = new Point(33, 136);
             botonCancelar.Name = "botonCancelar";
-            botonCancelar.Size = new Size(75, 23);
+            botonCancelar.Size = new Size(62, 23);
             botonCancelar.TabIndex = 6;
             botonCancelar.Text = "Cancelar";
             botonCancelar.UseVisualStyleBackColor = true;
@@ -84,7 +84,7 @@
             // cryptonombre
             // 
             cryptonombre.AutoSize = true;
-            cryptonombre.Location = new Point(85, 36);
+            cryptonombre.Location = new Point(82, 28);
             cryptonombre.Name = "cryptonombre";
             cryptonombre.Size = new Size(38, 15);
             cryptonombre.TabIndex = 7;
@@ -93,9 +93,10 @@
             // 
             // tipoAlerta
             // 
+            tipoAlerta.DropDownStyle = ComboBoxStyle.DropDownList;
             tipoAlerta.FormattingEnabled = true;
             tipoAlerta.Items.AddRange(new object[] { "Incremento", "Decremento" });
-            tipoAlerta.Location = new Point(62, 103);
+            tipoAlerta.Location = new Point(49, 94);
             tipoAlerta.Name = "tipoAlerta";
             tipoAlerta.Size = new Size(103, 23);
             tipoAlerta.TabIndex = 8;
@@ -104,7 +105,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(193, 181);
+            ClientSize = new Size(185, 170);
             Controls.Add(tipoAlerta);
             Controls.Add(cryptonombre);
             Controls.Add(botonCancelar);

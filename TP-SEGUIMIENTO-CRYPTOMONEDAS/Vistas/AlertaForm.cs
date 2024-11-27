@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
@@ -17,16 +18,18 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         public int? AlertaID;
         public IUnitOfWork _unitOfWork;
         public InicioForm _inicioForm;
-        
+
         //Evento para actualizar la listview de inicio al clickear en guardar
         public event EventHandler GuardarAlerta;
-        public AlertaForm(string crypto,int? id, IUnitOfWork unitOfWork, InicioForm inicioForm)
+        public AlertaForm(string crypto, int? id, IUnitOfWork unitOfWork, InicioForm inicioForm)
         {
             _unitOfWork = unitOfWork;
             cryptoNombre = crypto;
             AlertaID = id;
             _inicioForm = inicioForm;
             InitializeComponent();
+
+            tipoAlerta.SelectedIndex = 0;
         }
 
         private void AlertaForm_Load(object sender, EventArgs e)
@@ -49,11 +52,17 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 _inicioForm.CargarAlertasActivas();
             }
 
-            else  _inicioForm._alertaService.CrearAlerta(cryptoNombre, nuevoValorPositivo, tipo);
+            else _inicioForm._alertaService.CrearAlerta(cryptoNombre, nuevoValorPositivo, tipo);
 
             // Llama al evento cuando se presiona el botón
             GuardarAlerta?.Invoke(this, EventArgs.Empty);
             this.Close();
+        }
+
+        public void ActualizarForm(decimal valor, string tipo)
+        {
+            valorAlerta.Text = valor.ToString();
+            if (string.Equals(tipo,"Decremento")) { tipoAlerta.SelectedIndex = 1;} else { tipoAlerta.SelectedIndex=0;}
         }
 
         private void botonCancelar_Click(object sender, EventArgs e)

@@ -62,7 +62,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 ListViewItem selectedItem = listaCryptosFavoritas.SelectedItems[0];
 
                 // Crear e iniciar el nuevo formulario pasando los datos
-                OpcionesCrypto opcionesForm = new OpcionesCrypto(selectedItem.SubItems[1].Text,selectedItem.SubItems[5].Text, _unitOfWork, this);
+                OpcionesCrypto opcionesForm = new OpcionesCrypto(selectedItem.SubItems[1].Text, selectedItem.SubItems[5].Text, _unitOfWork, this);
 
                 // Suscribirse al evento del formulario intermedio
                 opcionesForm.EventoGuardarAlerta += Evento_GuardarAlerta;
@@ -73,12 +73,15 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private void AlertasBoton_Click(object sender, EventArgs e)
         {
+            botonEliminar.Visible = false;
+            botonModificar.Visible = false;
             CargarAlertasActivas();
         }
 
         private void HistorialAlertas_Click(object sender, EventArgs e)
         {
             botonModificar.Visible = false;
+            botonEliminar.Visible = false;
             listaAlertas.Clear();
             CargarHistorial();
         }
@@ -106,9 +109,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                     item.SubItems.Add(DatosCrypto.priceUsd.ToString("C2", CultureInfo.CreateSpecificCulture("en-US"))); // Precio en USD, formato de moneda
 
                     //Para que los numeros no queden desalineados por el signo "-"
-                    if (DatosCrypto.changePercent24Hr.ToString("F2").StartsWith("-")) 
-                        item.SubItems.Add(DatosCrypto.changePercent24Hr.ToString("F2") + " %");  
-                    else item.SubItems.Add("  "+DatosCrypto.changePercent24Hr.ToString("F2") + " %");
+                    if (DatosCrypto.changePercent24Hr.ToString("F2").StartsWith("-"))
+                        item.SubItems.Add(DatosCrypto.changePercent24Hr.ToString("F2") + " %");
+                    else item.SubItems.Add("  " + DatosCrypto.changePercent24Hr.ToString("F2") + " %");
                     item.SubItems.Add(DatosCrypto.id);
                     listaCryptosFavoritas.Items.Add(item);
                 }
@@ -170,6 +173,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             listaCryptosFavoritas.Columns.Add("Precio (USD)", 100);
             listaCryptosFavoritas.Columns.Add("24Hs%", 70);
             listaCryptosFavoritas.Columns.Add("Id", 0);
+            botonEliminar.Visible = false;
             botonModificar.Visible = false;
         }
 
@@ -177,7 +181,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         {
             listaAlertas.Clear();
             listaAlertas.FullRowSelect = false;
-          //  var alertasHistorial = _unitOfWork.Alerta.ObtenerAlertasHistorial();
+            //  var alertasHistorial = _unitOfWork.Alerta.ObtenerAlertasHistorial();
             listaAlertas.View = View.Details;
             listaAlertas.Sort();
             listaAlertas.Columns.Add("Orden", 0);
@@ -217,13 +221,13 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             listaAlertas.Items.Clear();
 
             var alertas = _alertaService.ObtenerObservadores();
-            
+
             foreach (var alerta in alertas)
             {
                 var item = new ListViewItem(alerta.nombreCrypto);
                 item.SubItems.Add(alerta.valorAlerta.ToString("F3"));
                 item.SubItems.Add(alerta.tipoAlerta);
-                item.SubItems.Add(alerta.idAlerta.ToString()) ;
+                item.SubItems.Add(alerta.idAlerta.ToString());
 
                 listaAlertas.Items.Add(item);
             }
@@ -253,11 +257,23 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 // Obtener el ítem seleccionado
                 ListViewItem selectedItem = listaAlertas.SelectedItems[0];
                 int subItemValue = Convert.ToInt32(selectedItem.SubItems[3].Text);
-                AlertaForm alerta = new AlertaForm(selectedItem.Text, subItemValue, _unitOfWork, this) ;
+                AlertaForm alerta = new AlertaForm(selectedItem.Text, subItemValue, _unitOfWork, this);
+                alerta.ActualizarForm(Convert.ToDecimal(selectedItem.SubItems[1].Text), selectedItem.SubItems[2].Text);
                 // Suscribirse al evento GuardarAlerta
                 alerta.GuardarAlerta += Evento_GuardarAlerta;
-                alerta.Show();    
-            }       
+                alerta.Show();
+            }
+        }
+
+        private void botonEliminar_Click_1(object sender, EventArgs e)
+        {
+            if (listaAlertas.SelectedItems.Count > 0)
+            {
+                // Obtener el ítem seleccionado
+                ListViewItem alertaSeleccionada = listaAlertas.SelectedItems[0];
+                _alertaService.EliminarAlerta(Convert.ToInt32(alertaSeleccionada.SubItems[3].Text));
+            }
+            CargarAlertasActivas();
         }
 
         private void Evento_GuardarAlerta(object sender, EventArgs e)
@@ -270,10 +286,12 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             if (listaAlertas.SelectedItems.Count > 0)
             {
                 botonModificar.Visible = true;  // Muestra el botón si hay un ítem seleccionado
+                botonEliminar.Visible = true;
             }
             else
             {
                 botonModificar.Visible = false;  // Oculta el botón si no hay ítem seleccionado
+                botonEliminar.Visible = false;
             }
         }
 
@@ -335,6 +353,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 MessageBox.Show("Error al actualizar la lista de favoritas: " + ex.Message);
             }
         }
+
+        
     }
 
 }

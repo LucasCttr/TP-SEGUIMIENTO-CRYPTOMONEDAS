@@ -39,6 +39,7 @@
             HistorialAlertas = new Button();
             botonModificar = new Button();
             timer = new System.Windows.Forms.Timer(components);
+            botonEliminar = new Button();
             SuspendLayout();
             // 
             // MercadoBoton
@@ -96,7 +97,7 @@
             listaAlertas.FullRowSelect = true;
             listaAlertas.Location = new Point(308, 41);
             listaAlertas.Name = "listaAlertas";
-            listaAlertas.Size = new Size(373, 368);
+            listaAlertas.Size = new Size(359, 368);
             listaAlertas.Sorting = SortOrder.Descending;
             listaAlertas.TabIndex = 5;
             listaAlertas.UseCompatibleStateImageBehavior = false;
@@ -105,7 +106,7 @@
             // 
             AlertasBoton.Location = new Point(308, 415);
             AlertasBoton.Name = "AlertasBoton";
-            AlertasBoton.Size = new Size(75, 23);
+            AlertasBoton.Size = new Size(62, 23);
             AlertasBoton.TabIndex = 6;
             AlertasBoton.Text = "Alertas";
             AlertasBoton.UseVisualStyleBackColor = true;
@@ -113,9 +114,9 @@
             // 
             // HistorialAlertas
             // 
-            HistorialAlertas.Location = new Point(389, 415);
+            HistorialAlertas.Location = new Point(376, 415);
             HistorialAlertas.Name = "HistorialAlertas";
-            HistorialAlertas.Size = new Size(75, 23);
+            HistorialAlertas.Size = new Size(63, 23);
             HistorialAlertas.TabIndex = 7;
             HistorialAlertas.Text = "Historial";
             HistorialAlertas.UseVisualStyleBackColor = true;
@@ -123,9 +124,9 @@
             // 
             // botonModificar
             // 
-            botonModificar.Location = new Point(470, 415);
+            botonModificar.Location = new Point(445, 415);
             botonModificar.Name = "botonModificar";
-            botonModificar.Size = new Size(75, 23);
+            botonModificar.Size = new Size(66, 23);
             botonModificar.TabIndex = 8;
             botonModificar.Text = "Modificar";
             botonModificar.UseVisualStyleBackColor = true;
@@ -136,11 +137,22 @@
             timer.Enabled = true;
             timer.Interval = 10000;
             // 
+            // botonEliminar
+            // 
+            botonEliminar.Location = new Point(517, 415);
+            botonEliminar.Name = "botonEliminar";
+            botonEliminar.Size = new Size(65, 23);
+            botonEliminar.TabIndex = 9;
+            botonEliminar.Text = "Eliminar";
+            botonEliminar.UseVisualStyleBackColor = true;
+            botonEliminar.Click += botonEliminar_Click_1;
+            // 
             // InicioForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(693, 450);
+            ClientSize = new Size(679, 450);
+            Controls.Add(botonEliminar);
             Controls.Add(botonModificar);
             Controls.Add(HistorialAlertas);
             Controls.Add(AlertasBoton);
@@ -170,5 +182,6 @@
         private Button HistorialAlertas;
         private Button botonModificar;
         private System.Windows.Forms.Timer timer;
+        private Button botonEliminar;
     }
 }
