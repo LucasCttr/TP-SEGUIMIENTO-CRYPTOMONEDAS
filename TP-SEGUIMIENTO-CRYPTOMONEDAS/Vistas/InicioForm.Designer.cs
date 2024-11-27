@@ -46,7 +46,7 @@
             // 
             MercadoBoton.Location = new Point(12, 415);
             MercadoBoton.Name = "MercadoBoton";
-            MercadoBoton.Size = new Size(75, 23);
+            MercadoBoton.Size = new Size(65, 23);
             MercadoBoton.TabIndex = 0;
             MercadoBoton.Text = "Mercado";
             MercadoBoton.UseVisualStyleBackColor = true;
@@ -75,9 +75,9 @@
             // 
             // OpcionesBoton
             // 
-            OpcionesBoton.Location = new Point(93, 415);
+            OpcionesBoton.Location = new Point(83, 415);
             OpcionesBoton.Name = "OpcionesBoton";
-            OpcionesBoton.Size = new Size(75, 23);
+            OpcionesBoton.Size = new Size(66, 23);
             OpcionesBoton.TabIndex = 3;
             OpcionesBoton.Text = "Opciones";
             OpcionesBoton.UseVisualStyleBackColor = true;
@@ -85,17 +85,19 @@
             // 
             // MiCuentaBoton
             // 
-            MiCuentaBoton.Location = new Point(174, 415);
+            MiCuentaBoton.Location = new Point(155, 415);
             MiCuentaBoton.Name = "MiCuentaBoton";
-            MiCuentaBoton.Size = new Size(75, 23);
+            MiCuentaBoton.Size = new Size(72, 23);
             MiCuentaBoton.TabIndex = 4;
             MiCuentaBoton.Text = "Mi Cuenta";
             MiCuentaBoton.UseVisualStyleBackColor = true;
+            MiCuentaBoton.Click += MiCuentaBoton_Click;
             // 
             // listaAlertas
             // 
             listaAlertas.FullRowSelect = true;
             listaAlertas.Location = new Point(308, 41);
+            listaAlertas.MultiSelect = false;
             listaAlertas.Name = "listaAlertas";
             listaAlertas.Size = new Size(359, 368);
             listaAlertas.Sorting = SortOrder.Descending;

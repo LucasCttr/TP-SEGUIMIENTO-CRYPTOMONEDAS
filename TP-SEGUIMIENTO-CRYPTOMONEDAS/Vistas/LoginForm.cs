@@ -36,13 +36,14 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             {
                 // Autenticación exitosa
                 // Guardar ID y Mail de usuario en SessionManager
-                SessionManager.CurrentUserId = user.UsuarioId; 
+                SessionManager.CurrentUserId = user.UsuarioId;
+                SessionManager.CurrentPassword = user.Contraseña;
                 SessionManager.CurrentMail = user.Correo;
                 SessionManager.CurrentName = user.Nombre;
                 this.Hide();
                 var alertaObserver = new AlertaObserverManager();
                 var _alertaService = new AlertaService(_unitOfWork, alertaObserver);
-                var inicioForm = new InicioForm(_unitOfWork,_alertaService); // Cambia esto al nombre de tu formulario principal
+                var inicioForm = new InicioForm(_unitOfWork, _alertaService); // Cambia esto al nombre de tu formulario principal
                 inicioForm.Show();
             }
             else
@@ -50,6 +51,12 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 // Mostrar mensaje de error
                 MessageBox.Show("Correo electrónico o contraseña incorrectos.");
             }
+        }
+
+        private void botonRegistrarse_Click(object sender, EventArgs e)
+        {
+            var altaForm = new AltaUsuarioForm(_unitOfWork);
+            altaForm.ShowDialog();
         }
     }
 }

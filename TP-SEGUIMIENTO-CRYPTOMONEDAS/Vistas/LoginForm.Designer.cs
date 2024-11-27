@@ -34,6 +34,7 @@
             ContrasenaBox = new TextBox();
             label3 = new Label();
             BotonIniciar = new Button();
+            botonRegistrarse = new Button();
             SuspendLayout();
             // 
             // label1
@@ -48,7 +49,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(34, 140);
+            label2.Location = new Point(34, 121);
             label2.Name = "label2";
             label2.Size = new Size(67, 15);
             label2.TabIndex = 1;
@@ -58,20 +59,21 @@
             // 
             MailBox.Location = new Point(107, 78);
             MailBox.Name = "MailBox";
-            MailBox.Size = new Size(233, 23);
+            MailBox.Size = new Size(173, 23);
             MailBox.TabIndex = 2;
             // 
             // ContrasenaBox
             // 
-            ContrasenaBox.Location = new Point(107, 137);
+            ContrasenaBox.Location = new Point(107, 118);
             ContrasenaBox.Name = "ContrasenaBox";
-            ContrasenaBox.Size = new Size(233, 23);
+            ContrasenaBox.Size = new Size(173, 23);
             ContrasenaBox.TabIndex = 3;
+            ContrasenaBox.UseSystemPasswordChar = true;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(183, 30);
+            label3.Location = new Point(157, 34);
             label3.Name = "label3";
             label3.Size = new Size(66, 15);
             label3.TabIndex = 4;
@@ -79,7 +81,7 @@
             // 
             // BotonIniciar
             // 
-            BotonIniciar.Location = new Point(174, 187);
+            BotonIniciar.Location = new Point(205, 164);
             BotonIniciar.Name = "BotonIniciar";
             BotonIniciar.Size = new Size(75, 23);
             BotonIniciar.TabIndex = 5;
@@ -87,11 +89,22 @@
             BotonIniciar.UseVisualStyleBackColor = true;
             BotonIniciar.Click += BotonIniciar_Click;
             // 
+            // botonRegistrarse
+            // 
+            botonRegistrarse.Location = new Point(107, 164);
+            botonRegistrarse.Name = "botonRegistrarse";
+            botonRegistrarse.Size = new Size(75, 23);
+            botonRegistrarse.TabIndex = 6;
+            botonRegistrarse.Text = "Registrarse";
+            botonRegistrarse.UseVisualStyleBackColor = true;
+            botonRegistrarse.Click += botonRegistrarse_Click;
+            // 
             // LoginForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(442, 244);
+            ClientSize = new Size(366, 199);
+            Controls.Add(botonRegistrarse);
             Controls.Add(BotonIniciar);
             Controls.Add(label3);
             Controls.Add(ContrasenaBox);
@@ -113,5 +126,6 @@
         private TextBox ContrasenaBox;
         private Label label3;
         private Button BotonIniciar;
+        private Button botonRegistrarse;
     }
 }

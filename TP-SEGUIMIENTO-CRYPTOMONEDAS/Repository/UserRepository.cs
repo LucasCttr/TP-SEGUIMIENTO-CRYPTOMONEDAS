@@ -23,15 +23,17 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
         public UserDTO ValidarUsuario(string mail, string contrasena)
         {
             // Lógica para obtener el usuario de la base de datos
-            var usuario= _context.Usuarios
-                .FirstOrDefault(u => u.Correo== mail && u.Contraseña == contrasena);
+            var usuario = _context.Usuarios
+                .AsEnumerable() //Para poder utilizar c# en la consulta con EntityFramework
+                .FirstOrDefault(u => u.Correo == mail &&
+                                     u.Contraseña.Equals(contrasena, StringComparison.Ordinal)); //Utilizo Equals para tambien evaluar mayusculas
 
             if (usuario != null)
             {
                 //implementar patron singleton
                 return usuario;
             }
-            else    return null;
+            else return null;
         }
 
         public List<UsuarioCryptoDTO> ObtenerCryptosFavoritas()
@@ -51,14 +53,54 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
 
             return favoriteCryptos; // Retorna la lista de criptomonedas favoritas
         }
+
+        public bool ValidarContraseña(string contraseña)
+        {
+            if (contraseña == SessionManager.CurrentPassword) { return true; } else { return false; }
+        }
+
+        public void CambiarDatosUsuario(string nombre, string correo, string contraseña)
+        {
+            {
+                // Buscar al usuario por el correo (o algún identificador único)
+                var usuario = _context.Usuarios.FirstOrDefault(u => u.Correo == correo);
+
+                if (usuario != null)
+                {
+                    // Actualizar los campos del usuario
+                    usuario.Nombre = nombre;
+                    usuario.Correo = correo;
+                    usuario.Contraseña = contraseña;
+
+                    // Guardar los cambios en la base de datos
+                    _context.SaveChanges();
+
+                    SessionManager.CurrentName = nombre;
+                    SessionManager.CurrentMail = correo;
+                    SessionManager.CurrentPassword = contraseña;
+                }
+            }
+        }
+
+        public bool VerificarExistenciaUsuario(string correo)
+        {
+            // Buscar al usuario por el correo (o algún identificador único)
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.Correo == correo);
+
+            if (usuario != null) return true; else { return false; }
+        }
+
+        public void DarDeAltaUsuario(string nombre, string correo, string contraseña)
+        {
+            var usuario = new UserDTO
+            {
+                Nombre = nombre,
+                Correo = correo,
+                Contraseña = contraseña
+
+            };
+            _context.Usuarios.Add(usuario);
+            _context.SaveChanges(true);
+        }
     }
-
-
-    //REGISTRAR USUARIOS
-     //   public void Add(UserDTO user)
-     //   {
-    //        // Lógica para agregar un nuevo usuario
-    //        var entity = new User { Nombre = user.Nombre, Contrasena = user.Contrasena };
-     //       _context.Users.Add(entity);
-     //       _context.SaveChanges();
 }

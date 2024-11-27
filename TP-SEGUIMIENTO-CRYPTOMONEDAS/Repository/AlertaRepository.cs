@@ -15,27 +15,27 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             _client = new RestClient("https://api.coincap.io/v2/");  //BORRAR?
         }
 
-        //public List<AlertaDTO> ObtenerAlertasHistorial()
-        //{
-        //   Accede al userId desde la sesión (suponiendo que tienes una forma de acceder a la sesión)
-        //    int userId = SessionManager.CurrentUserId; // Cambia esto según tu implementación de sesión
+        public List<AlertaDTO> ObtenerAlertasHistorial()
+        {
+            //Accede al userId desde la sesión(suponiendo que tienes una forma de acceder a la sesión)
+            int userId = SessionManager.CurrentUserId; // Cambia esto según tu implementación de sesión
 
-        //   Obtiene las criptomonedas favoritas del usuario especificado de manera síncrona
-        //  var favoriteCryptos = _context.AlertasCrypto
-        //        .Where(fc => fc.UsuarioID == userId)
-        //        .AsEnumerable() // Mueve la consulta a memoria
-        //        .Where(fc => (DateTime.Now.Date - fc.FechaAlerta).Days < 7) // Ahora puedes comparar en memoria
-        //        .Select(fc => new AlertaDTO // Mapea a AlertaDTO
-        //        {
-        //            CryptoNombre = fc.CryptoNombre,
-        //            CambioPorcentual = fc.CambioPorcentual,
-        //            FechaAlerta = fc.FechaAlerta,
-        //            TipoCambio = fc.TipoCambio,
-        //        })
-        //        .ToList(); // Usa ToList() para una operación síncrona
+           //Obtiene las criptomonedas favoritas del usuario especificado de manera síncrona
+          var favoriteCryptos = _context.Alertas
+                .Where(fc => fc.UsuarioID == userId && fc.FechaActivasion != null)
+                .AsEnumerable() // Mueve la consulta a memoria
+                .Where(fc => (DateTime.Now.Date - fc.FechaActivasion.Value).Days < 7) // Ahora puedes comparar en memoria
+                .Select(fc => new AlertaDTO // Mapea a AlertaDTO
+                {
+                    CryptomonedaID = fc.CryptomonedaID,
+                    CambioPorcentual = fc.CambioPorcentual,
+                    FechaActivasion = fc.FechaActivasion,
+                    TipoCambio = fc.TipoCambio,
+                })
+                .ToList(); // Usa ToList() para una operación síncrona
 
-        //    return favoriteCryptos; // Retorna la lista de criptomonedas favoritas
-        //}
+            return favoriteCryptos; // Retorna la lista de criptomonedas favoritas
+        }
 
         public List<AlertaDTO> ObtenerAlertasActivas()
         {

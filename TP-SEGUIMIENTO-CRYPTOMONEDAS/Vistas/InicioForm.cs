@@ -80,6 +80,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private void HistorialAlertas_Click(object sender, EventArgs e)
         {
+            listaAlertas.FullRowSelect = false;
             botonModificar.Visible = false;
             botonEliminar.Visible = false;
             listaAlertas.Clear();
@@ -181,25 +182,23 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         {
             listaAlertas.Clear();
             listaAlertas.FullRowSelect = false;
-            //  var alertasHistorial = _unitOfWork.Alerta.ObtenerAlertasHistorial();
+            var alertasHistorial = _unitOfWork.Alerta.ObtenerAlertasHistorial();
             listaAlertas.View = View.Details;
             listaAlertas.Sort();
-            listaAlertas.Columns.Add("Orden", 0);
             listaAlertas.Columns.Add("Fecha", 120);
-            listaAlertas.Columns.Add("Crypto", 100);
-            listaAlertas.Columns.Add("Valor", 48);
-            listaAlertas.Columns.Add("Tipo", 82);
+            listaAlertas.Columns.Add("Crypto", 90);
+            listaAlertas.Columns.Add("Valor", 60);
+            listaAlertas.Columns.Add("Tipo", 79);
 
-            //foreach (var historial in alertasHistorial)
-            //{
-
-            //    var item = new ListViewItem(historial.FechaAlerta.ToString());
-            //    item.SubItems.Add(historial.FechaAlerta.ToString());
-            //    item.SubItems.Add(historial.CryptoNombre);
-            //    item.SubItems.Add(historial.CambioPorcentual.ToString());
-            //    item.SubItems.Add(historial.TipoCambio);
-            //    listaAlertas.Items.Add(item);
-            //}
+            foreach (var historial in alertasHistorial)
+            {
+                //Cargo la fecha activasion 2 veces par
+                var item = new ListViewItem(historial.FechaActivasion.ToString());
+                item.SubItems.Add(historial.CryptomonedaID);
+                item.SubItems.Add(historial.CambioPorcentual.ToString("F3"));
+                item.SubItems.Add(historial.TipoCambio);
+                listaAlertas.Items.Add(item);
+            }
         }
 
 
@@ -354,7 +353,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             }
         }
 
-        
+        private void MiCuentaBoton_Click(object sender, EventArgs e)
+        {
+            var cuentaForm = new MiCuentaForm(_unitOfWork);
+            cuentaForm.ShowDialog();
+        }
     }
 
 }
