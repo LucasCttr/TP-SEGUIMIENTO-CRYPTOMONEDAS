@@ -21,9 +21,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
         }
 
         // Método para eliminar un observador
-        public void EliminarObservador(string nombreCrypto)
+        public void EliminarObservador(int idCrypto)
         {
-            var observadorAEliminar = observadores.FirstOrDefault(o => o is AlertaPorcentaje alerta && alerta.nombreCrypto == nombreCrypto);
+            var observadorAEliminar = observadores.FirstOrDefault(o => o is AlertaPorcentaje alerta && alerta.idAlerta == idCrypto);
             if (observadorAEliminar != null)
             {
                 observadores.Remove(observadorAEliminar);
@@ -31,7 +31,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
         }
 
         // Método para modificar un observador existente
-        public bool ModificarObservador(string nombreCrypto, decimal valorPositivo, decimal valorNegativo)
+        public void ModificarObservador(string nombreCrypto, decimal valorAlerta, string tipoAlerta, int idAlerta)
         {
             // Buscar si ya existe un observador asociado a la criptomoneda
             var observadorAModificar = observadores.FirstOrDefault(o => o is AlertaPorcentaje alerta && alerta.nombreCrypto == nombreCrypto);
@@ -41,13 +41,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
                 // Si existe, modificar su configuración
                 if (observadorAModificar is AlertaPorcentaje alerta)
                 {
-                    alerta.ConfigurarAlerta(nombreCrypto, valorPositivo, valorNegativo);
-                } 
-                return true;
-            } return false;
-            
+                    alerta.ConfigurarAlerta(nombreCrypto, valorAlerta, tipoAlerta, idAlerta);
+                }
+            }
         }
-
 
 
         // Método para notificar a un observador específico
@@ -58,21 +55,14 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
             {
                 if (observador is AlertaPorcentaje alerta && alerta.nombreCrypto == nombreCrypto)
                 {
-                    
                     alerta.Notificar(cambio24Hs);
                 }
             }
         }
 
-        // Método para cargar observadores desde un repositorio
-        public void CargarObservadores(IEnumerable<UsuarioCryptoDTO> alertasActivas, Action<string> accionAlerta, Action<string> eliminarObservador, Action<string,decimal,string> alertaPositiva, Action<string,decimal,string> alertaNegativa)
+        public List<IAlertaObserver> ObtenerLista()
         {
-            foreach (var alerta in alertasActivas)
-            {
-                var observador = new AlertaPorcentaje(accionAlerta, eliminarObservador,alertaPositiva,alertaNegativa);
-            //    observador.ConfigurarAlerta(alerta.CryptomonedaID, alerta.ValorPositivo, alerta.ValorNegativo);
-                AgregarObservador(observador);
-            }
+            return observadores;
         }
     }
 }

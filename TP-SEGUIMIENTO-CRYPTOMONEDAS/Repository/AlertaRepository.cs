@@ -37,20 +37,22 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
         //    return favoriteCryptos; // Retorna la lista de criptomonedas favoritas
         //}
 
-        //public List<UsuarioCryptoDTO> ObtenerAlertasActivas()
-        //{
-        //    int userId = SessionManager.CurrentUserId;
+        public List<AlertaDTO> ObtenerAlertasActivas()
+        {
+            int userId = SessionManager.CurrentUserId;
 
-        //    var alertasActivas = _context.UsuariosCryptos
-        //        .Where(fc => fc.UsuarioID == userId && (fc.ValorPositivo != 0 || fc.ValorNegativo != 0))
-        //        .Select(fc => new UsuarioCryptoDTO
-        //        {
-        //            ValorPositivo = fc.ValorPositivo,
-        //            ValorNegativo = fc.ValorNegativo,
-        //            CryptoNombre = fc.CryptoNombre
-        //        }).ToList();
-        //    return alertasActivas;
-        //}
+            var alertasActivas = _context.Alertas
+                .Where(fc => fc.UsuarioID == userId && (fc.FechaActivasion == null))
+                .Select(fc => new AlertaDTO
+                {
+                    CambioPorcentual = fc.CambioPorcentual,
+                    TipoCambio = fc.TipoCambio,
+                    CryptomonedaID = fc.CryptomonedaID, 
+                    AlertaID = fc.AlertaID
+                    
+                }).ToList();
+            return alertasActivas;
+        }
 
         //public UsuarioCryptoDTO ObtenerUnaAlerta(string nombreCrypto)
         //{
@@ -65,42 +67,70 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
         //    return alerta;
         //}
 
-        //public void GuardarValoresAlerta(string nobreCrypto, decimal valorPositivo, decimal valorNegativo)
-        //{
-        //    int userId = SessionManager.CurrentUserId;
-        //    var alerta = _context.UsuariosCryptos.Where(fc => fc.UsuarioID == userId && fc.CryptomonedaID == nobreCrypto)
-        //        .FirstOrDefault();
-        //    // Sobrescribir las propiedades directamente
-        //    alerta.ValorPositivo = valorPositivo;
-        //    alerta.ValorNegativo = valorNegativo;
+        public void GuardarValoresAlerta(int idCrypto, decimal valorAlerta, string tipoAlerta)
+        {
+            int userId = SessionManager.CurrentUserId;
+            var alerta = _context.Alertas.Where(fc => fc.UsuarioID == userId && fc.AlertaID == idCrypto)
+                .FirstOrDefault();
+            // Sobrescribir las propiedades directamente
+            alerta.CambioPorcentual = valorAlerta;
+            alerta.TipoCambio = tipoAlerta;
 
-        //    // Guardar los cambios en la base de datos
-        //    _context.SaveChanges();
-        //}
+            // Guardar los cambios en la base de datos
+            _context.SaveChanges();
+        }
 
-        //public void EliminarAlerta(string nombreCrypto)
-        //{
-        //    GuardarValoresAlerta(nombreCrypto, 0, 0);
-        //}
-     
-        public void CrearHistoriaAlerta(string nombreCrypto, decimal umbralSuperado, string tipo)
+        public void EliminarAlerta(int idAlerta)
         {
             int userId = SessionManager.CurrentUserId;
 
-            var nuevaAlertaHistoria = new AlertaDTO
+            // Busca la alerta específica por ID
+            var alertaAEliminar = _context.Alertas.FirstOrDefault(fc => fc.AlertaID == idAlerta);
+
+            if (alertaAEliminar != null)
+            {
+                // Elimina la alerta
+                _context.Alertas.Remove(alertaAEliminar);
+
+                // Guarda los cambios en la base de datos
+                _context.SaveChanges();
+            }
+        }
+
+        public int CrearAlerta(string nombreCrypto, decimal umbralSuperado, string tipo)
+        {
+            int userId = SessionManager.CurrentUserId;
+
+            var nuevaAlerta = new AlertaDTO
             {
                 UsuarioID = userId,
-
-                CryptoNombre = nombreCrypto,
-
+                CryptomonedaID = nombreCrypto,
                 CambioPorcentual = umbralSuperado,
-
                 TipoCambio = tipo,
-
-                FechaAlerta = DateTime.Now
             };
 
-            _context.AlertasCrypto.Add(nuevaAlertaHistoria);
+            // Agregar la alerta a la base de datos
+            _context.Alertas.Add(nuevaAlerta);
+
+            // Guardar los cambios en la base de datos
+            _context.SaveChanges();
+
+            // Obtener el Id de la alerta recién creada
+            int nuevaAlertaId = nuevaAlerta.AlertaID; // Suponiendo que "AlertaID" es la clave primaria
+
+            return nuevaAlertaId;
+        }
+
+        public void MarcarActivacionAlerta(int idCrypto)
+        {
+            // Busca la alerta específica por ID
+            var alerta = _context.Alertas.Where(fc => fc.AlertaID == idCrypto)
+                .FirstOrDefault();
+
+            // Sobrescribir la fecha
+            alerta.FechaActivasion = DateTime.Now;
+
+            // Guardar los cambios en la base de datos
             _context.SaveChanges();
         }
     }

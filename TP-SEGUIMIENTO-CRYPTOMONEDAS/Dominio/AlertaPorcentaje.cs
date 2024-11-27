@@ -11,46 +11,39 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
 {
     public class AlertaPorcentaje : IAlertaObserver
     {
-        private readonly Action<string> accionAlerta;
-        private readonly Action<string> eliminarObservador; // Acción para eliminar el observador
-        private readonly Action<string, decimal, string> alertaPositivaActivada;  //Crear el hisotiral de la alerta +
-        private readonly Action<string, decimal, string> alertaNegativaActivada;  //Crear el hisotiral de la alerta -
+        private readonly Action<string,int> alertaActivada;
+        private readonly Action<int> eliminarObservador; // Acción para eliminar el observador
         public string nombreCrypto { get; set; }
-        private decimal valorIncremento;
-        private decimal valorDecremento;
+        public int idAlerta { get; set; }
+        public decimal valorAlerta { get; set; }
+        public string tipoAlerta { get; set; }
 
-        public AlertaPorcentaje(Action<string> accion, Action<string> eliminar, Action<string, decimal, string> alertaPositiva, Action<string, decimal, string> alertaNegativa)
+        public AlertaPorcentaje(Action<string,int> accion, Action<int> eliminar)
         {
-            accionAlerta = accion;
+            alertaActivada = accion;
             eliminarObservador = eliminar;
-            alertaPositivaActivada = alertaPositiva;
-            alertaNegativaActivada = alertaNegativa;
         }
 
         // Configuramos la alerta con los valores de la criptomoneda y los umbrales
-        public void ConfigurarAlerta(string nombre, decimal valorPositivo, decimal valorNegativo)
+        public void ConfigurarAlerta(string nombre, decimal valorAlerta, string tipoAlerta, int idAlerta)
         {
             this.nombreCrypto = nombre;
-            this.valorIncremento = valorPositivo;
-            this.valorDecremento = valorNegativo;
+            this.valorAlerta = valorAlerta;
+            this.tipoAlerta = tipoAlerta;
+            this.idAlerta = idAlerta;   
         }
 
         public void Notificar(decimal cambio24Hs)
         {
-            if (cambio24Hs >= valorIncremento && valorIncremento != 0)
+            if (tipoAlerta == "Incremento" && cambio24Hs >= valorAlerta)
             {
-                accionAlerta($"🔔 Alerta: {nombreCrypto} ha aumentado un {cambio24Hs:F2}% en las últimas 24 horas.");
-                eliminarObservador(nombreCrypto);
-                alertaPositivaActivada(nombreCrypto, valorIncremento, "Incremento");
-                //EnviarMail("Incremento", valorIncremento);
-
+                alertaActivada($"🔔 Alerta: {nombreCrypto} ha aumentado un {cambio24Hs:F2}% en las últimas 24 horas.", idAlerta);
+                //EnviarMail(tipoAlerta, valorAlerta);
             }
-            else if (cambio24Hs <= valorDecremento && valorDecremento != 0)
+            else if (tipoAlerta == "Decremento" && cambio24Hs <= valorAlerta)
             {
-                accionAlerta($"🔔 Alerta: {nombreCrypto} ha disminuido un {cambio24Hs:F2}% en las últimas 24 horas.");
-                eliminarObservador(nombreCrypto);
-                alertaNegativaActivada(nombreCrypto, valorDecremento, "Decremento");
-               //EnviarMail("Decremento", valorDecremento);
+                alertaActivada($"🔔 Alerta: {nombreCrypto} ha disminuido un {cambio24Hs:F2}% en las últimas 24 horas.", idAlerta);
+                //EnviarMail(tipoAlerta, valorAlerta);
             }
         }
 

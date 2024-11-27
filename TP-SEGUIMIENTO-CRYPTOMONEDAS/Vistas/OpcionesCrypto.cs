@@ -81,8 +81,19 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private void AlertaBoton_Click(object sender, EventArgs e)
         {
-            AlertaForm alertaForm = new AlertaForm(cryptoNombre, _unitOfWork, InicioForm);
+            AlertaForm alertaForm = new AlertaForm(cryptoNombre,null ,_unitOfWork, InicioForm);
+            // Suscribirse al evento GuardarAlerta del formulario secundario
+            alertaForm.GuardarAlerta += FormularioSecundario_GuardarAlerta;
             alertaForm.Show();
         }
+
+        //Evento para actualizar la view del formulario de inicio al darle a guardar en el formulario de alerta.
+        private void FormularioSecundario_GuardarAlerta(object sender, EventArgs e)
+        {
+            // Propagar el evento o invocar el método en el FormularioPrincipal
+            // Puedes crear un evento en el FormularioIntermedio para llamar al FormularioPrincipal
+            EventoGuardarAlerta?.Invoke(this, e);
+        }
+        public event EventHandler EventoGuardarAlerta;
     }
 }

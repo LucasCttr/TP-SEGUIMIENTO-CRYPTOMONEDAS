@@ -32,9 +32,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             listaCryptosFavoritas.SelectedIndexChanged += listaCryptosFavoritas_SelectedIndexChanged;
             listaCryptosFavoritas.SelectedIndexChanged += listaAlertasActivas_SelectedIndexChanged;
             listaAlertas.SelectedIndexChanged += listaAlertas_SelectedIndexChanged;
+            _alertaService.CargarObservadores();
 
             // Suscribirse al evento para actualizar UI despues de que salte una alerta
-            _alertaService.AlertaEliminada += (nombreCrypto) =>
+            _alertaService.alertaActivada += (notificacion) =>
             {
                 // Lógica para actualizar la lista de UI
                 CargarHistorial();
@@ -45,7 +46,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         {
             CargarCryptosFavoritas();
             CargarHistorial();
-          //  _alertaService.CargarAlertasActivas();
         }
 
         private void MercadoBoton_Click(object sender, EventArgs e)
@@ -63,6 +63,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
                 // Crear e iniciar el nuevo formulario pasando los datos
                 OpcionesCrypto opcionesForm = new OpcionesCrypto(selectedItem.SubItems[1].Text,selectedItem.SubItems[5].Text, _unitOfWork, this);
+
+                // Suscribirse al evento del formulario intermedio
+                opcionesForm.EventoGuardarAlerta += Evento_GuardarAlerta;
+
                 opcionesForm.ShowDialog(); // Usar ShowDialog para abrir como modal, o Show para no modal
             }
         }
@@ -105,7 +109,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                     if (DatosCrypto.changePercent24Hr.ToString("F2").StartsWith("-")) 
                         item.SubItems.Add(DatosCrypto.changePercent24Hr.ToString("F2") + " %");  
                     else item.SubItems.Add("  "+DatosCrypto.changePercent24Hr.ToString("F2") + " %");
-
                     item.SubItems.Add(DatosCrypto.id);
                     listaCryptosFavoritas.Items.Add(item);
                 }
@@ -202,28 +205,29 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             listaAlertas.FullRowSelect = true;
             listaAlertas.View = View.Details;
             listaAlertas.Columns.Add("Activas", 125);
-            listaAlertas.Columns.Add("Incremento", 100);
-            listaAlertas.Columns.Add("Decremento", 80);
+            listaAlertas.Columns.Add("Valor", 95);
+            listaAlertas.Columns.Add("Tipo", 85);
+            listaAlertas.Columns.Add("Id", 0);
 
-           // ActualizarListaAlertasActivas();
+            ActualizarListaAlertasActivas();
         }
+        //var alertasActivas = _unitOfWork.Alerta.ObtenerAlertasActivas();
+        public void ActualizarListaAlertasActivas()
+        {
+            listaAlertas.Items.Clear();
 
-        //public void ActualizarListaAlertasActivas()
-        //{
-        //    listaAlertas.Items.Clear();
-        //    var alertasActivas = _unitOfWork.Alerta.ObtenerAlertasActivas();
-        //    foreach (var alerta in alertasActivas)
-        //    {
-        //        var item = new ListViewItem(alerta.CryptoNombre);
-        //        if (alerta.ValorPositivo == 0) item.SubItems.Add("    -");
-        //        else item.SubItems.Add(alerta.ValorPositivo.ToString());
+            var alertas = _alertaService.ObtenerObservadores();
+            
+            foreach (var alerta in alertas)
+            {
+                var item = new ListViewItem(alerta.nombreCrypto);
+                item.SubItems.Add(alerta.valorAlerta.ToString("F3"));
+                item.SubItems.Add(alerta.tipoAlerta);
+                item.SubItems.Add(alerta.idAlerta.ToString()) ;
 
-        //        if (alerta.ValorNegativo == 0) item.SubItems.Add("    -");
-        //        else item.SubItems.Add(alerta.ValorNegativo.ToString());
-
-        //        listaAlertas.Items.Add(item);
-        //    }
-        //}
+                listaAlertas.Items.Add(item);
+            }
+        }
 
 
         private void listaCryptosFavoritas_SelectedIndexChanged(object sender, EventArgs e)
@@ -248,11 +252,18 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             {
                 // Obtener el ítem seleccionado
                 ListViewItem selectedItem = listaAlertas.SelectedItems[0];
-                AlertaForm alerta = new AlertaForm(selectedItem.Text, _unitOfWork, this);
+                int subItemValue = Convert.ToInt32(selectedItem.SubItems[3].Text);
+                AlertaForm alerta = new AlertaForm(selectedItem.Text, subItemValue, _unitOfWork, this) ;
+                // Suscribirse al evento GuardarAlerta
+                alerta.GuardarAlerta += Evento_GuardarAlerta;
                 alerta.Show();    
             }       
         }
 
+        private void Evento_GuardarAlerta(object sender, EventArgs e)
+        {
+            CargarAlertasActivas();
+        }
 
         private void listaAlertas_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -295,8 +306,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                     var crypto = await Task.Run(() => _unitOfWork.CryptosFavoritas.BuscarCryptoMedianteId(f.CryptomonedaID));
                     if (crypto == null) continue;
                     // Notificar las alertas si es necesario
-                    //_alertaService.NotificarCambio
-                        //(crypto.name, crypto.changePercent24Hr);
+                    _alertaService.NotificarCambio(crypto.name, crypto.changePercent24Hr);
 
                     // Crear un nuevo ListViewItem
                     ListViewItem newItem = new ListViewItem(crypto.rank.ToString())

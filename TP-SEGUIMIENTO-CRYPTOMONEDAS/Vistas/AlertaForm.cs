@@ -13,13 +13,18 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
     public partial class AlertaForm : Form
     {
-        public string nombreCrypto;
+        public string cryptoNombre;
+        public int? AlertaID;
         public IUnitOfWork _unitOfWork;
         public InicioForm _inicioForm;
-        public AlertaForm(string crypto, IUnitOfWork unitOfWork, InicioForm inicioForm)
+        
+        //Evento para actualizar la listview de inicio al clickear en guardar
+        public event EventHandler GuardarAlerta;
+        public AlertaForm(string crypto,int? id, IUnitOfWork unitOfWork, InicioForm inicioForm)
         {
             _unitOfWork = unitOfWork;
-            nombreCrypto = crypto;
+            cryptoNombre = crypto;
+            AlertaID = id;
             _inicioForm = inicioForm;
             InitializeComponent();
         }
@@ -30,16 +35,24 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
             //valorPositivo.Text = alerta.ValorPositivo.ToString("F2");
             //valorNegativo.Text = alerta.ValorNegativo.ToString("F2");
-            cryptonombre.Text = nombreCrypto;
+            cryptonombre.Text = cryptoNombre;
         }
 
         private void botonGuardar_Click(object sender, EventArgs e)
         {
-            decimal nuevoValorPositivo = Convert.ToDecimal(valorPositivo.Text);  // Convierte el texto a decimal
-            decimal nuevoValorNegativo = Convert.ToDecimal(valorNegativo.Text);  // Convierte el texto a decimal
+            decimal nuevoValorPositivo = Convert.ToDecimal(valorAlerta.Text);  // Convierte el texto a decimal
+            string tipo = tipoAlerta.Text;
 
-           // _inicioForm._alertaService.ActualizarOCrearAlerta(nombreCrypto, nuevoValorPositivo, nuevoValorNegativo);
-            _inicioForm.CargarAlertasActivas();
+            if (AlertaID != null)
+            {
+                _inicioForm._alertaService.ActualizarAlerta(cryptoNombre, nuevoValorPositivo, tipo, AlertaID.Value);
+                _inicioForm.CargarAlertasActivas();
+            }
+
+            else  _inicioForm._alertaService.CrearAlerta(cryptoNombre, nuevoValorPositivo, tipo);
+
+            // Llama al evento cuando se presiona el botón
+            GuardarAlerta?.Invoke(this, EventArgs.Empty);
             this.Close();
         }
 
