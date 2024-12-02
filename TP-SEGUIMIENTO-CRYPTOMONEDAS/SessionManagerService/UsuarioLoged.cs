@@ -35,7 +35,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.SessionManagerService
 
         public UserDTO GetUserById(int userId)
         {
-            var user = _context.Usuarios.FirstOrDefault(u => u.UsuarioId == userId);
+            var user = _context.Usuarios.FirstOrDefault(u => u.UsuarioID== userId);
             if (user != null)
             {
                 return new UserDTO

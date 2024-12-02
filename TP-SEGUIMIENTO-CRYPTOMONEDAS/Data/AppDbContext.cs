@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using Microsoft.EntityFrameworkCore;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
 
 
     namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Data
@@ -17,7 +18,7 @@ using Microsoft.EntityFrameworkCore;
 
             // DbSet para cada entidad
             public DbSet<CryptoDTO> CryptosFavoritas { get; set; }
-            public DbSet<UserDTO> Usuarios { get; set; }
+            public DbSet<Usuario> Usuarios { get; set; }
             public DbSet<UsuarioCryptoDTO> UsuariosCryptos { get; set; }
             public DbSet<AlertaDTO> Alertas { get; set; }
             
@@ -38,11 +39,11 @@ using Microsoft.EntityFrameworkCore;
                 //modelBuilder.Entity<CryptoDTO>().Property(c => c.vwap24Hr).HasColumnType("decimal(18,2)");
 
             // Configuración de la tabla para UserDTO
-                modelBuilder.Entity<UserDTO>().ToTable("Usuarios");
-                modelBuilder.Entity<UserDTO>().HasKey(u => u.UsuarioId);
-                modelBuilder.Entity<UserDTO>().Property(u => u.Nombre).IsRequired().HasMaxLength(20);  // Nombre de usuario obligatorio, máx. 20 caracteres
-                modelBuilder.Entity<UserDTO>().Property(u => u.Contraseña).IsRequired().HasMaxLength(100);  // Contraseña obligatoria, máx. 100 caracteres
-                modelBuilder.Entity<UserDTO>().Property(u => u.Correo).IsRequired().HasMaxLength(50);  // Correo obligatorio, máx. 50 caracteres
+                modelBuilder.Entity<Usuario>().ToTable("Usuarios");
+                modelBuilder.Entity<Usuario>().HasKey(u => u.UsuarioID);
+                modelBuilder.Entity<Usuario>().Property(u => u.Nombre).IsRequired().HasMaxLength(20);  // Nombre de usuario obligatorio, máx. 20 caracteres
+                modelBuilder.Entity<Usuario>().Property(u => u.Contraseña).IsRequired().HasMaxLength(100);  // Contraseña obligatoria, máx. 100 caracteres
+                modelBuilder.Entity<Usuario>().Property(u => u.Correo).IsRequired().HasMaxLength(50);  // Correo obligatorio, máx. 50 caracteres
 
             // Configuración de la tabla para UserDTO
                 modelBuilder.Entity<UsuarioCryptoDTO>().ToTable("CryptomonedasFavoritas");

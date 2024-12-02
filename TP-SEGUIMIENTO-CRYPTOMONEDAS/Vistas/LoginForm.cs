@@ -37,7 +37,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             {
                 // Autenticación exitosa
                 // Guardar ID y Mail de usuario en SessionManager
-                SessionManager.CurrentUserId = user.UsuarioId;
+                SessionManager.CurrentUserId = user.UsuarioID;
                 SessionManager.CurrentPassword = user.Contraseña;
                 SessionManager.CurrentMail = user.Correo;
                 SessionManager.CurrentName = user.Nombre;

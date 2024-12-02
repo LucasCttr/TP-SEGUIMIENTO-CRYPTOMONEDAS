@@ -6,7 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.Data;
-using TP_SEGUIMIENTO_CRYPTOMONEDAS.SessionManagerService; 
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.SessionManagerService;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
 using Microsoft.EntityFrameworkCore;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
@@ -22,18 +23,18 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
 
         public UserDTO ValidarUsuario(string mail, string contrasena)
         {
-            // Lógica para obtener el usuario de la base de datos
-            var usuario = _context.Usuarios
-                .AsEnumerable() //Para poder utilizar c# en la consulta con EntityFramework
-                .FirstOrDefault(u => u.Correo == mail &&
-                                     u.Contraseña.Equals(contrasena, StringComparison.Ordinal)); //Utilizo Equals para tambien evaluar mayusculas
+            // Consulta directa a la base de datos, sin traer todas las entidades.
+            var usuarioDTO = _context.Usuarios
+                .Where(u => u.Correo == mail && u.Contraseña == contrasena) // Compara directamente en la base de datos.
+                .Select(u => new UserDTO
+                {
+                    UsuarioID = u.UsuarioID,
+                    Nombre = u.Nombre,
+                    Correo = u.Correo
+                })
+                .FirstOrDefault();
 
-            if (usuario != null)
-            {
-                //implementar patron singleton
-                return usuario;
-            }
-            else return null;
+            return usuarioDTO; // Devuelve el DTO o null si no encuentra el usuario.
         }
 
         public List<UsuarioCryptoDTO> ObtenerCryptosFavoritas()
@@ -92,7 +93,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
 
         public void DarDeAltaUsuario(string nombre, string correo, string contraseña)
         {
-            var usuario = new UserDTO
+            var usuario = new Usuario
             {
                 Nombre = nombre,
                 Correo = correo,
