@@ -16,6 +16,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs
         public decimal changePercent24Hr { get; set; }
         public string symbol { get; set; }
         public decimal supply {  get; set; }
+        public decimal? maxSupply { get; set; }
+        public decimal? vwap24Hr { get; set; }
         public int rank { get; set; }
     }
 }

@@ -11,7 +11,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
     {
         List<AlertaDTO> ObtenerAlertasHistorial();
         //UsuarioCryptoDTO ObtenerUnaAlerta(string nombreCrypto);
-        void GuardarValoresAlerta(int idCrypto, decimal valorPositivo, string tipo);
+        void ActualizarAlerta(int idCrypto, decimal valorPositivo, string tipo);
         void EliminarAlerta(int idAlerta);
         int CrearAlerta(string nombreCrypto, decimal umbralSuperado, string tipo);
 

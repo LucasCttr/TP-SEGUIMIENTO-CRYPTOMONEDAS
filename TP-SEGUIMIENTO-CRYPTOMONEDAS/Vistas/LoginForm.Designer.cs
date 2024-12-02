@@ -73,9 +73,10 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(157, 34);
+            label3.Font = new Font("Segoe Fluent Icons", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
+            label3.Location = new Point(152, 30);
             label3.Name = "label3";
-            label3.Size = new Size(66, 15);
+            label3.Size = new Size(82, 21);
             label3.TabIndex = 4;
             label3.Text = "Bienvenido";
             // 

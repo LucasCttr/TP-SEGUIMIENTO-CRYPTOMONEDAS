@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.Data;
-using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.SessionManagerService; 
 using Microsoft.EntityFrameworkCore;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository

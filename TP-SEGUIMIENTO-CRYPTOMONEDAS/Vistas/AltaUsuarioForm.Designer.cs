@@ -54,9 +54,10 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(160, 20);
+            label3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label3.Location = new Point(153, 15);
             label3.Name = "label3";
-            label3.Size = new Size(50, 15);
+            label3.Size = new Size(68, 21);
             label3.TabIndex = 18;
             label3.Text = "Registro";
             // 

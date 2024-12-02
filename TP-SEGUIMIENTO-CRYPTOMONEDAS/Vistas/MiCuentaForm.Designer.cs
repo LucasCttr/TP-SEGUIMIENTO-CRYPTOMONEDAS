@@ -112,9 +112,10 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(109, 24);
+            label3.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            label3.Location = new Point(98, 19);
             label3.Name = "label3";
-            label3.Size = new Size(62, 15);
+            label3.Size = new Size(81, 21);
             label3.TabIndex = 8;
             label3.Text = "Mi Cuenta";
             // 

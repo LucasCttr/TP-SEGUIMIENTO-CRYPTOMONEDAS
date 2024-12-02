@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 
-namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
+namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.SessionManagerService
 {
     public class UserSession
     {

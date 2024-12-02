@@ -32,7 +32,7 @@
             MercadoBoton = new Button();
             listaCryptosFavoritas = new ListView();
             label1 = new Label();
-            OpcionesBoton = new Button();
+            botonOpciones = new Button();
             MiCuentaBoton = new Button();
             listaAlertas = new ListView();
             AlertasBoton = new Button();
@@ -44,7 +44,7 @@
             // 
             // MercadoBoton
             // 
-            MercadoBoton.Location = new Point(12, 415);
+            MercadoBoton.Location = new Point(90, 415);
             MercadoBoton.Name = "MercadoBoton";
             MercadoBoton.Size = new Size(65, 23);
             MercadoBoton.TabIndex = 0;
@@ -67,25 +67,26 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(12, 23);
+            label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.Location = new Point(12, 8);
             label1.Name = "label1";
-            label1.Size = new Size(36, 15);
+            label1.Size = new Size(62, 30);
             label1.TabIndex = 2;
             label1.Text = "inicio";
             // 
-            // OpcionesBoton
+            // botonOpciones
             // 
-            OpcionesBoton.Location = new Point(83, 415);
-            OpcionesBoton.Name = "OpcionesBoton";
-            OpcionesBoton.Size = new Size(66, 23);
-            OpcionesBoton.TabIndex = 3;
-            OpcionesBoton.Text = "Opciones";
-            OpcionesBoton.UseVisualStyleBackColor = true;
-            OpcionesBoton.Click += OpcionesBoton_Click;
+            botonOpciones.Location = new Point(161, 415);
+            botonOpciones.Name = "botonOpciones";
+            botonOpciones.Size = new Size(66, 23);
+            botonOpciones.TabIndex = 3;
+            botonOpciones.Text = "Opciones";
+            botonOpciones.UseVisualStyleBackColor = true;
+            botonOpciones.Click += OpcionesBoton_Click;
             // 
             // MiCuentaBoton
             // 
-            MiCuentaBoton.Location = new Point(155, 415);
+            MiCuentaBoton.Location = new Point(12, 415);
             MiCuentaBoton.Name = "MiCuentaBoton";
             MiCuentaBoton.Size = new Size(72, 23);
             MiCuentaBoton.TabIndex = 4;
@@ -160,7 +161,7 @@
             Controls.Add(AlertasBoton);
             Controls.Add(listaAlertas);
             Controls.Add(MiCuentaBoton);
-            Controls.Add(OpcionesBoton);
+            Controls.Add(botonOpciones);
             Controls.Add(label1);
             Controls.Add(listaCryptosFavoritas);
             Controls.Add(MercadoBoton);
@@ -177,7 +178,7 @@
         private Button MercadoBoton;
         private ListView listaCryptosFavoritas;
         private Label label1;
-        private Button OpcionesBoton;
+        private Button botonOpciones;
         private Button MiCuentaBoton;
         private ListView listaAlertas;
         private Button AlertasBoton;

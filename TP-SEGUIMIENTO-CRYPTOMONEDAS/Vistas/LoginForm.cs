@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.SessionManagerService;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
@@ -41,8 +42,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 SessionManager.CurrentMail = user.Correo;
                 SessionManager.CurrentName = user.Nombre;
                 this.Hide();
-                var alertaObserver = new AlertaObserverManager();
-                var _alertaService = new AlertaService(_unitOfWork, alertaObserver);
+                var _alertaService = new AlertaMonitor();
                 var inicioForm = new InicioForm(_unitOfWork, _alertaService); // Cambia esto al nombre de tu formulario principal
                 inicioForm.Show();
             }

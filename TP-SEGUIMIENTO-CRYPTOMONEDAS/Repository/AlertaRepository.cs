@@ -1,7 +1,7 @@
 ﻿using RestSharp;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.Data;
-using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.SessionManagerService;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
 {
@@ -54,20 +54,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             return alertasActivas;
         }
 
-        //public UsuarioCryptoDTO ObtenerUnaAlerta(string nombreCrypto)
-        //{
-        //    int userId = SessionManager.CurrentUserId;
-        //    var alerta = _context.UsuariosCryptos.Where(fc => fc.UsuarioID == userId && fc.CryptoNombre == nombreCrypto)
-        //        .Select(fc => new UsuarioCryptoDTO
-        //        {
-        //            ValorPositivo = fc.ValorPositivo,
-        //            ValorNegativo = fc.ValorNegativo
-        //        }).FirstOrDefault();
-
-        //    return alerta;
-        //}
-
-        public void GuardarValoresAlerta(int idCrypto, decimal valorAlerta, string tipoAlerta)
+        public void ActualizarAlerta(int idCrypto, decimal valorAlerta, string tipoAlerta)
         {
             int userId = SessionManager.CurrentUserId;
             var alerta = _context.Alertas.Where(fc => fc.UsuarioID == userId && fc.AlertaID == idCrypto)

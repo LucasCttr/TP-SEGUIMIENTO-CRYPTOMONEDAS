@@ -30,15 +30,16 @@
         {
             CryptosLista = new ListView();
             OpcionesBoton = new Button();
+            Mercado = new Label();
             SuspendLayout();
             // 
             // CryptosLista
             // 
             CryptosLista.FullRowSelect = true;
-            CryptosLista.Location = new Point(12, 51);
+            CryptosLista.Location = new Point(12, 44);
             CryptosLista.MultiSelect = false;
             CryptosLista.Name = "CryptosLista";
-            CryptosLista.Size = new Size(776, 335);
+            CryptosLista.Size = new Size(776, 356);
             CryptosLista.TabIndex = 0;
             CryptosLista.UseCompatibleStateImageBehavior = false;
             CryptosLista.View = View.Details;
@@ -53,11 +54,22 @@
             OpcionesBoton.UseVisualStyleBackColor = true;
             OpcionesBoton.Click += OpcionesBoton_Click;
             // 
+            // Mercado
+            // 
+            Mercado.AutoSize = true;
+            Mercado.Font = new Font("Segoe UI", 18F, FontStyle.Regular, GraphicsUnit.Point);
+            Mercado.Location = new Point(12, 9);
+            Mercado.Name = "Mercado";
+            Mercado.Size = new Size(108, 32);
+            Mercado.TabIndex = 2;
+            Mercado.Text = "Mercado";
+            // 
             // MercadoForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(800, 439);
+            Controls.Add(Mercado);
             Controls.Add(OpcionesBoton);
             Controls.Add(CryptosLista);
             Name = "MercadoForm";
@@ -65,11 +77,13 @@
             Text = "MercadoForm";
             Load += MercadoForm_Load;
             ResumeLayout(false);
+            PerformLayout();
         }
 
         #endregion
 
         private ListView CryptosLista;
         private Button OpcionesBoton;
+        private Label Mercado;
     }
 }

@@ -28,16 +28,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             AlertaID = id;
             _inicioForm = inicioForm;
             InitializeComponent();
-
-            tipoAlerta.SelectedIndex = 0;
         }
 
         private void AlertaForm_Load(object sender, EventArgs e)
         {
-            //var alerta = _unitOfWork.Alerta.ObtenerUnaAlerta(nombreCrypto);
-
-            //valorPositivo.Text = alerta.ValorPositivo.ToString("F2");
-            //valorNegativo.Text = alerta.ValorNegativo.ToString("F2");
             cryptonombre.Text = cryptoNombre;
         }
 
@@ -48,11 +42,20 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
             if (AlertaID != null)
             {
-                _inicioForm._alertaService.ActualizarAlerta(cryptoNombre, nuevoValorPositivo, tipo, AlertaID.Value);
-                _inicioForm.CargarAlertasActivas();
-            }
+                //Modificar la alerta en la base de datos
+                _inicioForm._unitOfWork.Alerta.ActualizarAlerta(AlertaID.Value, nuevoValorPositivo, tipo);
 
-            else _inicioForm._alertaService.CrearAlerta(cryptoNombre, nuevoValorPositivo, tipo);
+                //Modificar el observador de la alerta
+                _inicioForm._alertaMonitor.ActualizarAlerta(cryptoNombre, nuevoValorPositivo, tipo, AlertaID.Value);
+            } 
+            else 
+            {
+                //Crear la Alerta en la base de datos
+                int idAlerta = _unitOfWork.Alerta.CrearAlerta(cryptoNombre, nuevoValorPositivo, tipo);
+
+                //Crear el obsevador de la alerta
+                _inicioForm._alertaMonitor.CrearAlerta(cryptoNombre, nuevoValorPositivo, tipo, idAlerta);  
+            }
 
             // Llama al evento cuando se presiona el botón
             GuardarAlerta?.Invoke(this, EventArgs.Empty);

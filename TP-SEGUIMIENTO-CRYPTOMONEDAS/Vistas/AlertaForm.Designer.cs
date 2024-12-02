@@ -84,9 +84,10 @@
             // cryptonombre
             // 
             cryptonombre.AutoSize = true;
-            cryptonombre.Location = new Point(82, 28);
+            cryptonombre.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
+            cryptonombre.Location = new Point(71, 25);
             cryptonombre.Name = "cryptonombre";
-            cryptonombre.Size = new Size(38, 15);
+            cryptonombre.Size = new Size(52, 21);
             cryptonombre.TabIndex = 7;
             cryptonombre.Text = "label2";
             cryptonombre.TextAlign = ContentAlignment.MiddleCenter;

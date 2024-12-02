@@ -37,6 +37,7 @@
             boton1Mes = new Button();
             Boton1Dia = new Button();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
+            listaDetalles = new ListView();
             ((System.ComponentModel.ISupportInitialize)grafico).BeginInit();
             SuspendLayout();
             // 
@@ -46,7 +47,7 @@
             grafico.ChartAreas.Add(chartArea1);
             legend1.Name = "Legend1";
             grafico.Legends.Add(legend1);
-            grafico.Location = new Point(-29, 41);
+            grafico.Location = new Point(-40, 68);
             grafico.Name = "grafico";
             series1.ChartArea = "ChartArea1";
             series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
@@ -54,13 +55,13 @@
             series1.Name = "Series1";
             series1.ToolTip = "X: {#VALX}, Y: {#VALY}";
             grafico.Series.Add(series1);
-            grafico.Size = new Size(948, 486);
+            grafico.Size = new Size(1086, 502);
             grafico.TabIndex = 0;
             grafico.Text = "CryptoNombre";
             // 
             // boton6Meses
             // 
-            boton6Meses.Location = new Point(93, 12);
+            boton6Meses.Location = new Point(933, 118);
             boton6Meses.Name = "boton6Meses";
             boton6Meses.Size = new Size(75, 23);
             boton6Meses.TabIndex = 1;
@@ -70,7 +71,7 @@
             // 
             // boton12Meses
             // 
-            boton12Meses.Location = new Point(12, 12);
+            boton12Meses.Location = new Point(933, 89);
             boton12Meses.Name = "boton12Meses";
             boton12Meses.Size = new Size(75, 23);
             boton12Meses.TabIndex = 2;
@@ -80,7 +81,7 @@
             // 
             // boton1Mes
             // 
-            boton1Mes.Location = new Point(174, 12);
+            boton1Mes.Location = new Point(933, 147);
             boton1Mes.Name = "boton1Mes";
             boton1Mes.Size = new Size(75, 23);
             boton1Mes.TabIndex = 3;
@@ -90,7 +91,7 @@
             // 
             // Boton1Dia
             // 
-            Boton1Dia.Location = new Point(255, 12);
+            Boton1Dia.Location = new Point(933, 176);
             Boton1Dia.Name = "Boton1Dia";
             Boton1Dia.Size = new Size(75, 23);
             Boton1Dia.TabIndex = 4;
@@ -98,11 +99,20 @@
             Boton1Dia.UseVisualStyleBackColor = true;
             Boton1Dia.Click += Boton1Dia_Click_1;
             // 
+            // listaDetalles
+            // 
+            listaDetalles.Location = new Point(12, 12);
+            listaDetalles.Name = "listaDetalles";
+            listaDetalles.Size = new Size(996, 50);
+            listaDetalles.TabIndex = 5;
+            listaDetalles.UseCompatibleStateImageBehavior = false;
+            // 
             // GraficoForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(799, 538);
+            ClientSize = new Size(1020, 570);
+            Controls.Add(listaDetalles);
             Controls.Add(Boton1Dia);
             Controls.Add(boton1Mes);
             Controls.Add(boton12Meses);
@@ -123,5 +133,6 @@
         private Button boton1Mes;
         private Button Boton1Dia;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
+        private ListView listaDetalles;
     }
 }

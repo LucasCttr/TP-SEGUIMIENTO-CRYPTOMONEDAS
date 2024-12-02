@@ -36,7 +36,7 @@
             // 
             // AgregarEliminarBoton
             // 
-            AgregarEliminarBoton.Location = new Point(27, 87);
+            AgregarEliminarBoton.Location = new Point(16, 63);
             AgregarEliminarBoton.Name = "AgregarEliminarBoton";
             AgregarEliminarBoton.Size = new Size(75, 23);
             AgregarEliminarBoton.TabIndex = 0;
@@ -46,7 +46,7 @@
             // 
             // GraficoBoton
             // 
-            GraficoBoton.Location = new Point(118, 87);
+            GraficoBoton.Location = new Point(98, 63);
             GraficoBoton.Name = "GraficoBoton";
             GraficoBoton.Size = new Size(75, 23);
             GraficoBoton.TabIndex = 1;
@@ -56,20 +56,23 @@
             // 
             // AlertaBoton
             // 
-            AlertaBoton.Location = new Point(214, 88);
+            AlertaBoton.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            AlertaBoton.Location = new Point(179, 63);
             AlertaBoton.Name = "AlertaBoton";
             AlertaBoton.Size = new Size(75, 23);
             AlertaBoton.TabIndex = 2;
-            AlertaBoton.Text = "Alerta";
+            AlertaBoton.Text = "Nueva 🔔";
             AlertaBoton.UseVisualStyleBackColor = true;
             AlertaBoton.Click += AlertaBoton_Click;
             // 
             // CryptomonedaNombre
             // 
             CryptomonedaNombre.AutoSize = true;
-            CryptomonedaNombre.Location = new Point(88, 36);
+            CryptomonedaNombre.Font = new Font("Segoe Fluent Icons", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
+            CryptomonedaNombre.ForeColor = SystemColors.ControlText;
+            CryptomonedaNombre.Location = new Point(52, 20);
             CryptomonedaNombre.Name = "CryptomonedaNombre";
-            CryptomonedaNombre.Size = new Size(131, 15);
+            CryptomonedaNombre.Size = new Size(162, 21);
             CryptomonedaNombre.TabIndex = 3;
             CryptomonedaNombre.Text = "CryptoMonedaNombre";
             // 
@@ -77,7 +80,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(320, 122);
+            ClientSize = new Size(275, 95);
             Controls.Add(CryptomonedaNombre);
             Controls.Add(AlertaBoton);
             Controls.Add(GraficoBoton);

@@ -28,19 +28,18 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             CryptosLista.SelectedIndexChanged += listView1_SelectedIndexChanged;
             OpcionesBoton.Enabled = false;
             _inicioForm = inicioForm;
+            CargarMercado();
         }
 
         private async void MercadoForm_Load(object sender, EventArgs e)
         {
-            await CargarMercado();
 
         }
 
         private async Task CargarMercado()
         {
-
             // Obtener las criptomonedas
-            var cryptos = await _unitOfWork.CryptosFavoritas.MostrarCryptos();
+            var cryptos = await _unitOfWork.CryptosFavoritas.ObtenerMercado();
 
             // Limpiar el ListView antes de llenarlo
             CryptosLista.Items.Clear();
@@ -66,12 +65,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             CryptosLista.Columns.Add("Rank", 40);
             CryptosLista.Columns.Add("Id", 0);
             CryptosLista.Columns.Add("Nombre", 150);
-            CryptosLista.Columns.Add("Simbolo", 70);
-            CryptosLista.Columns.Add("Precio (USD)", 100);
-            CryptosLista.Columns.Add("24Hs%", 70);
-            CryptosLista.Columns.Add("MarketCap", 100);
-            CryptosLista.Columns.Add("Supply", 100);
-
+            CryptosLista.Columns.Add("Simbolo", 100);
+            CryptosLista.Columns.Add("Precio (USD)", 110);
+            CryptosLista.Columns.Add("24Hs%", 100);
+            CryptosLista.Columns.Add("MarketCap", 130);
+            CryptosLista.Columns.Add("Supply", 125);
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)

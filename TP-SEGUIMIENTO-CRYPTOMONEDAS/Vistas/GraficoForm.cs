@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
 using System.Windows.Forms.DataVisualization.Charting;
+using System.Globalization;
 
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
@@ -18,24 +19,23 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         private string Crypto;
         IUnitOfWork _unitOfWork;
         
-
         public GraficoForm(string idCrypto, IUnitOfWork unitOfWork)
         {
             InitializeComponent();
             Crypto = idCrypto;
             _unitOfWork = unitOfWork;
-            CargarHistorialCrypto(Crypto, "d1");
-            // grafico.Series[0].ToolTip = "#VALY, #VALX"; // Muestra el valor Y (por ejemplo, el precio de la criptomoneda)
+            grafico.ChartAreas[0].AxisX.LabelStyle.Format = "dd-MM";
+            CargarHistorialCrypto("d1");
+            CargarDetallesCrypto();     
 
             // Asociamos el evento MouseWheel al gráfico
             grafico.MouseDown += chart1_MouseDown;
 
         }
-        private void CargarHistorialCrypto(string idCrypto, string intervalo)
+        private void CargarHistorialCrypto(string intervalo)
         {
-            var datosHistorial = _unitOfWork.CryptosFavoritas.ObtenerHistorialDeCrypto(Crypto, intervalo);
-
-
+            var datosHistorial = _unitOfWork.CryptosFavoritas.ObtenerHistorialDeUnaCrypto(Crypto,intervalo);
+            
             grafico.Series.Clear();
             Series serie = new Series();
             serie.ChartType = SeriesChartType.Line;
@@ -47,7 +47,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
             grafico.Series.Add(serie);
             grafico.Series[0].BorderWidth = 2;
-            grafico.ChartAreas[0].AxisX.LabelStyle.Format = "dd-MM";
             grafico.ChartAreas[0].AxisY.LabelStyle.Format = "$0.00";
             grafico.ChartAreas[0].CursorX.IsUserEnabled = true;
             grafico.ChartAreas[0].CursorX.IsUserSelectionEnabled = true;
@@ -57,35 +56,84 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             grafico.ChartAreas[0].AxisY.ScaleView.Zoomable = true;
             grafico.ChartAreas[0].AxisX.ScrollBar.Enabled = false;
             grafico.ChartAreas[0].AxisY.ScrollBar.Enabled = false;
+        }
 
+        private void CargarDetallesCrypto()
+        {
+            listaDetalles.View = View.Details;
+            listaDetalles.Columns.Add("Rank", 0);
+            listaDetalles.Columns.Add("Crypto", 130);
+            listaDetalles.Columns.Add("Simbolo", 100);
+            listaDetalles.Columns.Add("Price (USD)", 120);
+            listaDetalles.Columns.Add("24Hs%", 100);
+            listaDetalles.Columns.Add("Supply",140);
+            listaDetalles.Columns.Add("MarketCapUSD",140);
+            listaDetalles.Columns.Add("volumeUsd24Hr", 140);
+            listaDetalles.Columns.Add("vwap24Hr", 120);
+            listaDetalles.Columns.Add("Id", 0);
+
+            var datosCrypto = _unitOfWork.CryptosFavoritas.BuscarCryptoEnMercado(Crypto);
+
+            // Verifica si DatosCrypto no es null
+            if (datosCrypto != null)
+            {
+                // Crear un nuevo ListViewItem y agregar las propiedades de la criptomoneda
+                var item = new ListViewItem(datosCrypto.rank.ToString()); // Nombre de la criptomoneda
+                item.SubItems.Add(datosCrypto.name);
+                item.SubItems.Add(datosCrypto.symbol);
+                item.SubItems.Add(datosCrypto.priceUsd.ToString("C2", CultureInfo.CreateSpecificCulture("en-US"))); // Precio en USD, formato de moneda
+
+                //Para que los numeros no queden desalineados por el signo "-"
+                if (datosCrypto.changePercent24Hr.ToString("F2").StartsWith("-"))
+                    item.SubItems.Add(datosCrypto.changePercent24Hr.ToString("F2") + " %");
+                else item.SubItems.Add("  " + datosCrypto.changePercent24Hr.ToString("F2") + " %");
+                item.SubItems.Add(Math.Round(datosCrypto.supply, 2).ToString());
+                item.SubItems.Add(Math.Round(datosCrypto.marketCapUsd,2).ToString());
+                item.SubItems.Add(Math.Round(datosCrypto.volumeUsd24Hr,2).ToString());
+                item.SubItems.Add(Math.Round(datosCrypto.vwap24Hr.Value,2).ToString());
+                
+                listaDetalles.Items.Add(item);
+            }
         }
 
         private void boton12Meses_Click_1(object sender, EventArgs e)
         {
             ResetZoom();
             grafico.Series.Clear();
-            CargarHistorialCrypto(Crypto, "d1");
+            grafico.ChartAreas[0].AxisX.LabelStyle.Format = "dd-MM";
+            grafico.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Months;  // Intervalo en horas
+            grafico.ChartAreas[0].AxisX.Interval = 1;
+            CargarHistorialCrypto( "d1");
         }
 
         private void boton6Meses_Click(object sender, EventArgs e)
         {
             ResetZoom();
-            grafico.Series.Clear();
-            CargarHistorialCrypto(Crypto, "h6");
+            grafico.Series.Clear(); 
+            grafico.ChartAreas[0].AxisX.LabelStyle.Format = "dd-MM";
+            grafico.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Weeks;  // Intervalo en horas
+            grafico.ChartAreas[0].AxisX.Interval = 2;
+            CargarHistorialCrypto("h6");
         }
 
         private void boton1Mes_Click_1(object sender, EventArgs e)
         {   
             ResetZoom();
             grafico.Series.Clear();
-            CargarHistorialCrypto(Crypto, "h1");
+            grafico.ChartAreas[0].AxisX.LabelStyle.Format = "dd-MM";
+            grafico.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Days;  // Intervalo en horas
+            grafico.ChartAreas[0].AxisX.Interval = 2;
+            CargarHistorialCrypto("h1");
         }
 
         private void Boton1Dia_Click_1(object sender, EventArgs e)
         {
             ResetZoom();
             grafico.Series.Clear();
-            CargarHistorialCrypto(Crypto, "m1");
+            grafico.ChartAreas[0].AxisX.LabelStyle.Format = "HH:mm";
+            grafico.ChartAreas[0].AxisX.IntervalType = DateTimeIntervalType.Hours;  // Intervalo en horas
+            grafico.ChartAreas[0].AxisX.Interval = 1;
+            CargarHistorialCrypto("m1");
         }
 
         private void chart1_MouseDown(object sender, MouseEventArgs e)

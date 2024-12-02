@@ -7,26 +7,26 @@ using TP_SEGUIMIENTO_CRYPTOMONEDAS.Data;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using RestSharp;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.SessionManagerService;
 using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json; // Necesitas importar esta librería
+using Newtonsoft.Json;
 
 //UTILIZO RESTSHARP
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
 {
-    public class CryptosFavoritasRepository : ICryptosFavoritasRepository
+    public class CryptomonedasRepository : ICryptomonedasRepository
     {
         private readonly AppDbContext _context;
         private readonly RestClient _client;
 
         // Constructor que acepta un DbContext
-        public CryptosFavoritasRepository(AppDbContext context)
+        public CryptomonedasRepository(AppDbContext context)
         {
             _client = new RestClient("https://api.coincap.io/v2/");
             _context = context;
         }
 
-
-        public async Task<List<CryptoDTO>> MostrarCryptos()
+        public async Task<List<CryptoDTO>> ObtenerMercado()
         {
             var request = new RestRequest("assets", Method.Get);
             var response = await _client.ExecuteAsync<CryptoResponse>(request);
@@ -48,7 +48,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             public CryptoDTO Data { get; set; }
         }
 
-        public CryptoDTO BuscarCryptoMedianteId(string nombreCrypto)
+        public CryptoDTO BuscarCryptoEnMercado(string nombreCrypto)
         {
             var request = new RestRequest($"assets/{nombreCrypto}", Method.Get);
             var response = _client.Execute<SingleCryptoResponse>(request);
@@ -60,7 +60,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             return null;
         }
 
-        public void EliminarFavorito(string nombreCrypto)
+        public void EliminarCryptoDeFavorito(string nombreCrypto)
         {
             var cryptoFavorita = _context.UsuariosCryptos.FirstOrDefault(c => c.CryptomonedaID == nombreCrypto && c.UsuarioID == SessionManager.CurrentUserId);
             if (cryptoFavorita != null)
@@ -70,7 +70,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             }
         }
 
-        public void AgregarFavorito(string nombreCrypto, string idCryptomoneda)
+        public void AgregarCryptoAFavorito(string nombreCrypto, string idCryptomoneda)
         {
             int userId = SessionManager.CurrentUserId;
 
@@ -101,7 +101,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
 
         // Método para obtener el historial de precios
 
-        public List<PuntoHistorial> ObtenerHistorialDeCrypto(string cryptoId, string intervalo)
+        public List<PuntoHistorial> ObtenerHistorialDeUnaCrypto(string cryptoId, string intervalo)
         {
             var request = new RestRequest($"assets/{cryptoId}/history?interval={intervalo}", Method.Get);
             var response = _client.Execute(request);
@@ -131,10 +131,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
                 Console.WriteLine("Error al obtener datos del historial: " + response.ErrorMessage);
                 return new List<PuntoHistorial>();
             }
-
-
         }
-
     }
 }
 

@@ -7,8 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.SessionManagerService;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {

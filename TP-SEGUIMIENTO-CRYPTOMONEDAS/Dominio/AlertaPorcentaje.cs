@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.SessionManagerService;
 using MailKit.Net.Smtp;
 using MimeKit;
 

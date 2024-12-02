@@ -27,15 +27,17 @@ using Microsoft.EntityFrameworkCore;
             {
                 base.OnModelCreating(modelBuilder);
 
-                // Configuración de la tabla para CryptoCurrencyDTO
-                modelBuilder.Entity<CryptoDTO>().ToTable("CryptosFavoritass");
-                modelBuilder.Entity<CryptoDTO>().HasKey(c => c.id);
-                modelBuilder.Entity<CryptoDTO>().Property(c => c.name).IsRequired().HasMaxLength(50);  // Nombre obligatorio, máx. 50 caracteres
-                modelBuilder.Entity<CryptoDTO>().Property(c => c.symbol).IsRequired().HasMaxLength(10);  // Símbolo obligatorio, máx. 10 caracteres
-                modelBuilder.Entity<CryptoDTO>().Property(c => c.priceUsd).HasColumnType("decimal(18,2)");
-                modelBuilder.Entity<CryptoDTO>().Property(c => c.changePercent24Hr).HasMaxLength(10);
+                //// Configuración de la tabla para CryptoCurrencyDTO
+                //modelBuilder.Entity<CryptoDTO>().ToTable("Cryptos");
+                //modelBuilder.Entity<CryptoDTO>().HasKey(c => c.id);
+                //modelBuilder.Entity<CryptoDTO>().Property(c => c.name).IsRequired().HasMaxLength(50);  // Nombre obligatorio, máx. 50 caracteres
+                //modelBuilder.Entity<CryptoDTO>().Property(c => c.symbol).IsRequired().HasMaxLength(10);  // Símbolo obligatorio, máx. 10 caracteres
+                //modelBuilder.Entity<CryptoDTO>().Property(c => c.priceUsd).HasColumnType("decimal(18,2)");
+                //modelBuilder.Entity<CryptoDTO>().Property(c => c.changePercent24Hr).HasColumnType("decimal(18,2)");
+                //modelBuilder.Entity<CryptoDTO>().Property(c => c.maxSupply).HasColumnType("decimal(18,2)");
+                //modelBuilder.Entity<CryptoDTO>().Property(c => c.vwap24Hr).HasColumnType("decimal(18,2)");
 
-                // Configuración de la tabla para UserDTO
+            // Configuración de la tabla para UserDTO
                 modelBuilder.Entity<UserDTO>().ToTable("Usuarios");
                 modelBuilder.Entity<UserDTO>().HasKey(u => u.UsuarioId);
                 modelBuilder.Entity<UserDTO>().Property(u => u.Nombre).IsRequired().HasMaxLength(20);  // Nombre de usuario obligatorio, máx. 20 caracteres
