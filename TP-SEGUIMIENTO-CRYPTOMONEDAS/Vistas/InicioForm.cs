@@ -105,11 +105,27 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 // Obtener el ítem seleccionado
                 ListViewItem selectedItem = listaAlertas.SelectedItems[0];
                 int subItemValue = Convert.ToInt32(selectedItem.SubItems[3].Text);
-                AlertaForm alerta = new AlertaForm(selectedItem.Text, subItemValue, _unitOfWork, this);
-                alerta.ActualizarForm(Convert.ToDecimal(selectedItem.SubItems[1].Text), selectedItem.SubItems[2].Text);
+                AlertaForm alertaForm = new AlertaForm(selectedItem.Text, subItemValue, _unitOfWork);
                 // Suscribirse al evento GuardarAlerta
-                alerta.GuardarAlerta += Evento_GuardarAlerta;
-                alerta.Show();
+                alertaForm.GuardarAlerta += (sender, args) =>
+                {
+                    // Actualizar la lista en InicioForm
+                    if (args.AlertaID != null)
+                    {
+                        _unitOfWork.Alerta.ActualizarAlerta(args.AlertaID.Value, args.NuevoValor, args.Tipo);
+                        _alertaMonitor.ActualizarAlerta(args.CryptoNombre, args.NuevoValor, args.Tipo, args.AlertaID.Value);
+                    }
+                    else
+                    {
+                        int idAlerta = _unitOfWork.Alerta.CrearAlerta(args.CryptoNombre, args.NuevoValor, args.Tipo);
+                        _alertaMonitor.CrearAlerta(args.CryptoNombre, args.NuevoValor, args.Tipo, idAlerta);
+                    }
+
+                    // Refrescar ListView
+                    CargarAlertasActivas();
+                };
+                alertaForm.ActualizarForm(Convert.ToDecimal(selectedItem.SubItems[1].Text), selectedItem.SubItems[2].Text);
+                alertaForm.Show();
             }
         }
 
