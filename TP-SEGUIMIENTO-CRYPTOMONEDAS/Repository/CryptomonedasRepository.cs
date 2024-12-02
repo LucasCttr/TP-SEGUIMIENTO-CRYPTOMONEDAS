@@ -75,7 +75,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             int userId = SessionManager.CurrentUserId;
 
             // Crear una nueva instancia del modelo de favorito
-            var nuevoFavorito = new UsuarioCryptoDTO
+            var nuevoFavorito = new Favoritas
             {
                 UsuarioID = userId,
                 CryptomonedaID = idCryptomoneda,

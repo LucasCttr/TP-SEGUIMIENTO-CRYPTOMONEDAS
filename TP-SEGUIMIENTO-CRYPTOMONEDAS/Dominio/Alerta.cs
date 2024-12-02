@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
 {
-    internal class Alerta
+    public class Alerta
     {
         public int AlertaID { get; set; }
         public int UsuarioID { get; set; }

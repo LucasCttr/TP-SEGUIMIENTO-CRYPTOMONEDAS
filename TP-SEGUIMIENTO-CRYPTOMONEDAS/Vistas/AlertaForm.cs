@@ -42,6 +42,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
             if (AlertaID != null)
             {
+                //MODIFICAR ESTO USANDO EVENTOS
+
                 //Modificar la alerta en la base de datos
                 _inicioForm._unitOfWork.Alerta.ActualizarAlerta(AlertaID.Value, nuevoValorPositivo, tipo);
 

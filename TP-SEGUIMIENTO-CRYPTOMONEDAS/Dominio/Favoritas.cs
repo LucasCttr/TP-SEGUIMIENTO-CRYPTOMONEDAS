@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs
+namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
 {
-    public class UsuarioCryptoDTO
+    public class Favoritas
     {
-        //Transformar a clase de dominio
         public int FavoritoID { get; set; }
         public int UsuarioID { get; set; }
         public string CryptomonedaID { get; set; }

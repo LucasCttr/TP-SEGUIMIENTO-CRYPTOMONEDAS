@@ -19,8 +19,8 @@ using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
             // DbSet para cada entidad
             public DbSet<CryptoDTO> CryptosFavoritas { get; set; }
             public DbSet<Usuario> Usuarios { get; set; }
-            public DbSet<UsuarioCryptoDTO> UsuariosCryptos { get; set; }
-            public DbSet<AlertaDTO> Alertas { get; set; }
+            public DbSet<Favoritas> UsuariosCryptos { get; set; }
+            public DbSet<Alerta> Alertas { get; set; }
             
 
             // Configuración adicional de las entidades
@@ -46,19 +46,19 @@ using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
                 modelBuilder.Entity<Usuario>().Property(u => u.Correo).IsRequired().HasMaxLength(50);  // Correo obligatorio, máx. 50 caracteres
 
             // Configuración de la tabla para UserDTO
-                modelBuilder.Entity<UsuarioCryptoDTO>().ToTable("CryptomonedasFavoritas");
-                modelBuilder.Entity<UsuarioCryptoDTO>().HasKey(u => u.FavoritoID);
-                modelBuilder.Entity<UsuarioCryptoDTO>().Property(u => u.CryptomonedaID).IsRequired().HasMaxLength(50);  
-                modelBuilder.Entity<UsuarioCryptoDTO>().Property(u => u.UsuarioID).IsRequired().HasMaxLength(50);  
+                modelBuilder.Entity<Favoritas>().ToTable("CryptomonedasFavoritas");
+                modelBuilder.Entity<Favoritas>().HasKey(u => u.FavoritoID);
+                modelBuilder.Entity<Favoritas>().Property(u => u.CryptomonedaID).IsRequired().HasMaxLength(50);  
+                modelBuilder.Entity<Favoritas>().Property(u => u.UsuarioID).IsRequired().HasMaxLength(50);  
 
 
-                modelBuilder.Entity<AlertaDTO>().ToTable("Alertas");
-                modelBuilder.Entity<AlertaDTO>().HasKey(u => u.AlertaID);
-                modelBuilder.Entity<AlertaDTO>().Property(u => u.UsuarioID).IsRequired().HasMaxLength(100);  
-                modelBuilder.Entity<AlertaDTO>().Property(u => u.CambioPorcentual).HasColumnType("decimal(5,2)");
-                modelBuilder.Entity<AlertaDTO>().Property(u => u.FechaActivasion).HasColumnType("DateTime");
-                modelBuilder.Entity<AlertaDTO>().Property(u => u.TipoCambio).HasColumnType("HasMaxLength(20)");
-                modelBuilder.Entity<AlertaDTO>().Property(u => u.CryptomonedaID).HasColumnType("HasMaxLength(50)"); 
+                modelBuilder.Entity<Alerta>().ToTable("Alertas");
+                modelBuilder.Entity<Alerta>().HasKey(u => u.AlertaID);
+                modelBuilder.Entity<Alerta>().Property(u => u.UsuarioID).IsRequired().HasMaxLength(100);  
+                modelBuilder.Entity<Alerta>().Property(u => u.CambioPorcentual).HasColumnType("decimal(5,2)");
+                modelBuilder.Entity<Alerta>().Property(u => u.FechaActivasion).HasColumnType("DateTime");
+                modelBuilder.Entity<Alerta>().Property(u => u.TipoCambio).HasColumnType("HasMaxLength(20)");
+                modelBuilder.Entity<Alerta>().Property(u => u.CryptomonedaID).HasColumnType("HasMaxLength(50)"); 
         }
         }
     }

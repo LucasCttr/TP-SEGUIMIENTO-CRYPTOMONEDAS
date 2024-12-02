@@ -13,16 +13,14 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
     public class AlertaPorcentaje : IAlertaObserver
     {
         private readonly Action<string,int> alertaActivada;
-        private readonly Action<int> eliminarObservador; // Acción para eliminar el observador
         public string nombreCrypto { get; set; }
         public int idAlerta { get; set; }
         public decimal valorAlerta { get; set; }
         public string tipoAlerta { get; set; }
 
-        public AlertaPorcentaje(Action<string,int> accion, Action<int> eliminar)
+        public AlertaPorcentaje(Action<string,int> accion)
         {
             alertaActivada = accion;
-            eliminarObservador = eliminar;
         }
 
         // Configuramos la alerta con los valores de la criptomoneda y los umbrales

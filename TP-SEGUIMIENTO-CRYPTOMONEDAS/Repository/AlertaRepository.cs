@@ -2,6 +2,7 @@
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.Data;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.SessionManagerService;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
 {
@@ -88,7 +89,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
         {
             int userId = SessionManager.CurrentUserId;
 
-            var nuevaAlerta = new AlertaDTO
+            var nuevaAlerta = new Alerta
             {
                 UsuarioID = userId,
                 CryptomonedaID = nombreCrypto,

@@ -37,7 +37,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             return usuarioDTO; // Devuelve el DTO o null si no encuentra el usuario.
         }
 
-        public List<UsuarioCryptoDTO> ObtenerCryptosFavoritas()
+        public List<FavoritasDTO> ObtenerCryptosFavoritas()
         {
             // Accede al userId desde la sesión (suponiendo que tienes una forma de acceder a la sesión)
             int userId = SessionManager.CurrentUserId; // Cambia esto según tu implementación de sesión
@@ -45,7 +45,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             // Obtiene las criptomonedas favoritas del usuario especificado de manera síncrona
             var favoriteCryptos = _context.UsuariosCryptos
                 .Where(fc => fc.UsuarioID == userId) // Usa el userId de la sesión
-                .Select(fc => new UsuarioCryptoDTO // Mapea a UsuarioCryptoDTO
+                .Select(fc => new FavoritasDTO // Mapea a UsuarioCryptoDTO
                 {
                     UsuarioID = fc.UsuarioID,
                     CryptomonedaID = fc.CryptomonedaID
