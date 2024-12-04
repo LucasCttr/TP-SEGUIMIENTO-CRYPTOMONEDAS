@@ -30,19 +30,36 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
             // Asociamos el evento MouseWheel al gráfico
             grafico.MouseDown += chart1_MouseDown;
+            grafico.MouseMove += grafico_MouseMove;
 
         }
         private void CargarHistorialCrypto(string intervalo)
         {
-            var datosHistorial = _unitOfWork.CryptosFavoritas.ObtenerHistorialDeUnaCrypto(Crypto,intervalo);
+            var datosHistorial = _unitOfWork.CryptosFavoritas.ObtenerHistorialDeUnaCrypto(Crypto, intervalo);
             
             grafico.Series.Clear();
             Series serie = new Series();
             serie.ChartType = SeriesChartType.Line;
 
-            foreach (var punto in datosHistorial)
+            if (intervalo == "m1")
             {
-                serie.Points.AddXY(punto.Fecha, punto.Precio);
+                // Show points per hour for "m1" interval
+                foreach (var punto in datosHistorial)
+                {
+                    serie.Points.AddXY(punto.Fecha, punto.Precio);
+                }
+            }
+            else
+            {
+                // Show only one point per day for other intervals
+                var groupedData = datosHistorial.GroupBy(p => p.Fecha.Date)
+                                                .Select(g => g.First())
+                                                .ToList();
+
+                foreach (var punto in groupedData)
+                {
+                    serie.Points.AddXY(punto.Fecha, punto.Precio);
+                }
             }
 
             grafico.Series.Add(serie);
@@ -153,6 +170,36 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             // Restablecer el zoom de los ejes X e Y
             chartArea.AxisX.ScaleView.ZoomReset();
             chartArea.AxisY.ScaleView.ZoomReset();
+        }
+
+        private void grafico_MouseMove(object sender, MouseEventArgs e)
+        {
+            var pos = e.Location;
+            var results = grafico.HitTest(pos.X, pos.Y, false, ChartElementType.DataPoint);
+
+            foreach (var series in grafico.Series)
+            {
+                foreach (var point in series.Points)
+                {
+                    point.MarkerStyle = MarkerStyle.None; // Reset marker style
+                }
+            }
+
+            foreach (var result in results)
+            {
+                if (result.ChartElementType == ChartElementType.DataPoint)
+                {
+                    var point = result.Object as DataPoint;
+                    if (point != null)
+                    {
+                        var xValue = DateTime.FromOADate(point.XValue).ToString("dd-MM");
+                        point.ToolTip = $"X: {xValue}, Y: {point.YValues[0]}";
+                        point.MarkerStyle = MarkerStyle.Circle;
+                        point.MarkerSize = 10;
+                        point.MarkerColor = Color.Red;
+                    }
+                }
+            }
         }
     }
 }

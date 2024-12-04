@@ -23,6 +23,16 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         {
             InitializeComponent();
             _unitOfWork = unitOfWork;
+            this.KeyPreview = true;
+            this.KeyDown += new KeyEventHandler(LoginForm_KeyDown);
+        }
+
+        private void LoginForm_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                BotonIniciar.PerformClick();
+            }
         }
 
         private void BotonIniciar_Click(object sender, EventArgs e)

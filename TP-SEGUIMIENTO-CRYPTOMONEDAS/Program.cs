@@ -18,10 +18,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
 
-                // Configuración de opciones para el DbContext
+                // Configuraciï¿½n de opciones para el DbContext
                 var optionsBuilder = new DbContextOptionsBuilder<AppDbContext>();
-                // Aquí asegúrate de utilizar tu cadena de conexión real
-                optionsBuilder.UseSqlServer("server=LUCAS\\SQLEXPRESS; database=CryptoApp; integrated security=true;TrustServerCertificate = True");
+                // Aquï¿½ asegï¿½rate de utilizar tu cadena de conexiï¿½n real
+                optionsBuilder.UseSqlServer("server=MARTIN\\SQLEXPRESS; database=CryptoApp; integrated security=true;TrustServerCertificate = True");
 
                 // Crear el contexto pasando las opciones
                 using (var context = new AppDbContext(optionsBuilder.Options))

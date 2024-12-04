@@ -26,6 +26,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             InitializeComponent();
             InitializeListView();
             CryptosLista.SelectedIndexChanged += listView1_SelectedIndexChanged;
+            CryptosLista.DoubleClick += CryptosLista_DoubleClick; // Add this line
             OpcionesBoton.Enabled = false;
             _inicioForm = inicioForm;
             CargarMercado();
@@ -91,6 +92,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 OpcionesCrypto opcionesForm = new OpcionesCrypto(selectedItem.SubItems[2].Text, selectedItem.SubItems[1].Text, _unitOfWork, _inicioForm);
                 opcionesForm.Show(); 
             }
+        }
+
+        private void CryptosLista_DoubleClick(object sender, EventArgs e)
+        {
+            OpcionesBoton_Click(sender, e); // Add this method
         }
     }
 }

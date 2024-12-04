@@ -32,6 +32,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
            
             listaCryptosFavoritas.SelectedIndexChanged += listaCryptosFavoritas_SelectedIndexChanged;
             listaAlertas.SelectedIndexChanged += listaAlertas_SelectedIndexChanged;
+            listaCryptosFavoritas.DoubleClick += listaCryptosFavoritas_DoubleClick; // Add this line
 
             _alertaMonitor.CargarObservadores(_unitOfWork.Alerta.ObtenerAlertasActivas());
 
@@ -331,6 +332,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             {
                 MessageBox.Show("Error al actualizar la lista de favoritas: " + ex.Message);
             }
+        }
+
+        private void listaCryptosFavoritas_DoubleClick(object sender, EventArgs e)
+        {
+            OpcionesBoton_Click(sender, e);
         }
 
        

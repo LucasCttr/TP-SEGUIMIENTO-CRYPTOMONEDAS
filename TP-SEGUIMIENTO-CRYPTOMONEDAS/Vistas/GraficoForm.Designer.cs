@@ -38,6 +38,7 @@
             Boton1Dia = new Button();
             backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             listaDetalles = new ListView();
+            labelTitulo = new Label();
             ((System.ComponentModel.ISupportInitialize)grafico).BeginInit();
             SuspendLayout();
             // 
@@ -58,6 +59,14 @@
             grafico.Size = new Size(1086, 502);
             grafico.TabIndex = 0;
             grafico.Text = "CryptoNombre";
+            // 
+            // labelTitulo
+            // 
+            labelTitulo.Location = new Point(890, 65);
+            labelTitulo.Name = "labelTitulo";
+            labelTitulo.Size = new Size(150, 23);
+            labelTitulo.TabIndex = 6;
+            labelTitulo.Text = "Historial de los últimos:";
             // 
             // boton6Meses
             // 
@@ -112,6 +121,7 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1020, 570);
+            Controls.Add(labelTitulo);
             Controls.Add(listaDetalles);
             Controls.Add(Boton1Dia);
             Controls.Add(boton1Mes);
@@ -134,5 +144,6 @@
         private Button Boton1Dia;
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private ListView listaDetalles;
+        private Label labelTitulo;
     }
 }

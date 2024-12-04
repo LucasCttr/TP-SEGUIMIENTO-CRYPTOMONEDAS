@@ -72,7 +72,9 @@
             label1.Name = "label1";
             label1.Size = new Size(62, 30);
             label1.TabIndex = 2;
-            label1.Text = "inicio";
+            label1.Text = "Favoritas";
+            label1.BackColor = Color.Transparent;
+            label1.ForeColor = Color.White;
             // 
             // botonOpciones
             // 
@@ -171,6 +173,8 @@
             Load += InicioForm_Load;
             ResumeLayout(false);
             PerformLayout();
+            BackgroundImage = Image.FromFile(@"..\..\..\Resources\bg.jpeg");
+            BackgroundImageLayout = ImageLayout.Stretch;
         }
 
         #endregion
