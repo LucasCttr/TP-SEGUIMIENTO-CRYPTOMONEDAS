@@ -100,7 +100,7 @@
             listaAlertas.Location = new Point(308, 41);
             listaAlertas.MultiSelect = false;
             listaAlertas.Name = "listaAlertas";
-            listaAlertas.Size = new Size(359, 368);
+            listaAlertas.Size = new Size(387, 368);
             listaAlertas.Sorting = SortOrder.Descending;
             listaAlertas.TabIndex = 5;
             listaAlertas.UseCompatibleStateImageBehavior = false;
@@ -154,7 +154,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(679, 450);
+            ClientSize = new Size(707, 450);
             Controls.Add(botonEliminar);
             Controls.Add(botonModificar);
             Controls.Add(HistorialAlertas);

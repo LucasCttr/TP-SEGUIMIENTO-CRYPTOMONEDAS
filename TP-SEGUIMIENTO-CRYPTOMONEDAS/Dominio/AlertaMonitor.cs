@@ -47,6 +47,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
 
         public void CrearAlerta(string nombreCrypto, decimal valorAlerta, string tipoAlerta, int idAlerta)
         {
+            
             //Crear observador 
             var nuevoObservador = new AlertaPorcentaje(
                     (mensaje, alertaID) => AlertaActivada(mensaje, alertaID)); // Acción para mostrar el mensaje

@@ -20,7 +20,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
     {
         public IUnitOfWork _unitOfWork;
         public AlertaMonitor _alertaMonitor;
-
+        public event EventHandler<FavoritaDTO> GuardarAlerta;
 
         public InicioForm(IUnitOfWork unitOfWork, AlertaMonitor alertaService)
         {
@@ -76,7 +76,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 OpcionesCrypto opcionesForm = new OpcionesCrypto(selectedItem.SubItems[1].Text, selectedItem.SubItems[5].Text, _unitOfWork, this);
 
                 // Suscribirse al evento del formulario intermedio
-                opcionesForm.EventoGuardarAlerta += Evento_GuardarAlerta;
+                opcionesForm.GuardarAlerta += Evento_GuardarAlerta;
 
                 opcionesForm.ShowDialog(); // Usar ShowDialog para abrir como modal, o Show para no modal
             }
@@ -84,6 +84,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private void AlertasBoton_Click(object sender, EventArgs e)
         {
+            
             botonEliminar.Visible = false;
             botonModificar.Visible = false;
             CargarAlertasActivas();
@@ -91,7 +92,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private void HistorialAlertas_Click(object sender, EventArgs e)
         {
-            listaAlertas.FullRowSelect = false;
+            listaAlertas.Sort();
             botonModificar.Visible = false;
             botonEliminar.Visible = false;
             listaAlertas.Clear();
@@ -106,6 +107,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 ListViewItem selectedItem = listaAlertas.SelectedItems[0];
                 int subItemValue = Convert.ToInt32(selectedItem.SubItems[3].Text);
                 AlertaForm alertaForm = new AlertaForm(selectedItem.Text, subItemValue, _unitOfWork);
+                // alertaForm.GuardarAlerta += ManejarGuardarAlerta; // Suscripción al evento
                 // Suscribirse al evento GuardarAlerta
                 alertaForm.GuardarAlerta += (sender, args) =>
                 {
@@ -115,13 +117,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                         _unitOfWork.Alerta.ActualizarAlerta(args.AlertaID.Value, args.NuevoValor, args.Tipo);
                         _alertaMonitor.ActualizarAlerta(args.CryptoNombre, args.NuevoValor, args.Tipo, args.AlertaID.Value);
                     }
-                    else
-                    {
-                        int idAlerta = _unitOfWork.Alerta.CrearAlerta(args.CryptoNombre, args.NuevoValor, args.Tipo);
-                        _alertaMonitor.CrearAlerta(args.CryptoNombre, args.NuevoValor, args.Tipo, idAlerta);
-                    }
-
-                    // Refrescar ListView
+                    //else       //BORRAR?
+                    //{
+                    //    int idAlerta = _unitOfWork.Alerta.CrearAlerta(args.CryptoNombre, args.NuevoValor, args.Tipo);
+                    //    _alertaMonitor.CrearAlerta(args.CryptoNombre, args.NuevoValor, args.Tipo, idAlerta);
+                    //}
                     CargarAlertasActivas();
                 };
                 alertaForm.ActualizarForm(Convert.ToDecimal(selectedItem.SubItems[1].Text), selectedItem.SubItems[2].Text);
@@ -200,15 +200,17 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             var alertasHistorial = _unitOfWork.Alerta.ObtenerAlertasHistorial();
             listaAlertas.View = View.Details;
             listaAlertas.Sort();
-            listaAlertas.Columns.Add("Fecha", 120);
+            listaAlertas.Columns.Add("Orden", 0);
+            listaAlertas.Columns.Add("Fecha", 130);
             listaAlertas.Columns.Add("Crypto", 90);
             listaAlertas.Columns.Add("Valor", 60);
             listaAlertas.Columns.Add("Tipo", 79);
 
             foreach (var historial in alertasHistorial)
             {
-                //Cargo la fecha activasion 2 veces par
-                var item = new ListViewItem(historial.FechaActivasion.ToString());
+                //Cargo la fecha activasion 2 veces para el ordenamiento
+                var item = new ListViewItem(historial.FechaActivasion.Value.ToString("yyyy-MM-dd HH:mm:ss"));
+                item.SubItems.Add(historial.FechaActivasion.Value.ToString("dd-MM-yyyy / HH:mm:ss"));
                 item.SubItems.Add(historial.CryptomonedaID);
                 item.SubItems.Add(historial.CambioPorcentual.ToString("F3"));
                 item.SubItems.Add(historial.TipoCambio);
@@ -252,8 +254,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             } else botonOpciones.Visible = false;
         }
 
-        private void Evento_GuardarAlerta(object sender, EventArgs e)
+        private void Evento_GuardarAlerta(object sender, FavoritaDTO e)
         {
+            _alertaMonitor.CrearAlerta(e.CryptoNombre, e.NuevoValor, e.Tipo, e.AlertaID.Value);
             CargarAlertasActivas();
         }
 

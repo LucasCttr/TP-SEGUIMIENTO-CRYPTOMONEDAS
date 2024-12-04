@@ -21,6 +21,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         public IUnitOfWork _unitOfWork;
         private ICryptoState _estadoActual;
         public InicioForm InicioForm;
+        public event EventHandler<FavoritaDTO> GuardarAlerta;
+
 
         public OpcionesCrypto(string nombreCrypto, string idCrypto, IUnitOfWork unitOfWork, InicioForm inicioForm)
         {
@@ -88,12 +90,12 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         }
 
         //Evento para actualizar la view del formulario de inicio al darle a guardar en el formulario de alerta.
-        private void FormularioSecundario_GuardarAlerta(object sender, EventArgs e)
+        private void FormularioSecundario_GuardarAlerta(object sender, FavoritaDTO e)
         {
             // Propagar el evento o invocar el método en el FormularioPrincipal
             // Puedes crear un evento en el FormularioIntermedio para llamar al FormularioPrincipal
-            EventoGuardarAlerta?.Invoke(this, e);
+            GuardarAlerta?.Invoke(this, e);
+            MessageBox.Show(e.CryptoNombre);
         }
-        public event EventHandler EventoGuardarAlerta;
     }
 }
