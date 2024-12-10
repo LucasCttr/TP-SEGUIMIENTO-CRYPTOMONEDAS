@@ -3,37 +3,34 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas;
 
-namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
+namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
     //PAtron estado para el cambio de logica en caso de que una crpyto sea favorita o no
     public interface ICryptoState
     {
-        void Handle(OpcionesCrypto opcionesCrypto);
+        void Handle(OpcionesCryptoForm opcionesCrypto);
     }
 
     public class AgregarState : ICryptoState
     {
-        public void Handle(OpcionesCrypto opcionesCrypto)
+        public void Handle(OpcionesCryptoForm opcionesCrypto)
         {
-            
             opcionesCrypto._unitOfWork.CryptosFavoritas.AgregarCryptoAFavorito(opcionesCrypto.cryptoNombre, opcionesCrypto.cryptoId);
             opcionesCrypto.InicioForm.ActualizarListaFavoritasAsync();
             opcionesCrypto.CambiarEstado(new EliminarState());
-            opcionesCrypto.ActualizarBotones("Eliminar",true);
+            opcionesCrypto.ActualizarBotones("Eliminar", true);
         }
     }
 
     public class EliminarState : ICryptoState
     {
-        public void Handle(OpcionesCrypto opcionesCrypto)
+        public void Handle(OpcionesCryptoForm opcionesCrypto)
         {
-            
             opcionesCrypto._unitOfWork.CryptosFavoritas.EliminarCryptoDeFavorito(opcionesCrypto.cryptoId);
             opcionesCrypto.InicioForm.ActualizarListaFavoritasAsync();
             opcionesCrypto.CambiarEstado(new AgregarState());
-            opcionesCrypto.ActualizarBotones("Agregar",false);
+            opcionesCrypto.ActualizarBotones("Agregar", false);
         }
     }
 }

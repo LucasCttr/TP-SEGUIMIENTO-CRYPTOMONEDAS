@@ -98,9 +98,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             return crypto != null; // Devuelve true si existe, false si no
         }
 
-
         // Método para obtener el historial de precios
-
         public List<PuntoHistorial> ObtenerHistorialDeUnaCrypto(string cryptoId, string intervalo)
         {
             var request = new RestRequest($"assets/{cryptoId}/history?interval={intervalo}", Method.Get);

@@ -1,6 +1,6 @@
 ﻿namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
-    partial class OpcionesCrypto
+    partial class OpcionesCryptoForm
     {
         /// <summary>
         /// Required designer variable.

@@ -9,8 +9,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.MonitoreoAlertasService;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
@@ -74,7 +74,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 ListViewItem selectedItem = listaCryptosFavoritas.SelectedItems[0];
 
                 // Crear e iniciar el nuevo formulario pasando los datos
-                OpcionesCrypto opcionesForm = new OpcionesCrypto(selectedItem.SubItems[1].Text, selectedItem.SubItems[5].Text, _unitOfWork, this);
+                OpcionesCryptoForm opcionesForm = new OpcionesCryptoForm(selectedItem.SubItems[1].Text, selectedItem.SubItems[5].Text, _unitOfWork, this);
 
                 // Suscribirse al evento del formulario intermedio
                 opcionesForm.GuardarAlerta += Evento_GuardarAlerta;

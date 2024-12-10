@@ -8,17 +8,17 @@ using TP_SEGUIMIENTO_CRYPTOMONEDAS.SessionManagerService;
 using MailKit.Net.Smtp;
 using MimeKit;
 
-namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
+namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.MonitoreoAlertasService
 {
-    public class AlertaPorcentaje : IAlertaObserver
+    public class AlertaObservador : IAlertaObserver
     {
-        private readonly Action<string,int> alertaActivada;
+        private readonly Action<string, int> alertaActivada;
         public string nombreCrypto { get; set; }
         public int idAlerta { get; set; }
         public decimal valorAlerta { get; set; }
         public string tipoAlerta { get; set; }
 
-        public AlertaPorcentaje(Action<string,int> accion)
+        public AlertaObservador(Action<string, int> accion)
         {
             alertaActivada = accion;
         }
@@ -26,10 +26,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
         // Configuramos la alerta con los valores de la criptomoneda y los umbrales
         public void ConfigurarAlerta(string nombre, decimal valorAlerta, string tipoAlerta, int idAlerta)
         {
-            this.nombreCrypto = nombre;
+            nombreCrypto = nombre;
             this.valorAlerta = valorAlerta;
             this.tipoAlerta = tipoAlerta;
-            this.idAlerta = idAlerta;   
+            this.idAlerta = idAlerta;
         }
 
         public void Notificar(decimal cambio24Hs)

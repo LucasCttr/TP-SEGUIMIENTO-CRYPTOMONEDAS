@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
 
-namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
+namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.MonitoreoAlertasService
 {
     public class AlertaMonitor
     {
@@ -23,7 +23,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
             var copiaObservadores = observadores.ToList();
             foreach (var observador in copiaObservadores)
             {
-                if (observador is AlertaPorcentaje alerta && alerta.nombreCrypto == nombreCrypto)
+                if (observador is AlertaObservador alerta && alerta.nombreCrypto == nombreCrypto)
                 {
                     alerta.Notificar(cambio24Hs);
                 }
@@ -33,12 +33,12 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
         public void ActualizarAlerta(string nombreCrypto, decimal valorAlerta, string tipoAlerta, int idAlerta)
         {
             // Buscar si ya existe un observador asociado a la criptomoneda
-            var observadorAModificar = observadores.FirstOrDefault(o => o is AlertaPorcentaje alerta && alerta.nombreCrypto == nombreCrypto);
+            var observadorAModificar = observadores.FirstOrDefault(o => o is AlertaObservador alerta && alerta.nombreCrypto == nombreCrypto);
 
             if (observadorAModificar != null)
             {
                 // Si existe, modificar su configuración
-                if (observadorAModificar is AlertaPorcentaje alerta)
+                if (observadorAModificar is AlertaObservador alerta)
                 {
                     alerta.ConfigurarAlerta(nombreCrypto, valorAlerta, tipoAlerta, idAlerta);
                 }
@@ -47,9 +47,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
 
         public void CrearAlerta(string nombreCrypto, decimal valorAlerta, string tipoAlerta, int idAlerta)
         {
-            
+
             //Crear observador 
-            var nuevoObservador = new AlertaPorcentaje(
+            var nuevoObservador = new AlertaObservador(
                     (mensaje, alertaID) => AlertaActivada(mensaje, alertaID)); // Acción para mostrar el mensaje
 
             // Configurar el observador
@@ -73,7 +73,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
         public void EliminarObservador(int idAlerta)
         {
             // Elimina el observador correspondiente
-            var observadorAEliminar = observadores.FirstOrDefault(o => o is AlertaPorcentaje alerta && alerta.idAlerta == idAlerta);
+            var observadorAEliminar = observadores.FirstOrDefault(o => o is AlertaObservador alerta && alerta.idAlerta == idAlerta);
             if (observadorAEliminar != null)
             {
                 observadores.Remove(observadorAEliminar);
@@ -81,12 +81,12 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
         }
 
 
-        public void CargarObservadores(List<DTOs.AlertaDTO> listaAlertasActivas)
+        public void CargarObservadores(List<AlertaDTO> listaAlertasActivas)
         {
             foreach (var alerta in listaAlertasActivas)
             {
                 //Crear observador 
-                var nuevoObservador = new AlertaPorcentaje(
+                var nuevoObservador = new AlertaObservador(
                         (mensaje, alertaID) => AlertaActivada(mensaje, alertaID)); // Acción para mostrar el mensaje
 
                 // Configurar el observador

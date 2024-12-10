@@ -7,14 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
-    public partial class OpcionesCrypto : Form
+    public partial class OpcionesCryptoForm : Form
     {
         public string cryptoNombre;
         public string cryptoId;
@@ -24,7 +23,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         public event EventHandler<FavoritaDTO> GuardarAlerta;
 
 
-        public OpcionesCrypto(string nombreCrypto, string idCrypto, IUnitOfWork unitOfWork, InicioForm inicioForm)
+        public OpcionesCryptoForm(string nombreCrypto, string idCrypto, IUnitOfWork unitOfWork, InicioForm inicioForm)
         {
             InitializeComponent();
             _unitOfWork = unitOfWork;

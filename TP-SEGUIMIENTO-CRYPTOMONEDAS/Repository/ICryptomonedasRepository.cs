@@ -16,11 +16,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
         List<PuntoHistorial> ObtenerHistorialDeUnaCrypto(string idCrypto, string intervalo);
         void EliminarCryptoDeFavorito(string nombreCrypto);
         void AgregarCryptoAFavorito(string nombreCrypto, string idCrypto);
-        bool VerificarSiEsFavorito(string idCrypto);
-        //IEnumerable<CryptoCurrencyDTO> GetAll();
-        // CryptoCurrencyDTO GetById(string id);
-        //  void Add(CryptoCurrencyDTO cryptoCurrency);
-        //   void Update(CryptoCurrencyDTO cryptoCurrency);
-        //  void Delete(string id);
+        bool VerificarSiEsFavorito(string idCrypto);   
     }
 }
