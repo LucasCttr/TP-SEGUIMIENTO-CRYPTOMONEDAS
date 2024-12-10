@@ -5,8 +5,11 @@ using System.Text;
 using System.Threading.Tasks;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.SessionManagerService;
-using MailKit.Net.Smtp;
-using MimeKit;
+//using MailKit.Net.Smtp;
+//using MimeKit;
+using System.Net;
+using System.Net.Mail;
+using Microsoft.Extensions.Configuration;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.MonitoreoAlertasService
 {
@@ -37,46 +40,52 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.MonitoreoAlertasService
             if (tipoAlerta == "Incremento" && cambio24Hs >= valorAlerta)
             {
                 alertaActivada($"🔔 Alerta: {nombreCrypto} ha aumentado un {cambio24Hs:F2}% en las últimas 24 horas.", idAlerta);
-                //EnviarMail(tipoAlerta, valorAlerta);
+                EnviarMail(tipoAlerta, valorAlerta);
             }
             else if (tipoAlerta == "Decremento" && cambio24Hs <= valorAlerta)
             {
                 alertaActivada($"🔔 Alerta: {nombreCrypto} ha disminuido un {cambio24Hs:F2}% en las últimas 24 horas.", idAlerta);
-                //EnviarMail(tipoAlerta, valorAlerta);
+                EnviarMail(tipoAlerta, valorAlerta);
             }
         }
 
         //Crear Contrasena de aplicaciones
         private void EnviarMail(string tipo, decimal valor)
-        {
-            var mailFrom = "carottalucas2@gmail.com";
-            var mailTo = SessionManager.CurrentMail;
+        {   
+            var configuration = new ConfigurationBuilder()
+                .SetBasePath(AppContext.BaseDirectory)
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            var mailFrom = configuration["EmailSettings:MailFrom"];
+            var mailTo = "martindfernandez23@gmail.com"; //cambiar a SessionManager.CurrentMail;
+            var smtpPassword = configuration["EmailSettings:SMTPPassword"];
+            var asunto = "Alerta Activada: " + nombreCrypto;
+            var cuerpo = "Este es un correo para avisar que la cryptomoneda " + nombreCrypto + " " + tipo + " un " + valor + "%";
+
             try
             {
-                // Crear el mensaje
-                var mensaje = new MimeMessage();
-                mensaje.From.Add(new MailboxAddress("Alertas", mailFrom));
-                mensaje.To.Add(new MailboxAddress(SessionManager.CurrentName, "carottalucas@gmail.com"));   // Modificar, poner mailTo 
-                mensaje.Subject = "Alerta Activada: " + nombreCrypto;
+                // Configuración del cliente SMTP
+                SmtpClient client = new SmtpClient("smtp.gmail.com");
+                client.Port = 587; // Puerto SMTP
+                client.Credentials = new NetworkCredential(mailFrom, smtpPassword);
+                client.EnableSsl = true; // Habilitar SSL
 
-                // Cuerpo del correo
-                mensaje.Body = new TextPart("plain")
-                {
-                    Text = "Este es un correo para avisar que la cryptomoneda " + nombreCrypto + " " + tipo + " un" + valor + "%"
-                };
+                // Crear el mensaje de correo
+                MailMessage mailMessage = new MailMessage();
+                mailMessage.From = new MailAddress(mailFrom);
+                mailMessage.To.Add(mailTo);
+                mailMessage.Subject = asunto;
+                mailMessage.Body = cuerpo;
 
-                // Configurar el cliente SMTP
-                using (var cliente = new SmtpClient())
-                {
-                    cliente.Connect("smtp.gmail.com", 587, MailKit.Security.SecureSocketOptions.StartTls);
-                    cliente.Authenticate(mailFrom, "asda");
-
-                    // Enviar el correo
-                    cliente.Send(mensaje);
-                    cliente.Disconnect(true);
-                }
+                // Enviar el correo
+                client.Send(mailMessage);
             }
-            catch (Exception ex) { MessageBox.Show(ex.Message); }
+            catch (Exception ex)
+            {
+                // Manejo de errores
+                Console.WriteLine("Error al enviar el correo: " + ex.Message);
+            }
         }
     }
 }
