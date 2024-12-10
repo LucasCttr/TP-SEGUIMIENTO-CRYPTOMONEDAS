@@ -28,9 +28,9 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea1 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
-            System.Windows.Forms.DataVisualization.Charting.Legend legend1 = new System.Windows.Forms.DataVisualization.Charting.Legend();
-            System.Windows.Forms.DataVisualization.Charting.Series series1 = new System.Windows.Forms.DataVisualization.Charting.Series();
+            System.Windows.Forms.DataVisualization.Charting.ChartArea chartArea3 = new System.Windows.Forms.DataVisualization.Charting.ChartArea();
+            System.Windows.Forms.DataVisualization.Charting.Legend legend3 = new System.Windows.Forms.DataVisualization.Charting.Legend();
+            System.Windows.Forms.DataVisualization.Charting.Series series3 = new System.Windows.Forms.DataVisualization.Charting.Series();
             grafico = new System.Windows.Forms.DataVisualization.Charting.Chart();
             boton6Meses = new Button();
             boton12Meses = new Button();
@@ -44,33 +44,25 @@
             // 
             // grafico
             // 
-            chartArea1.Name = "ChartArea1";
-            grafico.ChartAreas.Add(chartArea1);
-            legend1.Name = "Legend1";
-            grafico.Legends.Add(legend1);
+            chartArea3.Name = "ChartArea1";
+            grafico.ChartAreas.Add(chartArea3);
+            legend3.Name = "Legend1";
+            grafico.Legends.Add(legend3);
             grafico.Location = new Point(-40, 68);
             grafico.Name = "grafico";
-            series1.ChartArea = "ChartArea1";
-            series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
-            series1.Legend = "Legend1";
-            series1.Name = "Series1";
-            series1.ToolTip = "X: {#VALX}, Y: {#VALY}";
-            grafico.Series.Add(series1);
+            series3.ChartArea = "ChartArea1";
+            series3.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line;
+            series3.Legend = "Legend1";
+            series3.Name = "Series1";
+            series3.ToolTip = "X: {#VALX}, Y: {#VALY}";
+            grafico.Series.Add(series3);
             grafico.Size = new Size(1086, 502);
             grafico.TabIndex = 0;
             grafico.Text = "CryptoNombre";
             // 
-            // labelTitulo
-            // 
-            labelTitulo.Location = new Point(890, 65);
-            labelTitulo.Name = "labelTitulo";
-            labelTitulo.Size = new Size(150, 23);
-            labelTitulo.TabIndex = 6;
-            labelTitulo.Text = "Historial de los últimos:";
-            // 
             // boton6Meses
             // 
-            boton6Meses.Location = new Point(933, 118);
+            boton6Meses.Location = new Point(921, 141);
             boton6Meses.Name = "boton6Meses";
             boton6Meses.Size = new Size(75, 23);
             boton6Meses.TabIndex = 1;
@@ -80,7 +72,7 @@
             // 
             // boton12Meses
             // 
-            boton12Meses.Location = new Point(933, 89);
+            boton12Meses.Location = new Point(921, 112);
             boton12Meses.Name = "boton12Meses";
             boton12Meses.Size = new Size(75, 23);
             boton12Meses.TabIndex = 2;
@@ -90,7 +82,7 @@
             // 
             // boton1Mes
             // 
-            boton1Mes.Location = new Point(933, 147);
+            boton1Mes.Location = new Point(921, 170);
             boton1Mes.Name = "boton1Mes";
             boton1Mes.Size = new Size(75, 23);
             boton1Mes.TabIndex = 3;
@@ -100,7 +92,7 @@
             // 
             // Boton1Dia
             // 
-            Boton1Dia.Location = new Point(933, 176);
+            Boton1Dia.Location = new Point(921, 199);
             Boton1Dia.Name = "Boton1Dia";
             Boton1Dia.Size = new Size(75, 23);
             Boton1Dia.TabIndex = 4;
@@ -110,11 +102,23 @@
             // 
             // listaDetalles
             // 
-            listaDetalles.Location = new Point(12, 12);
+            listaDetalles.BorderStyle = BorderStyle.None;
+            listaDetalles.Location = new Point(0, -1);
             listaDetalles.Name = "listaDetalles";
-            listaDetalles.Size = new Size(996, 50);
+            listaDetalles.Size = new Size(1019, 75);
             listaDetalles.TabIndex = 5;
             listaDetalles.UseCompatibleStateImageBehavior = false;
+            // 
+            // labelTitulo
+            // 
+            labelTitulo.BackColor = Color.White;
+            labelTitulo.Font = new Font("Segoe UI", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            labelTitulo.ForeColor = SystemColors.ControlText;
+            labelTitulo.Location = new Point(885, 86);
+            labelTitulo.Name = "labelTitulo";
+            labelTitulo.Size = new Size(134, 23);
+            labelTitulo.TabIndex = 6;
+            labelTitulo.Text = "Historial de los últimos:";
             // 
             // GraficoForm
             // 
