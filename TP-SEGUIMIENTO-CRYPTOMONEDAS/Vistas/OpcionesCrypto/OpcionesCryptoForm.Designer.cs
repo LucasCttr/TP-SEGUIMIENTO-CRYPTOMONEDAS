@@ -1,4 +1,4 @@
-﻿namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
+﻿namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas.OpcionesCrypto
 {
     partial class OpcionesCryptoForm
     {

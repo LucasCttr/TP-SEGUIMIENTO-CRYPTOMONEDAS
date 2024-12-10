@@ -12,6 +12,7 @@ using System.Windows.Forms;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.MonitoreoAlertasService;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas.OpcionesCrypto;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
@@ -20,7 +21,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
     {
         public IUnitOfWork _unitOfWork;
         public AlertaMonitor _alertaMonitor;
-        public event EventHandler<FavoritaDTO> GuardarAlerta;
+        public event EventHandler<FavoritaDTO> GuardarAlerta = delegate { };
 
         public InicioForm(IUnitOfWork unitOfWork, AlertaMonitor alertaService)
         {
@@ -30,9 +31,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             _unitOfWork = unitOfWork;
             _alertaMonitor = alertaService;
            
-            listaCryptosFavoritas.SelectedIndexChanged += listaCryptosFavoritas_SelectedIndexChanged;
-            listaAlertas.SelectedIndexChanged += listaAlertas_SelectedIndexChanged;
-            listaCryptosFavoritas.DoubleClick += listaCryptosFavoritas_DoubleClick; // Add this line
+            listaCryptosFavoritas.SelectedIndexChanged += listaCryptosFavoritas_SelectedIndexChanged!;
+            listaAlertas.SelectedIndexChanged += listaAlertas_SelectedIndexChanged!;
+            listaCryptosFavoritas.DoubleClick += listaCryptosFavoritas_DoubleClick!; // Add this line
 
             _alertaMonitor.CargarObservadores(_unitOfWork.Alerta.ObtenerAlertasActivas());
 

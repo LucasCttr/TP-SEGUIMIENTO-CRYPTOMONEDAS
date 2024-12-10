@@ -11,7 +11,7 @@ using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 
-namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
+namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas.OpcionesCrypto
 {
     public partial class OpcionesCryptoForm : Form
     {

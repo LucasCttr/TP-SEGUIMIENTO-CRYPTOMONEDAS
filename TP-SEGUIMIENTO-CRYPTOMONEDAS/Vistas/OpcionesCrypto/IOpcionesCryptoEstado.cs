@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
+namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas.OpcionesCrypto
 {
     //PAtron estado para el cambio de logica en caso de que una crpyto sea favorita o no
     public interface ICryptoState

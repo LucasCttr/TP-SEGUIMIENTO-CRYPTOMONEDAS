@@ -13,6 +13,7 @@ using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
 using System.Globalization;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas.OpcionesCrypto;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
