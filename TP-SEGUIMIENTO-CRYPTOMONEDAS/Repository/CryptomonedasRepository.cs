@@ -130,6 +130,12 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
                 return new List<PuntoHistorial>();
             }
         }
+
+        public class PuntoHistorial
+        {
+            public DateTime Fecha { get; set; }
+            public double Precio { get; set; }
+        }
     }
 }
 
