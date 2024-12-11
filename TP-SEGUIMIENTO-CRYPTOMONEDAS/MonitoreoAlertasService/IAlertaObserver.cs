@@ -9,14 +9,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.MonitoreoAlertasService
 {
     public interface IAlertaObserver
     {
-        string nombreCrypto { get; }  // Propiedad que quieres referenciar
+        string nombreCrypto { get; }  
         int idAlerta { get; }
         decimal valorAlerta { get; }
         string tipoAlerta { get; }
-        //void Notificar(decimal Cambio24Hs);
-        // void EliminarAlerta(string nombre);
 
         void ConfigurarAlerta(string nombre, decimal valor, string tipo, int idAlerta);
-
     }
 }

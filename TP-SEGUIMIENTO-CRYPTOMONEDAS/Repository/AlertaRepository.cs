@@ -3,6 +3,9 @@ using TP_SEGUIMIENTO_CRYPTOMONEDAS.Data;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.SessionManagerService;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
 {
@@ -10,32 +13,33 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
     {
         private readonly AppDbContext _context;
         private readonly RestClient _client;
+
         public AlertaRepository(AppDbContext context)
         {
             _context = context;
-            _client = new RestClient("https://api.coincap.io/v2/");  //BORRAR?
+            _client = new RestClient("https://api.coincap.io/v2/"); // Configuración del cliente REST
         }
 
         public List<AlertaDTO> ObtenerAlertasHistorial()
         {
-            //Accede al userId desde la sesión(suponiendo que tienes una forma de acceder a la sesión)
-            int userId = SessionManager.CurrentUserId; // Cambia esto según tu implementación de sesión
+            // Accede al userId desde la sesión
+            int userId = SessionManager.CurrentUserId;
 
-           //Obtiene las criptomonedas favoritas del usuario especificado de manera síncrona
-          var favoriteCryptos = _context.Alertas
+            // Obtiene las criptomonedas favoritas del usuario especificado de manera síncrona
+            var favoriteCryptos = _context.Alertas
                 .Where(fc => fc.UsuarioID == userId && fc.FechaActivasion != null)
-                .AsEnumerable() // Mueve la consulta a memoria
-                .Where(fc => (DateTime.Now.Date - fc.FechaActivasion.Value).Days < 7) // Ahora puedes comparar en memoria
-                .Select(fc => new AlertaDTO // Mapea a AlertaDTO
+                .AsEnumerable()
+                .Where(fc => (DateTime.Now.Date - fc.FechaActivasion.Value).Days < 7)
+                .Select(fc => new AlertaDTO
                 {
                     CryptomonedaID = fc.CryptomonedaID,
                     CambioPorcentual = fc.CambioPorcentual,
                     FechaActivasion = fc.FechaActivasion,
                     TipoCambio = fc.TipoCambio,
                 })
-                .ToList(); // Usa ToList() para una operación síncrona
+                .ToList();
 
-            return favoriteCryptos; // Retorna la lista de criptomonedas favoritas
+            return favoriteCryptos;
         }
 
         public List<AlertaDTO> ObtenerAlertasActivas()
@@ -48,10 +52,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
                 {
                     CambioPorcentual = fc.CambioPorcentual,
                     TipoCambio = fc.TipoCambio,
-                    CryptomonedaID = fc.CryptomonedaID, 
+                    CryptomonedaID = fc.CryptomonedaID,
                     AlertaID = fc.AlertaID
-                    
                 }).ToList();
+
             return alertasActivas;
         }
 
@@ -60,12 +64,16 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             int userId = SessionManager.CurrentUserId;
             var alerta = _context.Alertas.Where(fc => fc.UsuarioID == userId && fc.AlertaID == idCrypto)
                 .FirstOrDefault();
-            // Sobrescribir las propiedades directamente
-            alerta.CambioPorcentual = valorAlerta;
-            alerta.TipoCambio = tipoAlerta;
 
-            // Guardar los cambios en la base de datos
-            _context.SaveChanges();
+            // Sobrescribir las propiedades directamente
+            if (alerta != null)
+            {
+                alerta.CambioPorcentual = valorAlerta;
+                alerta.TipoCambio = tipoAlerta;
+
+                // Guardar los cambios en la base de datos
+                _context.SaveChanges();
+            }
         }
 
         public void EliminarAlerta(int idAlerta)
@@ -104,7 +112,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             _context.SaveChanges();
 
             // Obtener el Id de la alerta recién creada
-            int nuevaAlertaId = nuevaAlerta.AlertaID; // Suponiendo que "AlertaID" es la clave primaria
+            int nuevaAlertaId = nuevaAlerta.AlertaID;
 
             return nuevaAlertaId;
         }
@@ -116,11 +124,13 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
                 .FirstOrDefault();
 
             // Sobrescribir la fecha
-            alerta.FechaActivasion = DateTime.Now;
+            if (alerta != null)
+            {
+                alerta.FechaActivasion = DateTime.Now;
 
-            // Guardar los cambios en la base de datos
-            _context.SaveChanges();
+                // Guardar los cambios en la base de datos
+                _context.SaveChanges();
+            }
         }
     }
- }
-
+}

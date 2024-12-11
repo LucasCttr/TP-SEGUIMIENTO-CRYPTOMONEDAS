@@ -10,16 +10,14 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.MonitoreoAlertasService
 {
     public class AlertaMonitor
     {
-        public event Action<int> alertaActivada;
-        private readonly List<IAlertaObserver> observadores = new();
+        public event Action<int> alertaActivada; // Evento que se dispara cuando una alerta es activada.
+        private readonly List<IAlertaObserver> observadores = new(); // Lista de observadores para las alertas.
 
-        public AlertaMonitor()
-        {
-        }
+        public AlertaMonitor() { }
 
+        // Notifica cambios de tendencia a todos los observadores que corresponden a la criptomoneda especificada.
         public void NotificarCambio(string nombreCrypto, decimal cambio24Hs)
         {
-            //Notifico cambios de tendencia
             var copiaObservadores = observadores.ToList();
             foreach (var observador in copiaObservadores)
             {
@@ -30,49 +28,42 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.MonitoreoAlertasService
             }
         }
 
+        // Actualiza la configuración de una alerta existente.
         public void ActualizarAlerta(string nombreCrypto, decimal valorAlerta, string tipoAlerta, int idAlerta)
         {
-            // Buscar si ya existe un observador asociado a la criptomoneda
             var observadorAModificar = observadores.FirstOrDefault(o => o is AlertaObservador alerta && alerta.nombreCrypto == nombreCrypto);
 
-            if (observadorAModificar != null)
+            if (observadorAModificar != null && observadorAModificar is AlertaObservador alerta)
             {
-                // Si existe, modificar su configuración
-                if (observadorAModificar is AlertaObservador alerta)
-                {
-                    alerta.ConfigurarAlerta(nombreCrypto, valorAlerta, tipoAlerta, idAlerta);
-                }
+                alerta.ConfigurarAlerta(nombreCrypto, valorAlerta, tipoAlerta, idAlerta);
             }
         }
 
+        // Crea y agrega un nuevo observador para una alerta.
         public void CrearAlerta(string nombreCrypto, decimal valorAlerta, string tipoAlerta, int idAlerta)
         {
-
-            //Crear observador 
             var nuevoObservador = new AlertaObservador(
                     (mensaje, alertaID) => AlertaActivada(mensaje, alertaID)); // Acción para mostrar el mensaje
 
-            // Configurar el observador
             nuevoObservador.ConfigurarAlerta(nombreCrypto, valorAlerta, tipoAlerta, idAlerta);
 
             observadores.Add(nuevoObservador);
         }
 
+        // Desactiva y elimina un observador cuando una alerta es activada.
         public void AlertaActivada(string mensaje, int idAlerta)
         {
-            //Elimino observador
             EliminarObservador(idAlerta);
 
-            // Notificar a los suscriptores
+            // Comunica al InicioForm de la alerta activa para agregarle la fecha actual en la bd, mediante el unitOfWork
             alertaActivada?.Invoke(idAlerta);
 
             MessageBox.Show(mensaje);
         }
 
-
+        // Elimina el observador correspondiente al ID de la alerta especificado.
         public void EliminarObservador(int idAlerta)
         {
-            // Elimina el observador correspondiente
             var observadorAEliminar = observadores.FirstOrDefault(o => o is AlertaObservador alerta && alerta.idAlerta == idAlerta);
             if (observadorAEliminar != null)
             {
@@ -80,16 +71,14 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.MonitoreoAlertasService
             }
         }
 
-
+        // Carga todos los observadores existentes desde una lista de alertas activas.
         public void CargarObservadores(List<AlertaDTO> listaAlertasActivas)
         {
             foreach (var alerta in listaAlertasActivas)
             {
-                //Crear observador 
                 var nuevoObservador = new AlertaObservador(
                         (mensaje, alertaID) => AlertaActivada(mensaje, alertaID)); // Acción para mostrar el mensaje
 
-                // Configurar el observador
                 nuevoObservador.ConfigurarAlerta(alerta.CryptomonedaID, alerta.CambioPorcentual, alerta.TipoCambio, alerta.AlertaID);
 
                 observadores.Add(nuevoObservador);

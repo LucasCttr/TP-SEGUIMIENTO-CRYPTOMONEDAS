@@ -5,8 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.SessionManagerService;
-//using MailKit.Net.Smtp;
-//using MimeKit;
 using System.Net;
 using System.Net.Mail;
 using Microsoft.Extensions.Configuration;
@@ -49,16 +47,16 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.MonitoreoAlertasService
             }
         }
 
-        //Crear Contrasena de aplicaciones
+        // Enviar correo electrónico al activar la alerta
         private void EnviarMail(string tipo, decimal valor)
-        {   
+        {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(AppContext.BaseDirectory)
                 .AddJsonFile("appsettings.json")
                 .Build();
 
             var mailFrom = configuration["EmailSettings:MailFrom"];
-            var mailTo = "martindfernandez23@gmail.com"; //cambiar a SessionManager.CurrentMail;
+            var mailTo = "martindfernandez23@gmail.com";                            // Cambiar a SessionManager.CurrentMail;
             var smtpPassword = configuration["EmailSettings:SMTPPassword"];
             var asunto = "Alerta Activada: " + nombreCrypto;
             var cuerpo = "Este es un correo para avisar que la cryptomoneda " + nombreCrypto + " " + tipo + " un " + valor + "%";
