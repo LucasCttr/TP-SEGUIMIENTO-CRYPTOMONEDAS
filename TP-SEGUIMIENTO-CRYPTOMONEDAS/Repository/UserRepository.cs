@@ -1,5 +1,4 @@
-﻿using Microsoft.VisualBasic.ApplicationServices;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,76 +20,79 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             _context = context;
         }
 
+        // Valida las credenciales del usuario en la base de datos
         public UserDTO ValidarUsuario(string mail, string contrasena)
         {
-            // Consulta directa a la base de datos, sin traer todas las entidades.
+            // Consulta directa a la base de datos para validar las credenciales del usuario.
             var usuarioDTO = _context.Usuarios
-                .Where(u => u.Correo == mail && u.Contraseña == contrasena) // Compara directamente en la base de datos.
+                .Where(u => u.Correo == mail && u.Contraseña == contrasena) // Comparación de las credenciales
                 .Select(u => new UserDTO
                 {
                     UsuarioID = u.UsuarioID,
                     Nombre = u.Nombre,
                     Correo = u.Correo
                 })
-                .FirstOrDefault();
+                .FirstOrDefault(); // Obtiene el primer usuario encontrado o null si no hay coincidencias
 
-            return usuarioDTO; // Devuelve el DTO o null si no encuentra el usuario.
+            return usuarioDTO; // Devuelve el DTO de usuario o null
         }
 
+        // Obtiene las criptomonedas favoritas del usuario desde la base de datos
         public List<FavoritasDTO> ObtenerCryptosFavoritas()
         {
-            // Accede al userId desde la sesión (suponiendo que tienes una forma de acceder a la sesión)
+            // Recupera el ID del usuario desde la sesión
             int userId = SessionManager.CurrentUserId; // Cambia esto según tu implementación de sesión
 
-            // Obtiene las criptomonedas favoritas del usuario especificado de manera síncrona
+            // Consulta las criptomonedas favoritas del usuario
             var favoriteCryptos = _context.UsuariosCryptos
-                .Where(fc => fc.UsuarioID == userId) // Usa el userId de la sesión
-                .Select(fc => new FavoritasDTO // Mapea a UsuarioCryptoDTO
+                .Where(fc => fc.UsuarioID == userId) // Usa el ID de usuario de la sesión
+                .Select(fc => new FavoritasDTO // Mapea la información a FavoritasDTO
                 {
                     UsuarioID = fc.UsuarioID,
                     CryptomonedaID = fc.CryptomonedaID
                 })
-                .ToList(); // Usa ToList() para una operación síncrona
+                .ToList(); // Se convierte en una lista
 
-            return favoriteCryptos; // Retorna la lista de criptomonedas favoritas
+            return favoriteCryptos; // Devuelve la lista de criptomonedas favoritas
         }
 
+        // Valida si la contraseña ingresada corresponde con la de la sesión
         public bool ValidarContraseña(string contraseña)
         {
-            if (contraseña == SessionManager.CurrentPassword) { return true; } else { return false; }
+            return contraseña == SessionManager.CurrentPassword; // Devuelve true si coinciden, false si no
         }
 
+        // Cambia los datos del usuario en la base de datos
         public void CambiarDatosUsuario(string nombre, string correo, string contraseña)
         {
+            var usuario = _context.Usuarios.FirstOrDefault(u => u.Correo == correo);
+
+            if (usuario != null)
             {
-                // Buscar al usuario por el correo (o algún identificador único)
-                var usuario = _context.Usuarios.FirstOrDefault(u => u.Correo == correo);
+                // Actualiza los datos del usuario en la base de datos
+                usuario.Nombre = nombre;
+                usuario.Correo = correo;
+                usuario.Contraseña = contraseña;
 
-                if (usuario != null)
-                {
-                    // Actualizar los campos del usuario
-                    usuario.Nombre = nombre;
-                    usuario.Correo = correo;
-                    usuario.Contraseña = contraseña;
+                // Guarda los cambios
+                _context.SaveChanges();
 
-                    // Guardar los cambios en la base de datos
-                    _context.SaveChanges();
-
-                    SessionManager.CurrentName = nombre;
-                    SessionManager.CurrentMail = correo;
-                    SessionManager.CurrentPassword = contraseña;
-                }
+                // Actualiza los datos en la sesión
+                SessionManager.CurrentName = nombre;
+                SessionManager.CurrentMail = correo;
+                SessionManager.CurrentPassword = contraseña;
             }
         }
 
+        // Verifica si un usuario ya existe en la base de datos
         public bool VerificarExistenciaUsuario(string correo)
         {
-            // Buscar al usuario por el correo (o algún identificador único)
             var usuario = _context.Usuarios.FirstOrDefault(u => u.Correo == correo);
 
-            if (usuario != null) return true; else { return false; }
+            return usuario != null; // Devuelve true si el usuario existe, false si no
         }
 
+        // Da de alta un nuevo usuario en la base de datos
         public void DarDeAltaUsuario(string nombre, string correo, string contraseña)
         {
             var usuario = new Usuario
@@ -98,10 +100,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
                 Nombre = nombre,
                 Correo = correo,
                 Contraseña = contraseña
-
             };
+
             _context.Usuarios.Add(usuario);
-            _context.SaveChanges(true);
+            _context.SaveChanges(true); // Guarda los cambios
         }
     }
 }

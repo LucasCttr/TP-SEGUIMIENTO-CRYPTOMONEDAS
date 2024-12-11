@@ -11,7 +11,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
 {
     public interface ICryptomonedasRepository
     {
-        Task<List<CryptoDTO>> ObtenerMercado(); // Definición del método asíncrono
+        Task<List<CryptoDTO>> ObtenerMercado(); 
         CryptoDTO BuscarCryptoEnMercado(string IdCrypto);
         List<CryptomonedasRepository.PuntoHistorial> ObtenerHistorialDeUnaCrypto(string idCrypto, string intervalo);
         void EliminarCryptoDeFavorito(string nombreCrypto);

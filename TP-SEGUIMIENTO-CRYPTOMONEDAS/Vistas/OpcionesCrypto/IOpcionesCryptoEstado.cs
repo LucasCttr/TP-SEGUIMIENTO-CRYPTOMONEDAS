@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas.OpcionesCrypto
 {
-    //PAtron estado para el cambio de logica en caso de que una crpyto sea favorita o no
+    // Patron estado para el cambio de logica en caso de que una crpyto sea favorita o no
     public interface ICryptoState
     {
         void Handle(OpcionesCryptoForm opcionesCrypto);
