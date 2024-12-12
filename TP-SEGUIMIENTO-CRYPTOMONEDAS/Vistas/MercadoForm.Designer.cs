@@ -75,7 +75,6 @@
             Name = "MercadoForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "MercadoForm";
-            Load += MercadoForm_Load;
             ResumeLayout(false);
             PerformLayout();
         }

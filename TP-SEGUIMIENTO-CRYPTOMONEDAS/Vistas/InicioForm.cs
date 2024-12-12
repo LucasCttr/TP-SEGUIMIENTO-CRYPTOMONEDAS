@@ -119,11 +119,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                         _unitOfWork.Alerta.ActualizarAlerta(args.AlertaID.Value, args.NuevoValor, args.Tipo);
                         _alertaMonitor.ActualizarAlerta(args.CryptoNombre, args.NuevoValor, args.Tipo, args.AlertaID.Value);
                     }
-                    //else       //BORRAR?
-                    //{
-                    //    int idAlerta = _unitOfWork.Alerta.CrearAlerta(args.CryptoNombre, args.NuevoValor, args.Tipo);
-                    //    _alertaMonitor.CrearAlerta(args.CryptoNombre, args.NuevoValor, args.Tipo, idAlerta);
-                    //}
+
                     CargarAlertasActivas();
                 };
                 alertaForm.ActualizarForm(Convert.ToDecimal(selectedItem.SubItems[1].Text), selectedItem.SubItems[2].Text);
@@ -339,56 +335,5 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         {
             OpcionesBoton_Click(sender, e);
         }
-
-       
-
-
-
-
-
-        //Cargar una crypto al view de forma rapida
-        //public void CargarUnaCryptoAlView(string idCrypto)   //Hacerr un metodo para combinar con l ode arriba.
-        //{
-        //    var crypto = _unitOfWork.CryptosFavoritas.BuscarCryptoMedianteId(idCrypto);
-        //    // Crear el nuevo ListViewItem con el primer subítem
-        //    var Item = new ListViewItem(crypto.rank.ToString());
-
-        //    Item.SubItems.Add(crypto.name);
-        //    Item.SubItems.Add(crypto.symbol);
-        //    Item.SubItems.Add(crypto.priceUsd.ToString("C2", CultureInfo.CreateSpecificCulture("en-US"))); // Precio en USD, formato de moneda
-
-        //    //Para que los numeros no queden desalineados por el signo "-"
-        //    if (crypto.changePercent24Hr.ToString("F2").StartsWith("-"))
-        //        Item.SubItems.Add(crypto.changePercent24Hr.ToString("F2") + " %");
-        //    else Item.SubItems.Add("  " + crypto.changePercent24Hr.ToString("F2") + " %");
-
-        //    Item.SubItems.Add(crypto.id);
-        //    listaCryptosFavoritas.Items.Add(Item);
-
-        //    // Mostrar mensaje de éxito
-        //    MessageBox.Show(crypto.name + " agregado a favoritos");
-        //}
-
-        // Eliminar Crypto del view de forma rapida
-        //public void EliminarUnaCryptoDelView(string idCrypto)
-        //{
-        //    // Suspender redibujado
-        //    listaCryptosFavoritas.BeginUpdate();
-
-        //    foreach (ListViewItem item in listaCryptosFavoritas.Items)
-        //    {
-
-        //        if (item.SubItems[5].Text == idCrypto) // Cambia el índice si el ID está en otra columna
-        //        {
-        //            listaCryptosFavoritas.Items.Remove(item); // Eliminar el item encontrado
-        //            listaCryptosFavoritas.EndUpdate(); // Reactivar redibujado
-        //            MessageBox.Show(item.SubItems[1].Text + " eliminado de favoritos");
-        //            return;
-        //        }
-        //    }
-
-        //    // Reactivar redibujado en caso de que no se encuentre el ítem
-        //    listaCryptosFavoritas.EndUpdate();
-        //}
     }
 }
