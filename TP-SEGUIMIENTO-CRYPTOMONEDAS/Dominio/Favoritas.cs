@@ -8,7 +8,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
 {
     public class Favoritas
     {
-        // Propiedades públicas: necesarias para interactuar con Entity Framework y otras partes de la aplicación.
         public int FavoritoID { get; set; } // Clave primaria de la tabla Favoritas.
         public int UsuarioID { get; set; } // Identificador del usuario relacionado con la criptomoneda favorita.
         public string CryptomonedaID { get; set; } // Identificador único de la criptomoneda.

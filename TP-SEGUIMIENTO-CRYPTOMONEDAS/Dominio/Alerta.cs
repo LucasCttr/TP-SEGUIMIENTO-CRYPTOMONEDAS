@@ -8,7 +8,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio
 {
     public class Alerta
     {
-        // Propiedades públicas: estas son necesarias para interactuar con EF Core y otras partes de la aplicación.
         public int AlertaID { get; set; } // Clave primaria de la alerta.
         public int UsuarioID { get; set; } // Referencia al usuario asociado con la alerta.
         public decimal CambioPorcentual { get; set; } // Cambio porcentual configurado para la alerta.
