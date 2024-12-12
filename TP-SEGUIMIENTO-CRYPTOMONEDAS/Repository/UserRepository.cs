@@ -41,7 +41,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
         public List<FavoritasDTO> ObtenerCryptosFavoritas()
         {
             // Recupera el ID del usuario desde la sesión
-            int userId = SessionManager.CurrentUserId; // Cambia esto según tu implementación de sesión
+            int userId = SessionManager.CurrentUserId; 
 
             // Consulta las criptomonedas favoritas del usuario
             var favoriteCryptos = _context.UsuariosCryptos

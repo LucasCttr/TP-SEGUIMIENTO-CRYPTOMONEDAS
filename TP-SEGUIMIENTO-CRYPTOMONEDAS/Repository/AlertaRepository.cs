@@ -42,6 +42,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             return favoriteCryptos;
         }
 
+        // Obtiene las alertas de la base de datos que tienen el id del usuario y la fecha de activacion Null
         public List<AlertaDTO> ObtenerAlertasActivas()
         {
             int userId = SessionManager.CurrentUserId;
@@ -117,6 +118,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             return nuevaAlertaId;
         }
 
+        // Se llama cuando se produce un incremento o decremento del cambio porcentual sobre el valor de la alerta
         public void MarcarActivacionAlerta(int idCrypto)
         {
             // Busca la alerta específica por ID

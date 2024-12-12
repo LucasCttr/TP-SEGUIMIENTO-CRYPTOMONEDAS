@@ -96,12 +96,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
         public bool VerificarSiEsFavorito(string idCrypto)
         {
             int userId = SessionManager.CurrentUserId;
-            // Usar LINQ para hacer la comparación correctamente
             var crypto = _context.UsuariosCryptos
                 .FirstOrDefault(u => u.UsuarioID == userId && u.CryptomonedaID == idCrypto);
 
             // Devolver true si se encontró, false en caso contrario
-            return crypto != null; // Devuelve true si existe, false si no
+            return crypto != null; 
         }
 
         // Obtiene el historial de precios de una criptomoneda
