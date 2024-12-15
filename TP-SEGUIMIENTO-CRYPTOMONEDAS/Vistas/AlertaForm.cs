@@ -33,6 +33,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         private void AlertaForm_Load(object sender, EventArgs e)
         {
             cryptonombre.Text = CryptoNombre;
+            //cryptonombre.TextAlign = ContentAlignment.MiddleCenter;
+            cryptonombre.Left = ((this.ClientSize.Width - cryptonombre.Width) / 2) +2;
+            
         }
 
         private void botonGuardar_Click(object sender, EventArgs e)

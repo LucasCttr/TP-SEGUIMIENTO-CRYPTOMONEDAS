@@ -83,13 +83,14 @@
             // 
             // cryptonombre
             // 
+            cryptonombre.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
             cryptonombre.AutoSize = true;
-            cryptonombre.Font = new Font("Segoe UI", 12F, FontStyle.Regular, GraphicsUnit.Point);
-            cryptonombre.Location = new Point(71, 25);
+            cryptonombre.Font = new Font("Segoe UI", 12F);
+            cryptonombre.Location = new Point(47, 27);
             cryptonombre.Name = "cryptonombre";
-            cryptonombre.Size = new Size(52, 21);
+            cryptonombre.Size = new Size(115, 21);
             cryptonombre.TabIndex = 7;
-            cryptonombre.Text = "label2";
+            cryptonombre.Text = "CryptoNombre";
             cryptonombre.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // tipoAlerta
