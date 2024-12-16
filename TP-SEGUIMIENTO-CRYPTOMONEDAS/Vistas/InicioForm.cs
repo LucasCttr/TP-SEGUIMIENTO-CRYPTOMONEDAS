@@ -316,7 +316,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                     listaCryptosFavoritas.BeginUpdate(); // Iniciar actualización de la lista para evitar parpadeos
                     listaCryptosFavoritas.Items.Clear(); // Limpiar la lista existente
                     listaCryptosFavoritas.Items.AddRange(nuevosItems.ToArray()); // Agregar los nuevos items
-                    listaCryptosFavoritas.Sort();
+
+                    // Usar el comparador personalizado para ordenar
+                    listaCryptosFavoritas.ListViewItemSorter = new ListViewItemComparer(0); // Ordenar por la primera columna (rank)
+                    listaCryptosFavoritas.Sort(); // Ordenar
+
                     listaCryptosFavoritas.EndUpdate(); // Finalizar actualización de la lista
                 }));
             }
@@ -324,6 +328,37 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             {
                 // Mostrar un mensaje de error si ocurre una excepción
                 MessageBox.Show("Error al actualizar la lista de favoritas: " + ex.Message);
+            }
+        }
+        public class ListViewItemComparer : IComparer
+        {
+            private int columnIndex;
+
+            public ListViewItemComparer(int columnIndex)
+            {
+                this.columnIndex = columnIndex;
+            }
+
+            public int Compare(object x, object y)
+            {
+                // Verificar que los objetos sean ListViewItem
+                if (x is ListViewItem itemX && y is ListViewItem itemY)
+                {
+                    // Obtiene el valor de la columna (rank) como cadena
+                    var subItemX = itemX.SubItems[columnIndex].Text;
+                    var subItemY = itemY.SubItems[columnIndex].Text;
+
+                    // Intenta convertir los valores a números para ordenarlos correctamente
+                    if (int.TryParse(subItemX, out int xRank) && int.TryParse(subItemY, out int yRank))
+                    {
+                        return xRank.CompareTo(yRank);
+                    }
+
+                    // Si no es un número, se compara lexicográficamente
+                    return string.Compare(subItemX, subItemY);
+                }
+
+                throw new ArgumentException("Ambos objetos deben ser del tipo ListViewItem.");
             }
         }
 

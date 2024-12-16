@@ -34,9 +34,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         {
             cryptonombre.Text = CryptoNombre;
             cryptonombre.Left = ((this.ClientSize.Width - cryptonombre.Width) / 2) +2;
-            tipoAlerta.SelectedIndex = 0;
-            valorAlerta.Text = "0"; 
-            
+
+            if (valorAlerta.Text == "")
+            {
+                ActualizarForm(0,"Incremento");
+            }
         }
 
         private void botonGuardar_Click(object sender, EventArgs e)
