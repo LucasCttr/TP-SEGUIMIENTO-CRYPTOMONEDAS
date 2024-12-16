@@ -19,8 +19,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
     public partial class InicioForm : Form
     {
-        public IUnitOfWork _unitOfWork;
-        public AlertaMonitor _alertaMonitor;
+        private IUnitOfWork _unitOfWork;
+        private AlertaMonitor _alertaMonitor;
         public event EventHandler<FavoritaDTO> GuardarAlerta = delegate { };
 
         public InicioForm(IUnitOfWork unitOfWork, AlertaMonitor alertaService)

@@ -15,9 +15,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
     public partial class AlertaForm : Form
     {
-        public string CryptoNombre { get; private set; }
+        public string CryptoNombre { get; set; }
         public int? AlertaID { get; private set; }
-        public IUnitOfWork _unitOfWork;
+        private IUnitOfWork _unitOfWork;
 
         // Evento para notificar al exterior
         public event EventHandler<FavoritaDTO> GuardarAlerta;
