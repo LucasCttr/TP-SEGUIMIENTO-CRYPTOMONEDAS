@@ -41,14 +41,16 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             string Correo = MailBox.Text; // Obtiene el correo del TextBox.
             string Contraseña = ContrasenaBox.Text; // Obtiene la contraseña del TextBox.
 
-            // Llama al método del repositorio para validar credenciales.
-            var user = _unitOfWork.Usuarios.ValidarUsuario(Correo, Contraseña);
+            // Llama al metodo del repositorio para verificar si los datos ingresados coinciden con un usuario existente
+            var autentificacionCorrecta = _unitOfWork.Usuarios.ValidarContraseña(Correo, Contraseña);
 
-            if (user != null) // Validación exitosa.
+            if (autentificacionCorrecta == true) // Validación exitosa.
             {
-                // Se actualizan las propiedades de la sesión con los datos del usuario autenticado.
+                // Llama al método del repositorio para obtener datos del usuarios
+                var user = _unitOfWork.Usuarios.ObtenerUsuario(Correo, Contraseña);
+
+                // Se actualizan las propiedades de la sesión con los datos del usuario autenticado. (Se excluye contraseña por temas de seguridad)
                 SessionManager.CurrentUserId = user.UsuarioID;
-                SessionManager.CurrentPassword = user.Contraseña; 
                 SessionManager.CurrentMail = user.Correo;
                 SessionManager.CurrentName = user.Nombre;
 

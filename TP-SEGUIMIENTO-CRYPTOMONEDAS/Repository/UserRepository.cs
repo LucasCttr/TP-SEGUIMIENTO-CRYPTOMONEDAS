@@ -21,11 +21,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
         }
 
         // Valida las credenciales del usuario en la base de datos
-        public UserDTO ValidarUsuario(string mail, string contrasena)
+        public UserDTO ObtenerUsuario(string mail, string contraseña)
         {
             // Consulta directa a la base de datos para validar las credenciales del usuario.
             var usuarioDTO = _context.Usuarios
-                .Where(u => u.Correo == mail && u.Contraseña == contrasena) // Comparación de las credenciales
+                .Where(u => u.Correo == mail && u.Contraseña == contraseña) // Comparación de las credenciales
                 .Select(u => new UserDTO
                 {
                     UsuarioID = u.UsuarioID,
@@ -56,10 +56,20 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             return favoriteCryptos; // Devuelve la lista de criptomonedas favoritas
         }
 
-        // Valida si la contraseña ingresada corresponde con la de la sesión
-        public bool ValidarContraseña(string contraseña)
+        // Valida si la contraseña ingresada corresponde con la base de datos
+        public bool ValidarContraseña(string mail, string contraseña)
         {
-            return contraseña == SessionManager.CurrentPassword; // Devuelve true si coinciden, false si no
+            // Consulta directa a la base de datos para validar las credenciales del usuario
+            var usuario = _context.Usuarios
+                .FirstOrDefault(u => u.Correo == mail);
+
+            if (usuario == null)
+            {
+                // Si no se encuentra el usuario con el correo proporcionado, retorna false
+                return false;
+            }
+            // Verifica si la contraseña coincide
+            return usuario.Contraseña == contraseña;
         }
 
         // Cambia los datos del usuario en la base de datos
@@ -80,7 +90,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
                 // Actualiza los datos en la sesión
                 SessionManager.CurrentName = nombre;
                 SessionManager.CurrentMail = correo;
-                SessionManager.CurrentPassword = contraseña;
             }
         }
 

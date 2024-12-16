@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.SessionManagerService;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
@@ -26,7 +27,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         private void botonConfirmar_Click(object sender, EventArgs e)
         {
             // Valida la contraseña ingresada mediante el unitOfWork
-            var contraseñaCorrecta = _unitOfWork.Usuarios.ValidarContraseña(textContraseña.Text);
+            var contraseñaCorrecta = _unitOfWork.Usuarios.ValidarContraseña(SessionManager.CurrentMail,textContraseña.Text);
 
             if (contraseñaCorrecta == true)
             {

@@ -12,7 +12,5 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.SessionManagerService
         public static int CurrentUserId { get; set; }
         public static string CurrentMail { get; set; }
         public static string CurrentName { get; set; }
-        public static string CurrentPassword { get; set; }
-
     }
 }

@@ -40,25 +40,24 @@
             // label1
             // 
             label1.AutoSize = true;
+            label1.BackColor = Color.Transparent;
+            label1.ForeColor = Color.White;
             label1.Location = new Point(71, 81);
             label1.Name = "label1";
             label1.Size = new Size(30, 15);
             label1.TabIndex = 0;
             label1.Text = "Mail";
-            label1.BackColor = Color.Transparent;
-            label1.ForeColor = Color.White;
-            
             // 
             // label2
             // 
             label2.AutoSize = true;
+            label2.BackColor = Color.Transparent;
+            label2.ForeColor = Color.White;
             label2.Location = new Point(34, 121);
             label2.Name = "label2";
             label2.Size = new Size(67, 15);
             label2.TabIndex = 1;
             label2.Text = "Contrasena";
-            label2.BackColor = Color.Transparent;
-            label2.ForeColor = Color.White;
             // 
             // MailBox
             // 
@@ -78,14 +77,14 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Font = new Font("Segoe Fluent Icons", 20.75F, FontStyle.Regular, GraphicsUnit.Point);
+            label3.BackColor = Color.Transparent;
+            label3.Font = new Font("Segoe Fluent Icons", 20.75F);
+            label3.ForeColor = Color.White;
             label3.Location = new Point(140, 30);
             label3.Name = "label3";
-            label3.Size = new Size(82, 21);
+            label3.Size = new Size(119, 28);
             label3.TabIndex = 4;
             label3.Text = "Bienvenido";
-            label3.BackColor = Color.Transparent;
-            label3.ForeColor = Color.GhostWhite;
             // 
             // BotonIniciar
             // 
@@ -111,6 +110,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(366, 199);
             Controls.Add(botonRegistrarse);
             Controls.Add(BotonIniciar);
@@ -119,8 +119,6 @@
             Controls.Add(MailBox);
             Controls.Add(label2);
             Controls.Add(label1);
-            BackgroundImage = Image.FromFile(@"..\..\..\Resources\bg.jpeg");
-            BackgroundImageLayout = ImageLayout.Stretch;
             Name = "LoginForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "LoginForm";

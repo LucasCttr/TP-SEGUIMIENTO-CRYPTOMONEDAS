@@ -39,7 +39,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             // Cargar observadores de alertas al iniciar la aplicación
             _alertaMonitor.CargarObservadores(_unitOfWork.Alerta.ObtenerAlertasActivas());
 
-
             // Suscribirse al evento para actualizar UI después de que salte una alerta
             _alertaMonitor.alertaActivada += (idAlerta) =>
             {
@@ -50,7 +49,13 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private async void InicioForm_Load(object sender, EventArgs e)
         {
-            CargarCryptosFavoritas(); // Cargar criptomonedas favoritas
+
+            // Crear item con mensaje de cargando en la lista de cryptos favoritas
+            var item = new ListViewItem(" ");
+            item.SubItems.Add("Cargando..."); 
+            listaCryptosFavoritas.Items.Add(item); 
+
+            ActualizarListaFavoritasAsync();  //Cargar cryptos favoritas
             CargarHistorialAlertas(); // Cargar historial de alertas
             botonOpciones.Visible = false; // Ocultar el botón de opciones al inicio
         }
@@ -113,7 +118,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 ListViewItem selectedItem = listaAlertas.SelectedItems[0];
                 int subItemValue = Convert.ToInt32(selectedItem.SubItems[3].Text);
                 AlertaForm alertaForm = new AlertaForm(selectedItem.Text, subItemValue, _unitOfWork);
-                // alertaForm.GuardarAlerta += ManejarGuardarAlerta; // Suscripción al evento
+
                 // Suscribirse al evento GuardarAlerta
                 alertaForm.GuardarAlerta += (sender, args) =>
                 {
@@ -126,7 +131,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
                     CargarAlertasActivas();
                 };
-                alertaForm.ActualizarForm(Convert.ToDecimal(selectedItem.SubItems[1].Text), selectedItem.SubItems[2].Text);
+                var valorAlerta = Convert.ToDecimal(selectedItem.SubItems[1].Text);
+                var tipoAlerta = selectedItem.SubItems[2].Text;
+
+                alertaForm.ActualizarForm(valorAlerta, tipoAlerta);
                 alertaForm.Show();
             }
         }
@@ -148,40 +156,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             CargarAlertasActivas();
         }
 
-
-        public void CargarCryptosFavoritas() //Integrar con actualizarlistafavoritas
-        {
-            // Obtener las criptomonedas
-            var cryptos = _unitOfWork.Usuarios.ObtenerCryptosFavoritas();
-
-            listaCryptosFavoritas.Items.Clear();
-
-            foreach (var crypto in cryptos)
-            {
-                // Obtener los detalles de la criptomoneda mediante su ID
-                var DatosCrypto = _unitOfWork.CryptosFavoritas.BuscarCryptoEnMercado(crypto.CryptomonedaID);
-
-                // Verifica si DatosCrypto no es null
-                if (DatosCrypto != null)
-                {
-                    // Crear un nuevo ListViewItem y agregar las propiedades de la criptomoneda
-                    var item = new ListViewItem(DatosCrypto.rank.ToString()); // Nombre de la criptomoneda
-                    item.SubItems.Add(DatosCrypto.name);
-                    item.SubItems.Add(DatosCrypto.symbol);
-                    item.SubItems.Add(DatosCrypto.priceUsd.ToString("C2", CultureInfo.CreateSpecificCulture("en-US"))); // Precio en USD, formato de moneda
-
-                    //Para que los numeros no queden desalineados por el signo "-"
-                    if (DatosCrypto.changePercent24Hr.ToString("F2").StartsWith("-"))
-                        item.SubItems.Add(DatosCrypto.changePercent24Hr.ToString("F2") + " %");
-                    else item.SubItems.Add("  " + DatosCrypto.changePercent24Hr.ToString("F2") + " %");
-                    item.SubItems.Add(DatosCrypto.id);
-                    listaCryptosFavoritas.Items.Add(item);
-                }
-            }
-            listaCryptosFavoritas.Sort();
-        }
-
-
         private void InicializarListaCryptosFavoritas()
         {
             // Configuración de la vista de la lista de criptos favoritas
@@ -199,19 +173,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private void CargarHistorialAlertas()
         {
-            listaAlertas.Clear();
-            listaAlertas.FullRowSelect = false;
+            // Configuracion de la listview para historial de alertas
+            ConfigurarListviewHistorial();
 
             // Obtener las alertas de historial
             var alertasHistorial = _unitOfWork.Alerta.ObtenerAlertasHistorial();
-
-            listaAlertas.View = View.Details;
-            listaAlertas.Sort();
-            listaAlertas.Columns.Add("Orden", 0);
-            listaAlertas.Columns.Add("Fecha", 130);
-            listaAlertas.Columns.Add("Crypto", 90);
-            listaAlertas.Columns.Add("Valor", 60);
-            listaAlertas.Columns.Add("Tipo", 79);
 
             foreach (var historial in alertasHistorial)
             {
@@ -225,21 +191,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             }
         }
 
-
         public void CargarAlertasActivas()
         {
-            listaAlertas.Clear();
-            listaAlertas.FullRowSelect = true;
-            listaAlertas.View = View.Details;
-
-            // Configuración de las columnas de la lista de alertas
-            listaAlertas.Columns.Add("Activas", 125);
-            listaAlertas.Columns.Add("Valor", 95);
-            listaAlertas.Columns.Add("Tipo", 85);
-            listaAlertas.Columns.Add("Id", 0);
-
-            listaAlertas.Sort();
-            listaAlertas.Sorting = SortOrder.Ascending;
+            // Configuración de la listview para alertas activas
+            ConfigurarListviewAlertasActivas();
 
             // Obtener las alertas activas
             var alertas = _alertaMonitor.ObtenerObservadores();
@@ -254,6 +209,39 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 listaAlertas.Items.Add(item);
             }
         }
+
+        private void ConfigurarListviewAlertasActivas()
+        {
+            listaAlertas.Clear();
+            listaAlertas.FullRowSelect = true;
+            listaAlertas.View = View.Details;
+
+            // Configuración de las columnas de la lista de alertas
+            listaAlertas.Columns.Add("Activas", 125);
+            listaAlertas.Columns.Add("Valor", 95);
+            listaAlertas.Columns.Add("Tipo", 85);
+            listaAlertas.Columns.Add("Id", 0);
+
+            listaAlertas.Sort();
+            listaAlertas.Sorting = SortOrder.Ascending;
+        }
+
+        private void ConfigurarListviewHistorial()
+        {
+            listaAlertas.Clear();
+            listaAlertas.FullRowSelect = false;
+
+            // Configuración de las columnas de la lista de historial
+            listaAlertas.View = View.Details;
+            listaAlertas.Sort();
+            listaAlertas.Columns.Add("Orden", 0);
+            listaAlertas.Columns.Add("Fecha", 130);
+            listaAlertas.Columns.Add("Crypto", 90);
+            listaAlertas.Columns.Add("Valor", 60);
+            listaAlertas.Columns.Add("Tipo", 79);
+        }
+
+
 
 
         private void listaCryptosFavoritas_SelectedIndexChanged(object sender, EventArgs e)
@@ -275,6 +263,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             botonModificar.Visible = alertaSeleccionada;
             botonEliminar.Visible = alertaSeleccionada;
         }
+
 
 
         private async void InicializarTimer()
