@@ -156,6 +156,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImage = Image.FromFile("Resources/bg.jpeg");
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(707, 450);
             Controls.Add(botonEliminar);

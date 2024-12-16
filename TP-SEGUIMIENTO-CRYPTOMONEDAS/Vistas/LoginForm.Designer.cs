@@ -110,7 +110,8 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackgroundImageLayout = ImageLayout.Stretch;
+            this.BackgroundImage = Image.FromFile("Resources/bg.jpeg");
+            this.BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(366, 199);
             Controls.Add(botonRegistrarse);
             Controls.Add(BotonIniciar);
