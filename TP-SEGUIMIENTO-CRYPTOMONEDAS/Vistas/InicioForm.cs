@@ -330,6 +330,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 MessageBox.Show("Error al actualizar la lista de favoritas: " + ex.Message);
             }
         }
+
+        //Metodo para que las cryptos en la lista de cryptosFavoritas esten ordenadas por el rank
         public class ListViewItemComparer : IComparer
         {
             private int columnIndex;
