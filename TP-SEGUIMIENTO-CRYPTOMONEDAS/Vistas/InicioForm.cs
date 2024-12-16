@@ -316,6 +316,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                     listaCryptosFavoritas.BeginUpdate(); // Iniciar actualización de la lista para evitar parpadeos
                     listaCryptosFavoritas.Items.Clear(); // Limpiar la lista existente
                     listaCryptosFavoritas.Items.AddRange(nuevosItems.ToArray()); // Agregar los nuevos items
+                    listaCryptosFavoritas.Sort();
                     listaCryptosFavoritas.EndUpdate(); // Finalizar actualización de la lista
                 }));
             }

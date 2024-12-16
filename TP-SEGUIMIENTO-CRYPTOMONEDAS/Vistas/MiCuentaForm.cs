@@ -27,7 +27,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         {
             textNombre.Text = SessionManager.CurrentName; // Carga el nombre desde la sesión
             textCorreo.Text = SessionManager.CurrentMail; // Carga el correo desde la sesión
-            //textContraseña.Text = SessionManager.CurrentPassword; // Carga la contraseña desde la sesión
+            textContraseña.Text = "*********"; 
             ActiviarBotonModificar(); // Configura el formulario para estar en modo solo lectura
         }
 

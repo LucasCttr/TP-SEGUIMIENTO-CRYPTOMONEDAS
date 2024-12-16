@@ -67,14 +67,14 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Regular, GraphicsUnit.Point);
+            label1.BackColor = Color.Transparent;
+            label1.Font = new Font("Segoe UI", 15.75F);
+            label1.ForeColor = Color.White;
             label1.Location = new Point(12, 8);
             label1.Name = "label1";
-            label1.Size = new Size(62, 30);
+            label1.Size = new Size(94, 30);
             label1.TabIndex = 2;
             label1.Text = "Favoritas";
-            label1.BackColor = Color.Transparent;
-            label1.ForeColor = Color.White;
             // 
             // botonOpciones
             // 
@@ -156,6 +156,7 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
+            BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(707, 450);
             Controls.Add(botonEliminar);
             Controls.Add(botonModificar);
@@ -173,8 +174,6 @@
             Load += InicioForm_Load;
             ResumeLayout(false);
             PerformLayout();
-            BackgroundImage = Image.FromFile(@"..\..\..\Resources\bg.jpeg");
-            BackgroundImageLayout = ImageLayout.Stretch;
         }
 
         #endregion
