@@ -20,10 +20,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
     public partial class InicioForm : Form
     {
         private IUnitOfWork _unitOfWork;
-        private AlertaMonitor _alertaMonitor;
+        private CryptoService _alertaMonitor;
         public event EventHandler<FavoritaDTO> GuardarAlerta = delegate { };
 
-        public InicioForm(IUnitOfWork unitOfWork, AlertaMonitor alertaService)
+        public InicioForm(IUnitOfWork unitOfWork, CryptoService alertaService)
         {
             InitializeComponent(); // Inicializa los componentes de la interfaz
             InicializarListaCryptosFavoritas(); // Configura la lista de criptomonedas favoritas
@@ -37,14 +37,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             listaCryptosFavoritas.DoubleClick += listaCryptosFavoritas_DoubleClick;
 
             // Cargar observadores de alertas al iniciar la aplicación
-            _alertaMonitor.CargarObservadores(_unitOfWork.Alerta.ObtenerAlertasActivas());
+            _alertaMonitor.CargarObservadores();
 
             // Suscribirse al evento para actualizar UI después de que salte una alerta
-            _alertaMonitor.alertaActivada += (idAlerta) =>
-            {
-                _unitOfWork.Alerta.MarcarActivacionAlerta(idAlerta);
-                CargarHistorialAlertas();
-            };
+            _alertaMonitor.alertaActivada += CargarHistorialAlertas;
         }
 
         private async void InicioForm_Load(object sender, EventArgs e)
@@ -125,7 +121,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                     // Actualizar la lista en InicioForm
                     if (args.AlertaID != null)
                     {
-                        _unitOfWork.Alerta.ActualizarAlerta(args.AlertaID.Value, args.NuevoValor, args.Tipo);
+                        //_unitOfWork.Alerta.ActualizarAlerta(args.AlertaID.Value, args.NuevoValor, args.Tipo); Pasado a _alertaMonitor
                         _alertaMonitor.ActualizarAlerta(args.CryptoNombre, args.NuevoValor, args.Tipo, args.AlertaID.Value);
                     }
 
@@ -151,7 +147,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 _alertaMonitor.EliminarObservador(idAlerta);
 
                 // Elimina la alerta de la base de datos
-                _unitOfWork.Alerta.EliminarAlerta(idAlerta);
+                //_unitOfWork.Alerta.EliminarAlerta(idAlerta);   pasado a _alertaMonitor
             }
             CargarAlertasActivas();
         }
@@ -177,7 +173,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             ConfigurarListviewHistorial();
 
             // Obtener las alertas de historial
-            var alertasHistorial = _unitOfWork.Alerta.ObtenerAlertasHistorial();
+            var alertasHistorial = _alertaMonitor.ObtenerAlertasHistorial();
 
             foreach (var historial in alertasHistorial)
             {
@@ -284,14 +280,14 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             try
             {
                 // Obtener la lista de criptomonedas favoritas en un hilo separado
-                var favoritas = await Task.Run(() => _unitOfWork.Usuarios.ObtenerCryptosFavoritas());
+                var favoritas = await Task.Run(() => _alertaMonitor.ObtenerCryptosFavoritas());
 
                 List<ListViewItem> nuevosItems = new List<ListViewItem>();
 
                 foreach (var f in favoritas)
                 {
                     // Obtener la información actualizada del precio y la tendencia
-                    var crypto = await Task.Run(() => _unitOfWork.CryptosFavoritas.BuscarCryptoEnMercado(f.CryptomonedaID));
+                    var crypto = await Task.Run(() => _alertaMonitor.ObtenerDatosActualesDeUnaCrypto(f.CryptomonedaID));
                     if (crypto == null) continue;
 
                     // Notificar las alertas si es necesario

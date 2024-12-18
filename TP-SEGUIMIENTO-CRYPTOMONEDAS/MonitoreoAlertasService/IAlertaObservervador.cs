@@ -7,7 +7,7 @@ using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.MonitoreoAlertasService
 {
-    public interface IAlertaObserver
+    public interface IAlertaObservervador
     {
         string nombreCrypto { get; }  
         int idAlerta { get; }

@@ -57,7 +57,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 this.Hide(); // Oculta el formulario de login.
 
                 // Se inicializa el servicio de alertas y el formulario principal.
-                var _alertaService = new AlertaMonitor();
+                var _alertaService = new CryptoService(_unitOfWork);
                 var inicioForm = new InicioForm(_unitOfWork, _alertaService); 
                 inicioForm.Show(); // Muestra el formulario principal.
             }

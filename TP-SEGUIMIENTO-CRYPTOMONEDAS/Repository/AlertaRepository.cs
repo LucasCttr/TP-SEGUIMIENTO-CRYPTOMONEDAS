@@ -20,7 +20,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             _client = new RestClient("https://api.coincap.io/v2/"); // Configuración del cliente REST
         }
 
-        public List<AlertaDTO> ObtenerAlertasHistorial()
+        public List<AlertaDTO> ObtenerAlertasHistorialBD()
         {
             // Accede al userId desde la sesión
             int userId = SessionManager.CurrentUserId;
@@ -77,7 +77,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             }
         }
 
-        public void EliminarAlerta(int idAlerta)
+        public void EliminarAlertaBD(int idAlerta)
         {
             int userId = SessionManager.CurrentUserId;
 

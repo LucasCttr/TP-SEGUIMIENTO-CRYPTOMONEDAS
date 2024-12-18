@@ -11,7 +11,7 @@ using Microsoft.Extensions.Configuration;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.MonitoreoAlertasService
 {
-    public class AlertaObservador : IAlertaObserver
+    public class AlertaObservador : IAlertaObservervador
     {
         private readonly Action<string, int> alertaActivada;
         public string nombreCrypto { get; set; }
@@ -44,6 +44,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.MonitoreoAlertasService
             {
                 alertaActivada($"🔔 Alerta: {nombreCrypto} ha disminuido un {cambio24Hs:F2}% en las últimas 24 horas.", idAlerta);
                 EnviarMail(tipoAlerta, valorAlerta);
+                
             }
         }
 
