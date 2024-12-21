@@ -13,15 +13,23 @@ using TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.SessionManagerService;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.MonitoreoAlertasService;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.Controllers;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
     public partial class LoginForm : Form // Representa la vista para login.
     {
         private readonly IUnitOfWork _unitOfWork; // Patrón Unit of Work para manejar repositorios.
+        private readonly CryptosFavoritasController _cryptosFavoritasController;
+        private readonly UsuarioController _usuarioController;
+        private readonly AlertaController _alertaController;
 
-        public LoginForm(IUnitOfWork unitOfWork)
+        public LoginForm(IUnitOfWork unitOfWork, CryptosFavoritasController cryptosFavoritascontroller, UsuarioController usuarioController, AlertaController alertaController)
         {
+            _cryptosFavoritasController = cryptosFavoritascontroller;
+            _usuarioController = usuarioController;
+            _alertaController = alertaController;
+
             InitializeComponent(); 
             _unitOfWork = unitOfWork; 
             this.KeyPreview = true; // Permite que el formulario capture eventos de teclado.
@@ -57,7 +65,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 this.Hide(); // Oculta el formulario de login.
 
                 // Se inicializa el servicio de alertas y el formulario principal.
-                var _alertaService = new CryptoService(_unitOfWork);
+                var _alertaService = new CryptoService(_alertaController,_usuarioController,_cryptosFavoritasController);
                 var inicioForm = new InicioForm(_unitOfWork, _alertaService); 
                 inicioForm.Show(); // Muestra el formulario principal.
             }
