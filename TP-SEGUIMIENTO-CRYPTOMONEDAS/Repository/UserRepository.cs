@@ -21,11 +21,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
         }
 
         // Valida las credenciales del usuario en la base de datos
-        public UserDTO ObtenerUsuario(string mail, string contraseña)
+        public UserDTO ObtenerUsuario(string mail)
         {
             // Consulta directa a la base de datos para validar las credenciales del usuario.
             var usuarioDTO = _context.Usuarios
-                .Where(u => u.Correo == mail && u.Contraseña == contraseña) // Comparación de las credenciales
+                .Where(u => u.Correo == mail) // Comparación de las credenciales
                 .Select(u => new UserDTO
                 {
                     UsuarioID = u.UsuarioID,
@@ -104,15 +104,20 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
         // Da de alta un nuevo usuario en la base de datos
         public void DarDeAltaUsuario(string nombre, string correo, string contraseña)
         {
-            var usuario = new Usuario
+            if (VerificarExistenciaUsuario(correo))
             {
-                Nombre = nombre,
-                Correo = correo,
-                Contraseña = contraseña
-            };
+                var usuario = new Usuario
+                {
+                    Nombre = nombre,
+                    Correo = correo,
+                    Contraseña = contraseña
+                };
 
-            _context.Usuarios.Add(usuario);
-            _context.SaveChanges(true); // Guarda los cambios
+                _context.Usuarios.Add(usuario);
+                _context.SaveChanges(true); // Guarda los cambios
+                MessageBox.Show("Usuario dado de alta correctamente");
+            }
+            else MessageBox.Show("Ya existe una cuenta con el correo ingresado");
         }
     }
 }

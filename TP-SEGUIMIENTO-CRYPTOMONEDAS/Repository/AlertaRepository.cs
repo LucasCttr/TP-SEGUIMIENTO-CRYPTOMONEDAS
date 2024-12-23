@@ -121,6 +121,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
         // Se llama cuando se produce un incremento o decremento del cambio porcentual sobre el valor de la alerta
         public void MarcarActivacionAlerta(int idCrypto)
         {
+
             // Busca la alerta específica por ID
             var alerta = _context.Alertas.Where(fc => fc.AlertaID == idCrypto)
                 .FirstOrDefault();

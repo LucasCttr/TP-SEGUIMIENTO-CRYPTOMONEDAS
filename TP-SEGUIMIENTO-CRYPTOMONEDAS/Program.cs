@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Windows.Forms;
 using System.Configuration;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.Controllers;
 
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS
@@ -28,7 +29,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS
                 using (var context = new AppDbContext(optionsBuilder.Options))
                 {
                     IUnitOfWork unitOfWork = new UnitOfWork(context);
-                    Application.Run(new LoginForm(unitOfWork));
+                    AlertaController _alertaController = new AlertaController(unitOfWork);
+                    CryptosFavoritasController _cryptosFavoritasController = new CryptosFavoritasController(unitOfWork);
+                    UsuarioController _usuarioController = new UsuarioController(unitOfWork);
+
+                    Application.Run(new LoginForm(_alertaController,_cryptosFavoritasController, _usuarioController));
                 }
             }
         }

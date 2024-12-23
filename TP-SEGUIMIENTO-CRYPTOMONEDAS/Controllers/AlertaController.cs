@@ -22,6 +22,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Controllers
             _unitOfWork.Alerta.ActualizarAlerta(idAlerta, valorAlerta, tipoAlerta);
         }
 
+        public int CrearAlertaYObtenerID(string nombreCrypto, decimal umbralSupertado, string tipo)
+        {
+            return _unitOfWork.Alerta.CrearAlerta(nombreCrypto,umbralSupertado,tipo);
+        }
+
         public void MarcarActivacionAlerta(int idAlerta)
         {
             _unitOfWork.Alerta.MarcarActivacionAlerta(idAlerta);

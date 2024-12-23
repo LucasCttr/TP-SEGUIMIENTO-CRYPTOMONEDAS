@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.Controllers;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.MonitoreoAlertasService;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
@@ -19,16 +20,22 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
     public partial class InicioForm : Form
     {
-        private IUnitOfWork _unitOfWork;
+        private AlertaController _alertaController;
+        private CryptosFavoritasController _cryptosFavoritasController;
+        private UsuarioController _usuarioController;
         private CryptoService _alertaMonitor;
         public event EventHandler<FavoritaDTO> GuardarAlerta = delegate { };
 
-        public InicioForm(IUnitOfWork unitOfWork, CryptoService alertaService)
+        public InicioForm(AlertaController alertaController, CryptosFavoritasController cryptosFavoritasController,UsuarioController usuarioController, CryptoService alertaService)
         {
+            _alertaController = alertaController;
+            _cryptosFavoritasController = cryptosFavoritasController;
+            _usuarioController = usuarioController;
+            
             InitializeComponent(); // Inicializa los componentes de la interfaz
             InicializarListaCryptosFavoritas(); // Configura la lista de criptomonedas favoritas
             InicializarTimer(); // Inicializa el temporizador para actualizaciones periódicas
-            _unitOfWork = unitOfWork; // Almacena la unidad de trabajo
+
             _alertaMonitor = alertaService; // Almacena el monitor de alertas
 
             // Suscribir eventos a los manejadores correspondientes
@@ -40,7 +47,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             _alertaMonitor.CargarObservadores();
 
             // Suscribirse al evento para actualizar UI después de que salte una alerta
-            _alertaMonitor.alertaActivada += CargarHistorialAlertas;
+            _alertaMonitor.alertaActivada += CargarAlertasActivas;
         }
 
         private async void InicioForm_Load(object sender, EventArgs e)
@@ -59,14 +66,14 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         private void MercadoBoton_Click(object sender, EventArgs e)
         {
             // Abre el formulario de mercado
-            var mercadoForm = new MercadoForm(_unitOfWork, this);
+            var mercadoForm = new MercadoForm(_alertaController,_cryptosFavoritasController,_usuarioController, this);
             mercadoForm.Show();
         }
 
         private void MiCuentaBoton_Click(object sender, EventArgs e)
         {
             // Abre el formulario de cuenta del usuario
-            var cuentaForm = new MiCuentaForm(_unitOfWork);
+            var cuentaForm = new MiCuentaForm(_alertaController, _cryptosFavoritasController, _usuarioController);
             cuentaForm.ShowDialog();
         }
 
@@ -78,7 +85,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 ListViewItem selectedItem = listaCryptosFavoritas.SelectedItems[0];
 
                 // Crear e iniciar el nuevo formulario pasando los datos
-                OpcionesCryptoForm opcionesForm = new OpcionesCryptoForm(selectedItem.SubItems[1].Text, selectedItem.SubItems[5].Text, _unitOfWork, this);
+                OpcionesCryptoForm opcionesForm = new OpcionesCryptoForm(selectedItem.SubItems[1].Text, selectedItem.SubItems[5].Text, _alertaController, _cryptosFavoritasController, _usuarioController, this);
 
                 // Suscribirse al evento del formulario intermedio para actualizar la lista de favoritos
                 opcionesForm.GuardarAlerta += Evento_GuardarAlerta;
@@ -113,7 +120,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 // Obtener el ítem seleccionado
                 ListViewItem selectedItem = listaAlertas.SelectedItems[0];
                 int subItemValue = Convert.ToInt32(selectedItem.SubItems[3].Text);
-                AlertaForm alertaForm = new AlertaForm(selectedItem.Text, subItemValue, _unitOfWork);
+                AlertaForm alertaForm = new AlertaForm(selectedItem.Text, subItemValue, _alertaController, _cryptosFavoritasController, _usuarioController);
 
                 // Suscribirse al evento GuardarAlerta
                 alertaForm.GuardarAlerta += (sender, args) =>
@@ -147,7 +154,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 _alertaMonitor.EliminarObservador(idAlerta);
 
                 // Elimina la alerta de la base de datos
-                //_unitOfWork.Alerta.EliminarAlerta(idAlerta);   pasado a _alertaMonitor
+                _alertaController.EliminarAlerta(idAlerta);
             }
             CargarAlertasActivas();
         }

@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
 using System.Windows.Forms.DataVisualization.Charting;
 using System.Globalization;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.Controllers;
 
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
@@ -17,13 +18,20 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
     public partial class GraficoForm : Form
     {
         private string Crypto;
-        IUnitOfWork _unitOfWork;
-        
-        public GraficoForm(string idCrypto, IUnitOfWork unitOfWork)
+
+        private AlertaController _alertaController;
+        private CryptosFavoritasController _cryptosFavoritasController;
+        private UsuarioController _usuarioController;
+
+        public GraficoForm(string idCrypto, AlertaController alertaController, CryptosFavoritasController cryptosFavoritasController, UsuarioController usuarioController)
         {
             InitializeComponent();
             Crypto = idCrypto;
-            _unitOfWork = unitOfWork;
+
+            _alertaController = alertaController;
+            _cryptosFavoritasController = cryptosFavoritasController;
+            _usuarioController = usuarioController;
+
             grafico.ChartAreas[0].AxisX.LabelStyle.Format = "dd-MM";
             CargarHistorialCrypto("d1");
             CargarDetallesCrypto();     
@@ -35,8 +43,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         }
         private void CargarHistorialCrypto(string intervalo)
         {
-            var datosHistorial = _unitOfWork.CryptosFavoritas.ObtenerHistorialDeUnaCrypto(Crypto, intervalo);
-            
+            var datosHistorial = _cryptosFavoritasController.ObtenerHistorialDeUnaCrypto(Crypto, intervalo);
+
             grafico.Series.Clear();
             Series serie = new Series();
             serie.ChartType = SeriesChartType.Line;
@@ -89,7 +97,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             listaDetalles.Columns.Add("vwap24Hr", 120);
             listaDetalles.Columns.Add("Id", 0);
 
-            var datosCrypto = _unitOfWork.CryptosFavoritas.BuscarCryptoEnMercado(Crypto);
+            var datosCrypto = _cryptosFavoritasController.BuscarCryptoEnMercado(Crypto); 
 
             // Verifica si DatosCrypto no es null
             if (datosCrypto != null)

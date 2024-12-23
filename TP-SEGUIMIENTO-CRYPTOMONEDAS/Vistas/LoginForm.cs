@@ -19,19 +19,17 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
     public partial class LoginForm : Form // Representa la vista para login.
     {
-        private readonly IUnitOfWork _unitOfWork; // Patrón Unit of Work para manejar repositorios.
         private readonly CryptosFavoritasController _cryptosFavoritasController;
         private readonly UsuarioController _usuarioController;
         private readonly AlertaController _alertaController;
 
-        public LoginForm(IUnitOfWork unitOfWork, CryptosFavoritasController cryptosFavoritascontroller, UsuarioController usuarioController, AlertaController alertaController)
+        public LoginForm(AlertaController alertaController, CryptosFavoritasController cryptosFavoritascontroller, UsuarioController usuarioController)
         {
             _cryptosFavoritasController = cryptosFavoritascontroller;
             _usuarioController = usuarioController;
             _alertaController = alertaController;
 
             InitializeComponent(); 
-            _unitOfWork = unitOfWork; 
             this.KeyPreview = true; // Permite que el formulario capture eventos de teclado.
             this.KeyDown += new KeyEventHandler(LoginForm_KeyDown); // Evento para capturar teclas presionadas.
         }
@@ -50,12 +48,12 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             string Contraseña = ContrasenaBox.Text; // Obtiene la contraseña del TextBox.
 
             // Llama al metodo del repositorio para verificar si los datos ingresados coinciden con un usuario existente
-            var autentificacionCorrecta = _unitOfWork.Usuarios.ValidarContraseña(Correo, Contraseña);
+            var autentificacionCorrecta = _usuarioController.ValidarContraseña(Correo,Contraseña);
 
             if (autentificacionCorrecta == true) // Validación exitosa.
             {
                 // Llama al método del repositorio para obtener datos del usuarios
-                var user = _unitOfWork.Usuarios.ObtenerUsuario(Correo, Contraseña);
+                var user = _usuarioController.ObtenerUsuario(Correo); 
 
                 // Se actualizan las propiedades de la sesión con los datos del usuario autenticado. (Se excluye contraseña por temas de seguridad)
                 SessionManager.CurrentUserId = user.UsuarioID;
@@ -66,7 +64,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
                 // Se inicializa el servicio de alertas y el formulario principal.
                 var _alertaService = new CryptoService(_alertaController,_usuarioController,_cryptosFavoritasController);
-                var inicioForm = new InicioForm(_unitOfWork, _alertaService); 
+                var inicioForm = new InicioForm(_alertaController, _cryptosFavoritasController, _usuarioController,  _alertaService); 
                 inicioForm.Show(); // Muestra el formulario principal.
             }
             else
@@ -78,7 +76,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private void botonRegistrarse_Click(object sender, EventArgs e)
         {
-            var altaForm = new AltaUsuarioForm(_unitOfWork); // Inicia el formulario para registrar un nuevo usuario.
+            var altaForm = new AltaUsuarioForm(_alertaController, _cryptosFavoritasController, _usuarioController); // Inicia el formulario para registrar un nuevo usuario.
             altaForm.ShowDialog(); // Muestra el formulario de registro como un cuadro de diálogo modal.
         }
     }

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.Controllers;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
@@ -17,15 +18,23 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas.OpcionesCrypto
     {
         public string cryptoNombre;
         public string cryptoId;
-        public IUnitOfWork _unitOfWork;
+
+        public AlertaController _alertaController;
+        public CryptosFavoritasController _cryptosFavoritasController;
+        public UsuarioController _usuarioController;
+
         private ICryptoState _estadoActual;
-        public InicioForm InicioForm;
+        public InicioForm InicioForm;       
         public event EventHandler<FavoritaDTO> GuardarAlerta;
 
-        public OpcionesCryptoForm(string nombreCrypto, string idCrypto, IUnitOfWork unitOfWork, InicioForm inicioForm)
+        public OpcionesCryptoForm(string nombreCrypto, string idCrypto, AlertaController alertaController, CryptosFavoritasController cryptosFavoritasController, UsuarioController usuarioController, InicioForm inicioForm)
         {
             InitializeComponent();
-            _unitOfWork = unitOfWork;
+
+            _alertaController = alertaController;
+            _cryptosFavoritasController = cryptosFavoritasController;
+            _usuarioController = usuarioController;
+
             cryptoNombre = nombreCrypto;
             cryptoId = idCrypto;
             CargarDatos();
@@ -40,7 +49,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas.OpcionesCrypto
             CryptomonedaNombre.TextAlign = ContentAlignment.MiddleCenter;
 
             // Verificar si la criptomoneda es favorita
-            if (_unitOfWork.CryptosFavoritas.VerificarSiEsFavorito(cryptoId))
+            if (_cryptosFavoritasController.VerificarCryptoEsFavorito(cryptoId))
             {
                 CambiarEstado(new EliminarState());  // Asigna el estado inicial a Eliminar
                 ActualizarBotones("Eliminar", true);
@@ -80,14 +89,14 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas.OpcionesCrypto
         // Muestra el gráfico de la criptomoneda
         private void GraficoBoton_Click(object sender, EventArgs e)
         {
-            GraficoForm graficoForm = new GraficoForm(cryptoId, _unitOfWork);
+            GraficoForm graficoForm = new GraficoForm(cryptoId, _alertaController, _cryptosFavoritasController, _usuarioController);
             graficoForm.Show();
         }
 
         // AlertaBoton_Click: Muestra el formulario de alertas para la criptomoneda
         private void AlertaBoton_Click(object sender, EventArgs e)
         {
-            AlertaForm alertaForm = new AlertaForm(cryptoNombre, null, _unitOfWork);
+            AlertaForm alertaForm = new AlertaForm(cryptoNombre, null, _alertaController, _cryptosFavoritasController, _usuarioController);
             alertaForm.GuardarAlerta += FormularioSecundario_GuardarAlerta; // Suscribirse al evento GuardarAlerta del formulario secundario
             alertaForm.Show();
         }

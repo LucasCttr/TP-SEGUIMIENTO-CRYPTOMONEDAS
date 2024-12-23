@@ -78,9 +78,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.MonitoreoAlertasService
         // Elimina el observador correspondiente al ID de la alerta especificado.
         public void EliminarObservador(int idAlerta)
         {
-            // Elimina la alerta de la base de datos
-            _alertaController.EliminarAlerta(idAlerta);
-
             var observadorAEliminar = observadores.FirstOrDefault(o => o is AlertaObservador alerta && alerta.idAlerta == idAlerta);
             if (observadorAEliminar != null)
             {
@@ -102,6 +99,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.MonitoreoAlertasService
                 observadores.Add(nuevoObservador);
             }
         }
+
 
         public List<AlertaDTO> ObtenerAlertasHistorial()
         {

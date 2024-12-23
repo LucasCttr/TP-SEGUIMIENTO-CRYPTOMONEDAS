@@ -9,15 +9,21 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.SessionManagerService;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.Controllers;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
     public partial class MiCuentaForm : Form
     {
-        private IUnitOfWork _unitOfWork;
-        public MiCuentaForm(IUnitOfWork unitOfWork)
+        private AlertaController _alertaController;
+        private CryptosFavoritasController _cryptosFavoritasController;
+        private UsuarioController _usuarioController;
+        public MiCuentaForm(AlertaController alertaController, CryptosFavoritasController cryptosFavoritasController, UsuarioController usuarioController)
         {
-            _unitOfWork = unitOfWork;
+            _alertaController = alertaController;
+            _cryptosFavoritasController = cryptosFavoritasController;
+            _usuarioController = usuarioController;
+
             InitializeComponent();
             CargarForm(); // Carga los datos del usuario en el formulario
         }
@@ -40,7 +46,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         // Evento que se activa al hacer clic en el botón "Guardar"
         private void buttonGuardar_Click(object sender, EventArgs e)
         {
-            var validarForm = new ValidarCambiosForm(_unitOfWork); // Crea una instancia para validar la contraseña
+            var validarForm = new ValidarCambiosForm(_alertaController,_cryptosFavoritasController,_usuarioController); // Crea una instancia para validar la contraseña
 
             // Suscribirse al evento que valida la contraseña
             validarForm.OnPasswordValidated += ValidarForm_OnPasswordValidated;
@@ -50,7 +56,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             {
                 // Si la validación fue exitosa, guarda los cambios y activa el modo solo lectura
                 ActiviarBotonModificar();
-                _unitOfWork.Usuarios.CambiarDatosUsuario(textNombre.Text, textCorreo.Text, textContraseña.Text); // Actualiza los datos del usuario
+                _usuarioController.ModificarDatosUsuario(textNombre.Text, textCorreo.Text, textContraseña.Text);// Actualiza los datos del usuario
             }
         }
 

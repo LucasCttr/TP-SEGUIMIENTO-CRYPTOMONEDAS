@@ -64,9 +64,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
         }
 
         // Elimina una criptomoneda de los favoritos del usuario
-        public void EliminarCryptoDeFavorito(string nombreCrypto)
+        public void EliminarCryptoDeFavorito(string nombreID)
         {
-            var cryptoFavorita = _context.UsuariosCryptos.FirstOrDefault(c => c.CryptomonedaID == nombreCrypto && c.UsuarioID == SessionManager.CurrentUserId);
+            var cryptoFavorita = _context.UsuariosCryptos.FirstOrDefault(c => c.CryptomonedaID == nombreID && c.UsuarioID == SessionManager.CurrentUserId);
             if (cryptoFavorita != null)
             {
                 _context.UsuariosCryptos.Remove(cryptoFavorita);

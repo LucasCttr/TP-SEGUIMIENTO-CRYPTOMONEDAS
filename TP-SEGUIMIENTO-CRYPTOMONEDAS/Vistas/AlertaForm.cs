@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using static System.Windows.Forms.VisualStyles.VisualStyleElement;
+using TP_SEGUIMIENTO_CRYPTOMONEDAS.Controllers;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
@@ -17,14 +18,20 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
     {
         public string CryptoNombre { get; set; }
         public int? AlertaID { get; private set; }
-        private IUnitOfWork _unitOfWork;
+
+        private AlertaController _alertaController;
+        private CryptosFavoritasController _cryptosFavoritasController;
+        private UsuarioController _usuarioController;
 
         // Evento para notificar al exterior
         public event EventHandler<FavoritaDTO> GuardarAlerta;
 
-        public AlertaForm(string crypto, int? id, IUnitOfWork unitOfWork)
+        public AlertaForm(string crypto, int? id, AlertaController alertaController, CryptosFavoritasController cryptosFavoritasController, UsuarioController usuarioController)
         {
-            _unitOfWork = unitOfWork;
+            _alertaController = alertaController;
+            _cryptosFavoritasController = cryptosFavoritasController;
+            _usuarioController = usuarioController;
+
             CryptoNombre = crypto;
             AlertaID = id;
             InitializeComponent();
@@ -49,12 +56,12 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             if (AlertaID != null)
             {
                 // Modificar la alerta en la base de datos
-                _unitOfWork.Alerta.ActualizarAlerta(AlertaID.Value, nuevoValorPositivo, tipo);
+                _alertaController.ActualizarAlerta(AlertaID.Value, nuevoValorPositivo, tipo);
             }
             else
             {
                 // Crear la alerta en la base de datos
-                int idAlerta = _unitOfWork.Alerta.CrearAlerta(CryptoNombre, nuevoValorPositivo, tipo);
+                int idAlerta = _alertaController.CrearAlertaYObtenerID(CryptoNombre, nuevoValorPositivo, tipo);
                 AlertaID = idAlerta; // Actualizar el ID para esta instancia
             }
 
