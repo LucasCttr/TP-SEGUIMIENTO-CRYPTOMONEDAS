@@ -40,6 +40,8 @@
             botonModificar = new Button();
             timer = new System.Windows.Forms.Timer(components);
             botonEliminar = new Button();
+            BackgroundImage = Image.FromFile("Resources\\bg.jpeg");
+            BackgroundImageLayout = ImageLayout.Stretch;
             SuspendLayout();
             // 
             // MercadoBoton
