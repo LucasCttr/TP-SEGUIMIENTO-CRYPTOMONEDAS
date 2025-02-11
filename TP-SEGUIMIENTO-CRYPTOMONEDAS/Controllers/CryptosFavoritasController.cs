@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork;
-using static TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository.CryptomonedasRepository;
+using static TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository.APIRepository;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Controllers
 {

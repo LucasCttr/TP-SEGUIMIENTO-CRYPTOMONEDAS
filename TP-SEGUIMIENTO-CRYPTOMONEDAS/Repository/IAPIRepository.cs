@@ -9,11 +9,11 @@ using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
 {
-    public interface ICryptomonedasRepository
+    public interface IAPIRepository
     {
         Task<List<CryptoDTO>> ObtenerMercado(); 
         CryptoDTO BuscarCryptoEnMercado(string IdCrypto);
-        List<CryptomonedasRepository.PuntoHistorial> ObtenerHistorialDeUnaCrypto(string idCrypto, string intervalo);
+        List<APIRepository.PuntoHistorial> ObtenerHistorialDeUnaCrypto(string idCrypto, string intervalo);
         void EliminarCryptoDeFavorito(string nombreCrypto);
         void AgregarCryptoAFavorito(string nombreCrypto, string idCrypto);
         bool VerificarSiEsFavorito(string idCrypto);   

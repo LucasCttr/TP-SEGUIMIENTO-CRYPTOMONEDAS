@@ -13,13 +13,13 @@ using Newtonsoft.Json.Linq;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
 {
-    public class CryptomonedasRepository : ICryptomonedasRepository
+    public class APIRepository : IAPIRepository
     {
         private readonly AppDbContext _context;
         private readonly RestClient _client;
 
         // Constructor que acepta un DbContext
-        public CryptomonedasRepository(AppDbContext context)
+        public APIRepository(AppDbContext context)
         {
             _client = new RestClient("https://api.coincap.io/v2/");
             _context = context;
