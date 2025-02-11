@@ -40,11 +40,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         private void AlertaForm_Load(object sender, EventArgs e)
         {
             cryptonombre.Text = CryptoNombre;
-            cryptonombre.Left = ((this.ClientSize.Width - cryptonombre.Width) / 2) +2;
+            cryptonombre.Left = ((this.ClientSize.Width - cryptonombre.Width) / 2) + 2;
 
             if (valorAlerta.Text == "")
             {
-                ActualizarForm(0,"Incremento");
+                ActualizarForm(0, "Incremento");
             }
         }
 
@@ -84,6 +84,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         }
 
         private void botonCancelar_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void botonCancelar_Click_1(object sender, EventArgs e)
         {
             this.Close();
         }

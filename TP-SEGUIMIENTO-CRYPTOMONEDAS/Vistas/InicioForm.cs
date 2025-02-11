@@ -26,12 +26,12 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         private CryptoService _alertaMonitor;
         public event EventHandler<FavoritaDTO> GuardarAlerta = delegate { };
 
-        public InicioForm(AlertaController alertaController, CryptosFavoritasController cryptosFavoritasController,UsuarioController usuarioController, CryptoService alertaService)
+        public InicioForm(AlertaController alertaController, CryptosFavoritasController cryptosFavoritasController, UsuarioController usuarioController, CryptoService alertaService)
         {
             _alertaController = alertaController;
             _cryptosFavoritasController = cryptosFavoritasController;
             _usuarioController = usuarioController;
-            
+
             InitializeComponent(); // Inicializa los componentes de la interfaz
             InicializarListaCryptosFavoritas(); // Configura la lista de criptomonedas favoritas
             InicializarTimer(); // Inicializa el temporizador para actualizaciones periódicas
@@ -55,8 +55,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
             // Crear item con mensaje de cargando en la lista de cryptos favoritas
             var item = new ListViewItem(" ");
-            item.SubItems.Add("Cargando..."); 
-            listaCryptosFavoritas.Items.Add(item); 
+            item.SubItems.Add("Cargando...");
+            listaCryptosFavoritas.Items.Add(item);
 
             ActualizarListaFavoritasAsync();  //Cargar cryptos favoritas
             CargarHistorialAlertas(); // Cargar historial de alertas
@@ -66,7 +66,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         private void MercadoBoton_Click(object sender, EventArgs e)
         {
             // Abre el formulario de mercado
-            var mercadoForm = new MercadoForm(_alertaController,_cryptosFavoritasController,_usuarioController, this);
+            var mercadoForm = new MercadoForm(_alertaController, _cryptosFavoritasController, _usuarioController, this);
             mercadoForm.Show();
         }
 
@@ -97,6 +97,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         //Carga el view de las alertas activas actualmente
         private void AlertasBoton_Click(object sender, EventArgs e)
         {
+            label2.Text = "Alertas activas";
             botonEliminar.Visible = false;
             botonModificar.Visible = false;
             CargarAlertasActivas();
@@ -105,6 +106,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         // Carga el view de alertas con el historial de las que se activaron en los ultimos 7 dias
         private void HistorialAlertas_Click(object sender, EventArgs e)
         {
+            label2.Text = "Historial";
             listaAlertas.Sort();
             botonModificar.Visible = false;
             botonEliminar.Visible = false;
@@ -298,7 +300,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                     if (crypto == null) continue;
 
                     // Notificar las alertas si es necesario
-                    _alertaMonitor.NotificarCambio(crypto.name, crypto.changePercent24Hr);
+                    _alertaMonitor.NotificarCambio(crypto.name, crypto.changePercent24Hr.Value);
 
                     // Crear un nuevo ListViewItem
                     ListViewItem newItem = new ListViewItem(crypto.rank.ToString())
@@ -307,8 +309,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                     };
                     newItem.SubItems.Add(crypto.name);
                     newItem.SubItems.Add(crypto.symbol);
-                    newItem.SubItems.Add(crypto.priceUsd.ToString("C2", CultureInfo.CreateSpecificCulture("en-US")));
-                    newItem.SubItems.Add(crypto.changePercent24Hr.ToString("F2") + "%");
+                    newItem.SubItems.Add(crypto.priceUsd.Value.ToString("C2", CultureInfo.CreateSpecificCulture("en-US")));
+                    newItem.SubItems.Add(crypto.changePercent24Hr.Value.ToString("F2") + "%");
                     newItem.SubItems.Add(crypto.id);
                     nuevosItems.Add(newItem);
                 }
@@ -371,5 +373,6 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         {
             OpcionesBoton_Click(sender, e);
         }
+
     }
 }

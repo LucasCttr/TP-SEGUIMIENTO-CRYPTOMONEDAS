@@ -11,14 +11,14 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.UntOfWork
     public class UnitOfWork : IUnitOfWork
     {
         private readonly AppDbContext _context;
-        public ICryptomonedasRepository CryptosFavoritas { get; private set; }
+        public IAPIRepository CryptosFavoritas { get; private set; }
         public IUserRepository Usuarios { get; private set; }
         public IAlertaRepository Alerta { get; private set; }
 
         public UnitOfWork(AppDbContext context)
         {
             _context = context;
-            CryptosFavoritas = new CryptomonedasRepository(_context);
+            CryptosFavoritas = new APIRepository(_context);
             Usuarios = new UserRepository(_context);
             Alerta = new AlertaRepository(_context);
         }

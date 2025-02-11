@@ -19,16 +19,16 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs
         public string name { get; set; }
 
         // Precio actual en USD.
-        public decimal priceUsd { get; set; }
+        public decimal? priceUsd { get; set; }
 
         // Capitalización de mercado en USD.
-        public decimal marketCapUsd { get; set; }
+        public decimal? marketCapUsd { get; set; }
 
         // Volumen de transacciones en las últimas 24 horas en USD.
-        public decimal volumeUsd24Hr { get; set; }
+        public decimal? volumeUsd24Hr { get; set; }
 
         // Cambio porcentual en las últimas 24 horas.
-        public decimal changePercent24Hr { get; set; }
+        public decimal? changePercent24Hr { get; set; }
 
         // Símbolo o ticker de la criptomoneda (por ejemplo, BTC para Bitcoin).
         public string symbol { get; set; }
@@ -44,6 +44,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.DTOs
 
         // Posición de la criptomoneda en el ranking de capitalización de mercado.
         public int rank { get; set; }
+
+        public string explorer { get; set; }
+
+
     }
 }
 
