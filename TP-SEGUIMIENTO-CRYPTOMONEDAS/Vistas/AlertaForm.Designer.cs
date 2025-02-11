@@ -80,6 +80,7 @@
             botonCancelar.TabIndex = 6;
             botonCancelar.Text = "Cancelar";
             botonCancelar.UseVisualStyleBackColor = true;
+            botonCancelar.Click += botonCancelar_Click_1;
             // 
             // cryptonombre
             // 

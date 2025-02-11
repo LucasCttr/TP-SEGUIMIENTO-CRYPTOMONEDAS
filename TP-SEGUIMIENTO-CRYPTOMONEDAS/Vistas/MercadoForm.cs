@@ -46,6 +46,14 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         {
             // Obtener las criptomonedas favoritas desde el repositorio API
             var cryptos = await _cryptosFavoritasController.ObtenerMercadoAPI();
+
+            // Verificar si cryptos está vacío
+            if (cryptos == null || !cryptos.Any())
+            {
+                MessageBox.Show("No se encontraron criptomonedas.", "Información", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                return; // Salir del método si no hay criptomonedas
+            }
+
             this.Invoke(() =>
             {
                 // Limpiar la lista antes de cargar los nuevos datos
@@ -58,15 +66,13 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                     item.SubItems.Add(crypto.id.ToString());
                     item.SubItems.Add(crypto.name);
                     item.SubItems.Add(crypto.symbol);
-                    item.SubItems.Add(crypto.priceUsd.ToString("C2", CultureInfo.CreateSpecificCulture("en-US"))); // Formato de precio en USD
-                    item.SubItems.Add(crypto.changePercent24Hr.ToString("F2") + " %"); // Porcentaje de cambio en 24 horas
-                    item.SubItems.Add(crypto.marketCapUsd.ToString("F2")); // Capitalización del mercado
+                    item.SubItems.Add(crypto.priceUsd.Value.ToString("C2", CultureInfo.CreateSpecificCulture("en-US"))); // Formato de precio en USD
+                    item.SubItems.Add(crypto.changePercent24Hr.Value.ToString("F2") + " %"); // Porcentaje de cambio en 24 horas
+                    item.SubItems.Add(crypto.marketCapUsd.Value.ToString("F2")); // Capitalización del mercado
                     item.SubItems.Add(crypto.supply.ToString("F2")); // Suministro
                     CryptosLista.Items.Add(item);
                 }
             });
-
-            
         }
 
         // Inicializa la vista del ListView

@@ -106,15 +106,15 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 var item = new ListViewItem(datosCrypto.rank.ToString()); // Nombre de la criptomoneda
                 item.SubItems.Add(datosCrypto.name);
                 item.SubItems.Add(datosCrypto.symbol);
-                item.SubItems.Add(datosCrypto.priceUsd.ToString("C2", CultureInfo.CreateSpecificCulture("en-US"))); // Precio en USD, formato de moneda
+                item.SubItems.Add(datosCrypto.priceUsd.Value.ToString("C2", CultureInfo.CreateSpecificCulture("en-US"))); // Precio en USD, formato de moneda
 
                 //Para que los numeros no queden desalineados por el signo "-"
-                if (datosCrypto.changePercent24Hr.ToString("F2").StartsWith("-"))
-                    item.SubItems.Add(datosCrypto.changePercent24Hr.ToString("F2") + " %");
-                else item.SubItems.Add("  " + datosCrypto.changePercent24Hr.ToString("F2") + " %");
+                if (datosCrypto.changePercent24Hr.Value.ToString("F2").StartsWith("-"))
+                    item.SubItems.Add(datosCrypto.changePercent24Hr.Value.ToString("F2") + " %");
+                else item.SubItems.Add("  " + datosCrypto.changePercent24Hr.Value.ToString("F2") + " %");
                 item.SubItems.Add(Math.Round(datosCrypto.supply, 2).ToString());
-                item.SubItems.Add(Math.Round(datosCrypto.marketCapUsd,2).ToString());
-                item.SubItems.Add(Math.Round(datosCrypto.volumeUsd24Hr,2).ToString());
+                item.SubItems.Add(Math.Round(datosCrypto.marketCapUsd.Value, 2).ToString());
+                item.SubItems.Add(Math.Round(datosCrypto.volumeUsd24Hr.Value, 2).ToString());
                 item.SubItems.Add(Math.Round(datosCrypto.vwap24Hr.Value,2).ToString());
                 
                 listaDetalles.Items.Add(item);

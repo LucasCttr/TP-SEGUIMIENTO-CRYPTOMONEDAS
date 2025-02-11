@@ -40,6 +40,7 @@
             botonModificar = new Button();
             timer = new System.Windows.Forms.Timer(components);
             botonEliminar = new Button();
+            label2 = new Label();
             SuspendLayout();
             // 
             // MercadoBoton
@@ -72,9 +73,9 @@
             label1.ForeColor = Color.White;
             label1.Location = new Point(12, 8);
             label1.Name = "label1";
-            label1.Size = new Size(94, 30);
+            label1.Size = new Size(239, 30);
             label1.TabIndex = 2;
-            label1.Text = "Favoritas";
+            label1.Text = "Criptomonedas favoritas";
             // 
             // botonOpciones
             // 
@@ -152,12 +153,25 @@
             botonEliminar.UseVisualStyleBackColor = true;
             botonEliminar.Click += botonEliminar_Click_1;
             // 
+            // label2
+            // 
+            label2.AutoSize = true;
+            label2.BackColor = Color.Transparent;
+            label2.Font = new Font("Segoe UI", 15.75F);
+            label2.ForeColor = Color.White;
+            label2.Location = new Point(308, 8);
+            label2.Name = "label2";
+            label2.Size = new Size(89, 30);
+            label2.TabIndex = 10;
+            label2.Text = "Historial";
+            // 
             // InicioForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackgroundImageLayout = ImageLayout.Stretch;
             ClientSize = new Size(707, 450);
+            Controls.Add(label2);
             Controls.Add(botonEliminar);
             Controls.Add(botonModificar);
             Controls.Add(HistorialAlertas);
@@ -189,5 +203,6 @@
         private Button botonModificar;
         private System.Windows.Forms.Timer timer;
         private Button botonEliminar;
+        private Label label2;
     }
 }

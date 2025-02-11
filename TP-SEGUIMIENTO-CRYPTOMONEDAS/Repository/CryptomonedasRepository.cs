@@ -9,6 +9,7 @@ using TP_SEGUIMIENTO_CRYPTOMONEDAS.Dominio;
 using TP_SEGUIMIENTO_CRYPTOMONEDAS.SessionManagerService;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
 {
@@ -24,25 +25,76 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             _context = context;
         }
 
+        private class CryptoResponse
+        {
+            public List<CryptoDTO> data { get; set; }
+        }
+
         // Obtiene el mercado de criptomonedas desde la API
         public async Task<List<CryptoDTO>> ObtenerMercado()
         {
             var request = new RestRequest("assets", Method.Get);
-            var response = await _client.ExecuteAsync<CryptoResponse>(request);
+            var response = await _client.ExecuteAsync(request);
 
-            if (response.IsSuccessful)
+            // Comprobar si la respuesta fue exitosa
+            if (!response.IsSuccessful)
             {
-                return response.Data.Data; // Accede a la propiedad 'Data'
+                MessageBox.Show($"Error en la solicitud: {response.StatusCode}\n{response.Content}");
+                return new List<CryptoDTO>(); // Retorna una lista vacía en caso de error
             }
 
-            return new List<CryptoDTO>(); // Retorna una lista vacía en caso de error
+            try
+            {
+                // Deserializar el contenido a JObject para ver los datos sin mapear
+                var json = JsonConvert.DeserializeObject<JObject>(response.Content);
+
+                // Definir el DTO localmente
+                var cryptoDTOList = new List<CryptoDTO>();
+
+                // Deserializar el contenido directamente a un objeto de respuesta
+                var resultado = JsonConvert.DeserializeObject<CryptoResponse>(response.Content);
+
+                // Verificar si 'data' no es null
+                if (resultado?.data == null)
+                {
+                    MessageBox.Show("La propiedad 'data' es null o está vacía.");
+                    return new List<CryptoDTO>(); // Retorna una lista vacía si no hay datos
+                }
+
+                // Aquí puedes crear el DTO localmente y mapear los datos
+                foreach (var item in resultado.data)
+                {
+                    var cryptoDTO = new CryptoDTO
+                    {
+                        id = item.id,
+                        rank = item.rank,
+                        symbol = item.symbol,
+                        name = item.name,
+                        supply = item.supply,
+                        maxSupply = item.maxSupply,
+                        // Asignamos valores por defecto si son nulos
+                        marketCapUsd = item.marketCapUsd ?? 0m,
+                        volumeUsd24Hr = item.volumeUsd24Hr ?? 0m,
+                        priceUsd = item.priceUsd ?? 0m,
+                        changePercent24Hr = item.changePercent24Hr ?? 0m,
+                        vwap24Hr = item.vwap24Hr ?? 0m,
+                        explorer = item.explorer
+                    };
+
+                    cryptoDTOList.Add(cryptoDTO);
+                }
+
+                return cryptoDTOList; // Devuelve la lista de CryptoDTOs
+            }
+            catch (Exception ex)
+            {
+                // Si ocurre una excepción durante la deserialización
+                MessageBox.Show($"Error al deserializar los datos: {ex.Message}");
+                return new List<CryptoDTO>(); // Retorna una lista vacía en caso de error
+            }
         }
 
-        // Clase interna para mapeo de la respuesta de la API
-        private class CryptoResponse
-        {
-            public List<CryptoDTO> Data { get; set; }
-        }
+
 
         // Clase interna para mapeo de la respuesta individual de criptomoneda
         private class SingleCryptoResponse
@@ -131,7 +183,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
             }
             else
             {
-                Console.WriteLine("Error al obtener datos del historial: " + response.ErrorMessage);
+                MessageBox.Show("Error al obtener datos del historial: " + response.ErrorMessage);
                 return new List<PuntoHistorial>();
             }
         }

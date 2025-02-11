@@ -16,7 +16,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         // DbSet representa las tablas en la base de datos.
-        public DbSet<CryptoDTO> CryptosFavoritas { get; set; } // Tabla para las criptomonedas favoritas.
+       
         public DbSet<Usuario> Usuarios { get; set; } // Tabla para los usuarios.
         public DbSet<Favoritas> UsuariosCryptos { get; set; } // Relación entre usuarios y sus criptomonedas favoritas.
         public DbSet<Alerta> Alertas { get; set; } // Tabla para las alertas configuradas.
