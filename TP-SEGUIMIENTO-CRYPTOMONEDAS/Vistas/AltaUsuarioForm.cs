@@ -35,12 +35,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         private void botonGuardar_Click(object sender, EventArgs e)
         {
             //// Validar si el correo ya está registrado.
-            //if (_unitOfWork.Usuarios.VerificarExistenciaUsuario(textCorreo.Text)) // Asume que retorna un booleano.
-            //    _usuarioController.VerificarExistenciaUsuario(textCorreo.Text);
-            //{
-            //    MessageBox.Show("El correo ingresado ya se encuentra registrado");
-            //    return; // Salir si el correo ya existe.
-            //}
+            if (_usuarioController.ObtenerUsuario(textCorreo.Text) != null) // Asume que retorna un booleano.  
+            {
+                MessageBox.Show("El correo ingresado ya se encuentra registrado");
+               return; // Salir si el correo ya existe.
+            }
 
             // Validar si las contraseñas coinciden.
             if (textContraseña.Text != textContraseña2.Text)

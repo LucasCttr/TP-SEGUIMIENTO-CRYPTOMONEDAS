@@ -87,7 +87,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 // Crear e iniciar el nuevo formulario pasando los datos
                 OpcionesCryptoForm opcionesForm = new OpcionesCryptoForm(selectedItem.SubItems[1].Text, selectedItem.SubItems[5].Text, _alertaController, _cryptosFavoritasController, _usuarioController, this);
 
-                // Suscribirse al evento del formulario intermedio para actualizar la lista de favoritos
+                // Suscribirse al evento del formulario intermedio para actualizar la lista de favoritos  (Por si se llegase a crear una alerta nueva desde el windowsForm alerta)
                 opcionesForm.GuardarAlerta += Evento_GuardarAlerta;
 
                 opcionesForm.ShowDialog(); // Mostrar el formulario modally
@@ -124,13 +124,12 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 int subItemValue = Convert.ToInt32(selectedItem.SubItems[3].Text);
                 AlertaForm alertaForm = new AlertaForm(selectedItem.Text, subItemValue, _alertaController, _cryptosFavoritasController, _usuarioController);
 
-                // Suscribirse al evento GuardarAlerta
+                // Suscribirse al evento GuardarAlerta  (Al modificar la alerta desde su windowsForm, se modifica tambien en el _alertaMonitor)
                 alertaForm.GuardarAlerta += (sender, args) =>
                 {
                     // Actualizar la lista en InicioForm
                     if (args.AlertaID != null)
                     {
-                        //_unitOfWork.Alerta.ActualizarAlerta(args.AlertaID.Value, args.NuevoValor, args.Tipo); Pasado a _alertaMonitor
                         _alertaMonitor.ActualizarAlerta(args.CryptoNombre, args.NuevoValor, args.Tipo, args.AlertaID.Value);
                     }
 
@@ -139,6 +138,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 var valorAlerta = Convert.ToDecimal(selectedItem.SubItems[1].Text);
                 var tipoAlerta = selectedItem.SubItems[2].Text;
 
+                // Para que el form se abra con los valores del item seleccionado
                 alertaForm.ActualizarForm(valorAlerta, tipoAlerta);
                 alertaForm.Show();
             }
@@ -299,7 +299,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                     var crypto = await Task.Run(() => _alertaMonitor.ObtenerDatosActualesDeUnaCrypto(f.CryptomonedaID));
                     if (crypto == null) continue;
 
-                    // Notificar las alertas si es necesario
+                    // Notificar las alertas
                     _alertaMonitor.NotificarCambio(crypto.name, crypto.changePercent24Hr.Value);
 
                     // Crear un nuevo ListViewItem
