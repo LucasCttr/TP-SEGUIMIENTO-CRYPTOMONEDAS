@@ -16,9 +16,9 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
     public partial class MiCuentaForm : Form
     {
         private AlertaController _alertaController;
-        private CryptosFavoritasController _cryptosFavoritasController;
+        private APIController _cryptosFavoritasController;
         private UsuarioController _usuarioController;
-        public MiCuentaForm(AlertaController alertaController, CryptosFavoritasController cryptosFavoritasController, UsuarioController usuarioController)
+        public MiCuentaForm(AlertaController alertaController, APIController cryptosFavoritasController, UsuarioController usuarioController)
         {
             _alertaController = alertaController;
             _cryptosFavoritasController = cryptosFavoritasController;

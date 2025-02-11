@@ -17,10 +17,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
     {
         public event EventHandler<bool> OnPasswordValidated; // Evento para notificar si la contraseña es válida
         private AlertaController _alertaController;
-        private CryptosFavoritasController _cryptosFavoritasController;
+        private APIController _cryptosFavoritasController;
         private UsuarioController _usuarioController;
 
-        public ValidarCambiosForm(AlertaController alertaController, CryptosFavoritasController cryptosFavoritasController, UsuarioController usuarioController)
+        public ValidarCambiosForm(AlertaController alertaController, APIController cryptosFavoritasController, UsuarioController usuarioController)
         {
             _alertaController = alertaController;
             _cryptosFavoritasController = cryptosFavoritasController;

@@ -22,11 +22,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
     public partial class MercadoForm : Form
     {
         private AlertaController _alertaController;
-        private CryptosFavoritasController _cryptosFavoritasController;
+        private APIController _cryptosFavoritasController;
         private UsuarioController _usuarioController;
         private InicioForm _inicioForm;
 
-        public MercadoForm(AlertaController alertaController, CryptosFavoritasController cryptosFavoritasController, UsuarioController usuarioController, InicioForm inicioForm)
+        public MercadoForm(AlertaController alertaController, APIController cryptosFavoritasController, UsuarioController usuarioController, InicioForm inicioForm)
         {
             _alertaController = alertaController;
             _usuarioController = usuarioController;

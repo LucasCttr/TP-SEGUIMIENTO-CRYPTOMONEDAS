@@ -30,7 +30,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS
                 {
                     IUnitOfWork unitOfWork = new UnitOfWork(context);
                     AlertaController _alertaController = new AlertaController(unitOfWork);
-                    CryptosFavoritasController _cryptosFavoritasController = new CryptosFavoritasController(unitOfWork);
+                    APIController _cryptosFavoritasController = new APIController(unitOfWork);
                     UsuarioController _usuarioController = new UsuarioController(unitOfWork);
 
                     Application.Run(new LoginForm(_alertaController,_cryptosFavoritasController, _usuarioController));

@@ -19,11 +19,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
     public partial class LoginForm : Form // Representa la vista para login.
     {
-        private readonly CryptosFavoritasController _cryptosFavoritasController;
+        private readonly APIController _cryptosFavoritasController;
         private readonly UsuarioController _usuarioController;
         private readonly AlertaController _alertaController;
 
-        public LoginForm(AlertaController alertaController, CryptosFavoritasController cryptosFavoritascontroller, UsuarioController usuarioController)
+        public LoginForm(AlertaController alertaController, APIController cryptosFavoritascontroller, UsuarioController usuarioController)
         {
             _cryptosFavoritasController = cryptosFavoritascontroller;
             _usuarioController = usuarioController;

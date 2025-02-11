@@ -9,11 +9,11 @@ using static TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository.APIRepository;
 
 namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Controllers
 {
-    public class CryptosFavoritasController
+    public class APIController
     {
         private readonly IUnitOfWork _unitOfWork;
 
-        public CryptosFavoritasController(IUnitOfWork unitOfWork)
+        public APIController(IUnitOfWork unitOfWork)
         {
             _unitOfWork = unitOfWork;
         }

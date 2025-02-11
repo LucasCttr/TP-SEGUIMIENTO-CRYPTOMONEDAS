@@ -20,10 +20,10 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         private string Crypto;
 
         private AlertaController _alertaController;
-        private CryptosFavoritasController _cryptosFavoritasController;
+        private APIController _cryptosFavoritasController;
         private UsuarioController _usuarioController;
 
-        public GraficoForm(string idCrypto, AlertaController alertaController, CryptosFavoritasController cryptosFavoritasController, UsuarioController usuarioController)
+        public GraficoForm(string idCrypto, AlertaController alertaController, APIController cryptosFavoritasController, UsuarioController usuarioController)
         {
             InitializeComponent();
             Crypto = idCrypto;

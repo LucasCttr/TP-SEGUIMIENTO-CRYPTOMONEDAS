@@ -20,14 +20,14 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas.OpcionesCrypto
         public string cryptoId;
 
         public AlertaController _alertaController;
-        public CryptosFavoritasController _cryptosFavoritasController;
+        public APIController _cryptosFavoritasController;
         public UsuarioController _usuarioController;
 
         private ICryptoState _estadoActual;
         public InicioForm InicioForm;       
         public event EventHandler<FavoritaDTO> GuardarAlerta;
 
-        public OpcionesCryptoForm(string nombreCrypto, string idCrypto, AlertaController alertaController, CryptosFavoritasController cryptosFavoritasController, UsuarioController usuarioController, InicioForm inicioForm)
+        public OpcionesCryptoForm(string nombreCrypto, string idCrypto, AlertaController alertaController, APIController cryptosFavoritasController, UsuarioController usuarioController, InicioForm inicioForm)
         {
             InitializeComponent();
 

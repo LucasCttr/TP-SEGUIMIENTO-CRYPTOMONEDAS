@@ -20,13 +20,13 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         public int? AlertaID { get; private set; }
 
         private AlertaController _alertaController;
-        private CryptosFavoritasController _cryptosFavoritasController;
+        private APIController _cryptosFavoritasController;
         private UsuarioController _usuarioController;
 
         // Evento para notificar al exterior
         public event EventHandler<FavoritaDTO> GuardarAlerta;
 
-        public AlertaForm(string crypto, int? id, AlertaController alertaController, CryptosFavoritasController cryptosFavoritasController, UsuarioController usuarioController)
+        public AlertaForm(string crypto, int? id, AlertaController alertaController, APIController cryptosFavoritasController, UsuarioController usuarioController)
         {
             _alertaController = alertaController;
             _cryptosFavoritasController = cryptosFavoritasController;

@@ -21,12 +21,12 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
     public partial class InicioForm : Form
     {
         private AlertaController _alertaController;
-        private CryptosFavoritasController _cryptosFavoritasController;
+        private APIController _cryptosFavoritasController;
         private UsuarioController _usuarioController;
         private CryptoService _alertaMonitor;
         public event EventHandler<FavoritaDTO> GuardarAlerta = delegate { };
 
-        public InicioForm(AlertaController alertaController, CryptosFavoritasController cryptosFavoritasController, UsuarioController usuarioController, CryptoService alertaService)
+        public InicioForm(AlertaController alertaController, APIController cryptosFavoritasController, UsuarioController usuarioController, CryptoService alertaService)
         {
             _alertaController = alertaController;
             _cryptosFavoritasController = cryptosFavoritasController;

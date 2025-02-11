@@ -15,8 +15,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.MonitoreoAlertasService
         private readonly List<IAlertaObservervador> observadores = new(); // Lista de observadores para las alertas.
         private readonly AlertaController _alertaController;
         private readonly UsuarioController _usuarioController;
-        private readonly CryptosFavoritasController _cryptosFavoritasController;
-        public CryptoService(AlertaController alertaController, UsuarioController usuarioController, CryptosFavoritasController cryptosFavoritasController) 
+        private readonly APIController _cryptosFavoritasController;
+        public CryptoService(AlertaController alertaController, UsuarioController usuarioController, APIController cryptosFavoritasController) 
         {
             _alertaController = alertaController;
             _usuarioController = usuarioController;
