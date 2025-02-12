@@ -24,7 +24,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         private APIController _APIController;
         private UsuarioController _usuarioController;
         private CryptoService _alertaMonitor;
-        public event EventHandler<FavoritaDTO> GuardarAlerta = delegate { };
+        public event EventHandler<FavoritaDTO> GuardarAlerta = delegate { }; //Evento para crear obsevador de una alerta nueva que se crea desde alertaForm
 
         public InicioForm(AlertaController alertaController, APIController cryptosFavoritasController, UsuarioController usuarioController, CryptoService alertaService)
         {
@@ -87,7 +87,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 // Crear e iniciar el nuevo formulario pasando los datos
                 OpcionesCryptoForm opcionesForm = new OpcionesCryptoForm(selectedItem.SubItems[1].Text, selectedItem.SubItems[5].Text, _alertaController, _APIController, _usuarioController, this);
 
-                // Suscribirse al evento del formulario intermedio para actualizar la lista de favoritos  (Por si se llegase a crear una alerta nueva desde el windowsForm alerta)
+                // Suscribirse al evento del formulario intermedio para crear un observador en caso de que se cree una alerta nueva  (Por si se llegase a crear una alerta nueva desde el windowsForm alerta)
                 opcionesForm.GuardarAlerta += Evento_GuardarAlerta;
 
                 opcionesForm.ShowDialog(); // Mostrar el formulario modally
@@ -124,7 +124,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 int subItemValue = Convert.ToInt32(selectedItem.SubItems[3].Text);
                 AlertaForm alertaForm = new AlertaForm(selectedItem.Text, subItemValue, _alertaController, _APIController, _usuarioController);
 
-                // Suscribirse al evento GuardarAlerta  (Al modificar la alerta desde su windowsForm, se modifica tambien en el _alertaMonitor)
+                // Suscribirse al evento GuardarAlerta  (Al modificar la alerta desde el AlertaForm, se modifica tambien en el _alertaMonitor)
                 alertaForm.GuardarAlerta += (sender, args) =>
                 {
                     // Actualizar la lista en InicioForm
@@ -255,6 +255,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             botonOpciones.Visible = listaCryptosFavoritas.SelectedItems.Count > 0;
         }
 
+        // Se ejecuta cuando se crea una nueva alerta desde el AlertaForm
         private void Evento_GuardarAlerta(object sender, FavoritaDTO e)
         {
             _alertaMonitor.CrearAlerta(e.CryptoNombre, e.NuevoValor, e.Tipo, e.AlertaID.Value);

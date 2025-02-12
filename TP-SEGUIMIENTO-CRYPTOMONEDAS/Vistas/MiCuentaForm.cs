@@ -46,7 +46,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         // Evento que se activa al hacer clic en el botón "Guardar"
         private void buttonGuardar_Click(object sender, EventArgs e)
         {
-            var validarForm = new ValidarCambiosForm(_alertaController,_APIControllerController,_usuarioController); // Crea una instancia para validar la contraseña
+            var validarForm = new ValidarCambiosForm(_usuarioController); // Crea una instancia para validar la contraseña
 
             // Suscribirse al evento que valida la contraseña
             validarForm.OnPasswordValidated += ValidarForm_OnPasswordValidated;

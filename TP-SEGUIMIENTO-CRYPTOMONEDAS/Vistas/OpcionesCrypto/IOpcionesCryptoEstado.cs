@@ -16,7 +16,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas.OpcionesCrypto
     {
         public void Handle(OpcionesCryptoForm opcionesCrypto)
         {
-            opcionesCrypto._APIController.AgregarCryptoAFavorito(opcionesCrypto.cryptoNombre, opcionesCrypto.cryptoId);  // Se agrega la crypto a favorito
+            opcionesCrypto._APIController.AgregarCryptoAFavorito(opcionesCrypto.iCryptoNombre, opcionesCrypto.iCryptoId);  // Se agrega la crypto a favorito
             opcionesCrypto.InicioForm.ActualizarListaFavoritasAsync();  //Se actualiza la lista de favoritos del Inicio
             opcionesCrypto.CambiarEstado(new EliminarState());  //Se cambia al otro estado
             opcionesCrypto.ActualizarBotones("Eliminar", true);   //Se cambia el boton al del otro estado
@@ -27,7 +27,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas.OpcionesCrypto
     {
         public void Handle(OpcionesCryptoForm opcionesCrypto)
         {
-            opcionesCrypto._APIController.EliminarCryptoFavorito(opcionesCrypto.cryptoId);
+            opcionesCrypto._APIController.EliminarCryptoFavorito(opcionesCrypto.iCryptoId);
             opcionesCrypto.InicioForm.ActualizarListaFavoritasAsync();
             opcionesCrypto.CambiarEstado(new AgregarState());
             opcionesCrypto.ActualizarBotones("Agregar", false);

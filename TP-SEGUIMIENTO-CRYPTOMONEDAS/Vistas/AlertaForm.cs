@@ -16,11 +16,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
     public partial class AlertaForm : Form
     {
-        public string CryptoNombre { get; set; }
-        public int? AlertaID { get; private set; }
+        public string iCryptoNombre { get; set; }
+        public int? iAlertaID { get; private set; }  //Si es null, la alerta no existe en la DB. Si tiene valor, si existe.
 
         private AlertaController _alertaController;
-        private APIController _cryptosFavoritasController;
+        private APIController _APIController;
         private UsuarioController _usuarioController;
 
         // Evento para notificar al exterior
@@ -29,19 +29,20 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         public AlertaForm(string crypto, int? id, AlertaController alertaController, APIController cryptosFavoritasController, UsuarioController usuarioController)
         {
             _alertaController = alertaController;
-            _cryptosFavoritasController = cryptosFavoritasController;
+            _APIController = cryptosFavoritasController;
             _usuarioController = usuarioController;
 
-            CryptoNombre = crypto;
-            AlertaID = id;
+            iCryptoNombre = crypto;
+            iAlertaID = id;
             InitializeComponent();
         }
 
         private void AlertaForm_Load(object sender, EventArgs e)
         {
-            cryptonombre.Text = CryptoNombre;
-            cryptonombre.Left = ((this.ClientSize.Width - cryptonombre.Width) / 2) + 2;
+            cryptonombre.Text = iCryptoNombre;
+            cryptonombre.Left = ((this.ClientSize.Width - cryptonombre.Width) / 2) + 2;   //Ubicar  el nombre en el medio del form
 
+            // Se abre el form con los valores 0 e incremento seleccionados si es que no se modifico antes de abrirlo
             if (valorAlerta.Text == "")
             {
                 ActualizarForm(0, "Incremento");
@@ -53,23 +54,23 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             decimal nuevoValorPositivo = Convert.ToDecimal(valorAlerta.Text);
             string tipo = tipoAlerta.Text;
 
-            if (AlertaID != null)
+            if (iAlertaID != null) // Si es distinto de null, la alerta ya existe y se la busca en la DB para modificarla. Si es null, entonces no existe y se la crea en la DB
             {
                 // Modificar la alerta en la base de datos
-                _alertaController.ActualizarAlerta(AlertaID.Value, nuevoValorPositivo, tipo);
+                _alertaController.ActualizarAlerta(iAlertaID.Value, nuevoValorPositivo, tipo);
             }
             else
             {
-                // Crear la alerta en la base de datos
-                int idAlerta = _alertaController.CrearAlertaYObtenerID(CryptoNombre, nuevoValorPositivo, tipo);
-                AlertaID = idAlerta; // Actualizar el ID para esta instancia
+                // Crear la alerta en la base de datos y devuelve la id de la misma para actulizarla en la clase actual
+                int idAlerta = _alertaController.CrearAlertaYObtenerID(iCryptoNombre, nuevoValorPositivo, tipo);
+                iAlertaID = idAlerta; // Actualizar el ID para esta instancia
             }
 
-            // Invocar el evento para notificar
+            // Invocar el evento para notificar al Inicio y que este cree o modifique un observador para la alerta actual.
             GuardarAlerta?.Invoke(this, new FavoritaDTO
             {
-                CryptoNombre = CryptoNombre,
-                AlertaID = AlertaID,
+                CryptoNombre = iCryptoNombre,
+                AlertaID = iAlertaID,
                 NuevoValor = nuevoValorPositivo,
                 Tipo = tipo
             });

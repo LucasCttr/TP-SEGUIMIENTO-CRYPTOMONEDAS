@@ -17,20 +17,16 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
     public partial class GraficoForm : Form
     {
-        private string Crypto;
+        private string iCrypto;
 
-        private AlertaController _alertaController;
         private APIController _APIController;
-        private UsuarioController _usuarioController;
 
-        public GraficoForm(string idCrypto, AlertaController alertaController, APIController cryptosFavoritasController, UsuarioController usuarioController)
+        public GraficoForm(string idCrypto, APIController cryptosFavoritasController)
         {
             InitializeComponent();
-            Crypto = idCrypto;
+            iCrypto = idCrypto;
 
-            _alertaController = alertaController;
             _APIController = cryptosFavoritasController;
-            _usuarioController = usuarioController;
 
             grafico.ChartAreas[0].AxisX.LabelStyle.Format = "dd-MM";
             CargarHistorialCrypto("d1");
@@ -43,7 +39,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         }
         private void CargarHistorialCrypto(string intervalo)
         {
-            var datosHistorial = _APIController.ObtenerHistorialDeUnaCrypto(Crypto, intervalo);
+            var datosHistorial = _APIController.ObtenerHistorialDeUnaCrypto(iCrypto, intervalo);
 
             grafico.Series.Clear();
             Series serie = new Series();
@@ -51,7 +47,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
             if (intervalo == "m1")
             {
-                // Show points per hour for "m1" interval
+                // Muestra points por hora para "m1"
                 foreach (var punto in datosHistorial)
                 {
                     serie.Points.AddXY(punto.Fecha, punto.Precio);
@@ -59,7 +55,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             }
             else
             {
-                // Show only one point per day for other intervals
+                // Muestra puntos por dia para otros intervalos
                 var groupedData = datosHistorial.GroupBy(p => p.Fecha.Date)
                                                 .Select(g => g.First())
                                                 .ToList();
@@ -97,7 +93,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             listaDetalles.Columns.Add("vwap24Hr", 120);
             listaDetalles.Columns.Add("Id", 0);
 
-            var datosCrypto = _APIController.BuscarCryptoEnMercado(Crypto); 
+            var datosCrypto = _APIController.BuscarCryptoEnMercado(iCrypto); 
 
             // Verifica si DatosCrypto no es null
             if (datosCrypto != null)
