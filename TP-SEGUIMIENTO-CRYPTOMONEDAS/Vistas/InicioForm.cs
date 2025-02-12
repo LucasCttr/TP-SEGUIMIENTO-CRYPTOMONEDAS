@@ -73,7 +73,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         private void MiCuentaBoton_Click(object sender, EventArgs e)
         {
             // Abre el formulario de cuenta del usuario
-            var cuentaForm = new MiCuentaForm(_alertaController, _APIController, _usuarioController);
+            var cuentaForm = new MiCuentaForm(_usuarioController);
             cuentaForm.ShowDialog();
         }
 

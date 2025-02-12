@@ -104,20 +104,15 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Repository
         // Da de alta un nuevo usuario en la base de datos
         public void DarDeAltaUsuario(string nombre, string correo, string contraseña)
         {
-            if (VerificarExistenciaUsuario(correo))
+            var usuario = new Usuario
             {
-                var usuario = new Usuario
-                {
-                    Nombre = nombre,
-                    Correo = correo,
-                    Contraseña = contraseña
-                };
+                Nombre = nombre,
+                Correo = correo,
+                Contraseña = contraseña
+            };
 
-                _context.Usuarios.Add(usuario);
-                _context.SaveChanges(true); // Guarda los cambios
-                MessageBox.Show("Usuario dado de alta correctamente");
-            }
-            else MessageBox.Show("Ya existe una cuenta con el correo ingresado");
+            _context.Usuarios.Add(usuario);
+            _context.SaveChanges(true); // Guarda los cambios
         }
     }
 }
