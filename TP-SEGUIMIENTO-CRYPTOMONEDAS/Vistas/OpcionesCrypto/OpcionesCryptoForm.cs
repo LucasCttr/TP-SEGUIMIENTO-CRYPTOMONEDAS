@@ -20,11 +20,11 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas.OpcionesCrypto
         public string cryptoId;
 
         public AlertaController _alertaController;
-        public APIController _cryptosFavoritasController;
+        public APIController _APIController;
         public UsuarioController _usuarioController;
 
         private ICryptoState _estadoActual;
-        public InicioForm InicioForm;       
+        public InicioForm InicioForm;     //Se utiliza para actualizar la lista cuando del inicio luego de agregar o eliminar un criptomoneda desde este form
         public event EventHandler<FavoritaDTO> GuardarAlerta;
 
         public OpcionesCryptoForm(string nombreCrypto, string idCrypto, AlertaController alertaController, APIController cryptosFavoritasController, UsuarioController usuarioController, InicioForm inicioForm)
@@ -32,7 +32,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas.OpcionesCrypto
             InitializeComponent();
 
             _alertaController = alertaController;
-            _cryptosFavoritasController = cryptosFavoritasController;
+            _APIController = cryptosFavoritasController;
             _usuarioController = usuarioController;
 
             cryptoNombre = nombreCrypto;
@@ -49,7 +49,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas.OpcionesCrypto
             CryptomonedaNombre.TextAlign = ContentAlignment.MiddleCenter;
 
             // Verificar si la criptomoneda es favorita
-            if (_cryptosFavoritasController.VerificarCryptoEsFavorito(cryptoId))
+            if (_APIController.VerificarCryptoEsFavorito(cryptoId))
             {
                 CambiarEstado(new EliminarState());  // Asigna el estado inicial a Eliminar
                 ActualizarBotones("Eliminar", true);
@@ -89,14 +89,14 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas.OpcionesCrypto
         // Muestra el gráfico de la criptomoneda
         private void GraficoBoton_Click(object sender, EventArgs e)
         {
-            GraficoForm graficoForm = new GraficoForm(cryptoId, _alertaController, _cryptosFavoritasController, _usuarioController);
+            GraficoForm graficoForm = new GraficoForm(cryptoId, _alertaController, _APIController, _usuarioController);
             graficoForm.Show();
         }
 
         // AlertaBoton_Click: Muestra el formulario de alertas para la criptomoneda
         private void AlertaBoton_Click(object sender, EventArgs e)
         {
-            AlertaForm alertaForm = new AlertaForm(cryptoNombre, null, _alertaController, _cryptosFavoritasController, _usuarioController);
+            AlertaForm alertaForm = new AlertaForm(cryptoNombre, null, _alertaController, _APIController, _usuarioController);
             alertaForm.GuardarAlerta += FormularioSecundario_GuardarAlerta; // Suscribirse al evento GuardarAlerta del formulario secundario
             alertaForm.Show();
         }

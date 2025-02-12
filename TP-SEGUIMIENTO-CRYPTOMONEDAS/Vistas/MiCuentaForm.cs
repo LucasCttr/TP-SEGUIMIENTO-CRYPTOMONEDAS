@@ -16,12 +16,12 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
     public partial class MiCuentaForm : Form
     {
         private AlertaController _alertaController;
-        private APIController _cryptosFavoritasController;
+        private APIController _APIControllerController;
         private UsuarioController _usuarioController;
         public MiCuentaForm(AlertaController alertaController, APIController cryptosFavoritasController, UsuarioController usuarioController)
         {
             _alertaController = alertaController;
-            _cryptosFavoritasController = cryptosFavoritasController;
+            _APIControllerController = cryptosFavoritasController;
             _usuarioController = usuarioController;
 
             InitializeComponent();
@@ -46,17 +46,17 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         // Evento que se activa al hacer clic en el botón "Guardar"
         private void buttonGuardar_Click(object sender, EventArgs e)
         {
-            var validarForm = new ValidarCambiosForm(_alertaController,_cryptosFavoritasController,_usuarioController); // Crea una instancia para validar la contraseña
+            var validarForm = new ValidarCambiosForm(_alertaController,_APIControllerController,_usuarioController); // Crea una instancia para validar la contraseña
 
             // Suscribirse al evento que valida la contraseña
             validarForm.OnPasswordValidated += ValidarForm_OnPasswordValidated;
 
             // Muestra el formulario de validación como cuadro de diálogo
-            if (validarForm.ShowDialog() == DialogResult.OK)
+            if (validarForm.ShowDialog() == DialogResult.OK)   // ValidarForm devuelve OK si la contrasena se autentifica
             {
-                // Si la validación fue exitosa, guarda los cambios y activa el modo solo lectura
-                ActiviarBotonModificar();
+                // Si la validación fue exitosa, guarda los cambios y activa el modo solo lectura  (Boton modificar)
                 _usuarioController.ModificarDatosUsuario(textNombre.Text, textCorreo.Text, textContraseña.Text);// Actualiza los datos del usuario
+                ActiviarBotonModificar();
             }
         }
 

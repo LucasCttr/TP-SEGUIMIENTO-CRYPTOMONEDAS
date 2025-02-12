@@ -22,7 +22,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
     public partial class MercadoForm : Form
     {
         private AlertaController _alertaController;
-        private APIController _cryptosFavoritasController;
+        private APIController _APIController;
         private UsuarioController _usuarioController;
         private InicioForm _inicioForm;
 
@@ -30,7 +30,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         {
             _alertaController = alertaController;
             _usuarioController = usuarioController;
-            _cryptosFavoritasController = cryptosFavoritasController;
+            _APIController = cryptosFavoritasController;
 
             InitializeComponent(); // Inicializa los componentes del formulario
             InitializeListView(); // Inicializa la vista de la lista de criptomonedas
@@ -45,7 +45,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         private async Task CargarMercado()
         {
             // Obtener las criptomonedas favoritas desde el repositorio API
-            var cryptos = await _cryptosFavoritasController.ObtenerMercadoAPI();
+            var cryptos = await _APIController.ObtenerMercadoAPI();
 
             // Verificar si cryptos está vacío
             if (cryptos == null || !cryptos.Any())
@@ -104,7 +104,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 ListViewItem selectedItem = CryptosLista.SelectedItems[0];
 
                 // Crear una nueva instancia del formulario de opciones pasando los datos del item seleccionado
-                OpcionesCryptoForm opcionesForm = new OpcionesCryptoForm(selectedItem.SubItems[2].Text, selectedItem.SubItems[1].Text, _alertaController, _cryptosFavoritasController, _usuarioController, _inicioForm);
+                OpcionesCryptoForm opcionesForm = new OpcionesCryptoForm(selectedItem.SubItems[2].Text, selectedItem.SubItems[1].Text, _alertaController, _APIController, _usuarioController, _inicioForm);
                 opcionesForm.Show(); // Mostrar el formulario de opciones
             }
         }

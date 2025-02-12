@@ -14,13 +14,13 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
     public partial class AltaUsuarioForm : Form // Formulario para registrar un nuevo usuario.
     {
-        private readonly APIController _cryptosFavoritasController;
+        private readonly APIController _APIController;
         private readonly UsuarioController _usuarioController;
         private readonly AlertaController _alertaController;
 
         public AltaUsuarioForm(AlertaController alertaController, APIController cryptosFavoritascontroller, UsuarioController usuarioController)
         {
-            _cryptosFavoritasController = cryptosFavoritascontroller;
+            _APIController = cryptosFavoritascontroller;
             _usuarioController = usuarioController;
             _alertaController = alertaController;
 

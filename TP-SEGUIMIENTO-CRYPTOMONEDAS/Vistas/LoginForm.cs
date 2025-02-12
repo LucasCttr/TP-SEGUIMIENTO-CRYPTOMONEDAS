@@ -19,13 +19,13 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 {
     public partial class LoginForm : Form // Representa la vista para login.
     {
-        private readonly APIController _cryptosFavoritasController;
+        private readonly APIController _APIController;
         private readonly UsuarioController _usuarioController;
         private readonly AlertaController _alertaController;
 
         public LoginForm(AlertaController alertaController, APIController cryptosFavoritascontroller, UsuarioController usuarioController)
         {
-            _cryptosFavoritasController = cryptosFavoritascontroller;
+            _APIController = cryptosFavoritascontroller;
             _usuarioController = usuarioController;
             _alertaController = alertaController;
 
@@ -63,8 +63,8 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 this.Hide(); // Oculta el formulario de login.
 
                 // Se inicializa el servicio de alertas y el formulario principal.
-                var _alertaService = new CryptoService(_alertaController,_usuarioController,_cryptosFavoritasController);
-                var inicioForm = new InicioForm(_alertaController, _cryptosFavoritasController, _usuarioController,  _alertaService); 
+                var _alertaService = new CryptoService(_alertaController,_usuarioController,_APIController);
+                var inicioForm = new InicioForm(_alertaController, _APIController, _usuarioController,  _alertaService); 
                 inicioForm.Show(); // Muestra el formulario principal.
             }
             else
@@ -76,7 +76,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
 
         private void botonRegistrarse_Click(object sender, EventArgs e)
         {
-            var altaForm = new AltaUsuarioForm(_alertaController, _cryptosFavoritasController, _usuarioController); // Inicia el formulario para registrar un nuevo usuario.
+            var altaForm = new AltaUsuarioForm(_alertaController, _APIController, _usuarioController); // Inicia el formulario para registrar un nuevo usuario.
             altaForm.ShowDialog(); // Muestra el formulario de registro como un cuadro de diálogo modal.
         }
     }

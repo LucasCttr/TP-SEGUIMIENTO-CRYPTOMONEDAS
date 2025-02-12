@@ -20,7 +20,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         private string Crypto;
 
         private AlertaController _alertaController;
-        private APIController _cryptosFavoritasController;
+        private APIController _APIController;
         private UsuarioController _usuarioController;
 
         public GraficoForm(string idCrypto, AlertaController alertaController, APIController cryptosFavoritasController, UsuarioController usuarioController)
@@ -29,7 +29,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             Crypto = idCrypto;
 
             _alertaController = alertaController;
-            _cryptosFavoritasController = cryptosFavoritasController;
+            _APIController = cryptosFavoritasController;
             _usuarioController = usuarioController;
 
             grafico.ChartAreas[0].AxisX.LabelStyle.Format = "dd-MM";
@@ -43,7 +43,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         }
         private void CargarHistorialCrypto(string intervalo)
         {
-            var datosHistorial = _cryptosFavoritasController.ObtenerHistorialDeUnaCrypto(Crypto, intervalo);
+            var datosHistorial = _APIController.ObtenerHistorialDeUnaCrypto(Crypto, intervalo);
 
             grafico.Series.Clear();
             Series serie = new Series();
@@ -97,7 +97,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             listaDetalles.Columns.Add("vwap24Hr", 120);
             listaDetalles.Columns.Add("Id", 0);
 
-            var datosCrypto = _cryptosFavoritasController.BuscarCryptoEnMercado(Crypto); 
+            var datosCrypto = _APIController.BuscarCryptoEnMercado(Crypto); 
 
             // Verifica si DatosCrypto no es null
             if (datosCrypto != null)

@@ -17,13 +17,13 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
     {
         public event EventHandler<bool> OnPasswordValidated; // Evento para notificar si la contraseña es válida
         private AlertaController _alertaController;
-        private APIController _cryptosFavoritasController;
+        private APIController _APIControllerController;
         private UsuarioController _usuarioController;
 
         public ValidarCambiosForm(AlertaController alertaController, APIController cryptosFavoritasController, UsuarioController usuarioController)
         {
             _alertaController = alertaController;
-            _cryptosFavoritasController = cryptosFavoritasController;
+            _APIControllerController = cryptosFavoritasController;
             _usuarioController = usuarioController;
             InitializeComponent(); 
         }
@@ -38,7 +38,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
             {
                 // Si la contraseña es correcta, invoca el evento OnPasswordValidated con resultado true
                 OnPasswordValidated?.Invoke(this, true);
-                this.DialogResult = DialogResult.OK; // Establece el resultado del formulario como OK
+                this.DialogResult = DialogResult.OK; // Establece el resultado del formulario como OK (Para validar la autentificacion)
                 this.Close(); // Cierra el formulario
             }
             else

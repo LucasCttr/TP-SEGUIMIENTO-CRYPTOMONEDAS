@@ -21,7 +21,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
     public partial class InicioForm : Form
     {
         private AlertaController _alertaController;
-        private APIController _cryptosFavoritasController;
+        private APIController _APIController;
         private UsuarioController _usuarioController;
         private CryptoService _alertaMonitor;
         public event EventHandler<FavoritaDTO> GuardarAlerta = delegate { };
@@ -29,7 +29,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         public InicioForm(AlertaController alertaController, APIController cryptosFavoritasController, UsuarioController usuarioController, CryptoService alertaService)
         {
             _alertaController = alertaController;
-            _cryptosFavoritasController = cryptosFavoritasController;
+            _APIController = cryptosFavoritasController;
             _usuarioController = usuarioController;
 
             InitializeComponent(); // Inicializa los componentes de la interfaz
@@ -66,14 +66,14 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
         private void MercadoBoton_Click(object sender, EventArgs e)
         {
             // Abre el formulario de mercado
-            var mercadoForm = new MercadoForm(_alertaController, _cryptosFavoritasController, _usuarioController, this);
+            var mercadoForm = new MercadoForm(_alertaController, _APIController, _usuarioController, this);
             mercadoForm.Show();
         }
 
         private void MiCuentaBoton_Click(object sender, EventArgs e)
         {
             // Abre el formulario de cuenta del usuario
-            var cuentaForm = new MiCuentaForm(_alertaController, _cryptosFavoritasController, _usuarioController);
+            var cuentaForm = new MiCuentaForm(_alertaController, _APIController, _usuarioController);
             cuentaForm.ShowDialog();
         }
 
@@ -85,7 +85,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 ListViewItem selectedItem = listaCryptosFavoritas.SelectedItems[0];
 
                 // Crear e iniciar el nuevo formulario pasando los datos
-                OpcionesCryptoForm opcionesForm = new OpcionesCryptoForm(selectedItem.SubItems[1].Text, selectedItem.SubItems[5].Text, _alertaController, _cryptosFavoritasController, _usuarioController, this);
+                OpcionesCryptoForm opcionesForm = new OpcionesCryptoForm(selectedItem.SubItems[1].Text, selectedItem.SubItems[5].Text, _alertaController, _APIController, _usuarioController, this);
 
                 // Suscribirse al evento del formulario intermedio para actualizar la lista de favoritos  (Por si se llegase a crear una alerta nueva desde el windowsForm alerta)
                 opcionesForm.GuardarAlerta += Evento_GuardarAlerta;
@@ -122,7 +122,7 @@ namespace TP_SEGUIMIENTO_CRYPTOMONEDAS.Vistas
                 // Obtener el ítem seleccionado
                 ListViewItem selectedItem = listaAlertas.SelectedItems[0];
                 int subItemValue = Convert.ToInt32(selectedItem.SubItems[3].Text);
-                AlertaForm alertaForm = new AlertaForm(selectedItem.Text, subItemValue, _alertaController, _cryptosFavoritasController, _usuarioController);
+                AlertaForm alertaForm = new AlertaForm(selectedItem.Text, subItemValue, _alertaController, _APIController, _usuarioController);
 
                 // Suscribirse al evento GuardarAlerta  (Al modificar la alerta desde su windowsForm, se modifica tambien en el _alertaMonitor)
                 alertaForm.GuardarAlerta += (sender, args) =>
