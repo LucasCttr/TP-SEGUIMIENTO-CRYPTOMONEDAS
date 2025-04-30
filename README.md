@@ -1,4 +1,4 @@
-Trabajo practico final, Taller de programacion.    
-
-App para monitorizar el valor de tus criptomonedas favoritas mediante la API de coinbase.                                                                                                                                                                                           
-Permite agregar a favoritos y establecer alertas sobre el top 100 de criptomonedas del sitio.
+## Trabajo Práctico Final – Taller de Programación                                                                                                                                                                                                                                       
+Aplicación desarrollada para seguir el valor de criptomonedas en tiempo real utilizando la API de Coinbase.                                                                                                                                                                                          
+Incluye funcionalidades para agregar criptomonedas a favoritos y configurar alertas personalizadas sobre las principales 100 monedas del sitio.                                                                                                                                                       
+Cuando se activa una alerta, se envía automáticamente un correo electrónico al usuario logueado con los detalles correspondientes.
